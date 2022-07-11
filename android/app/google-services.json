@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "31030779030",
+    "project_id": "fe--media-vault",
+    "storage_bucket": "fe--media-vault.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:31030779030:android:27df02271180d2215036b7",
+        "android_client_info": {
+          "package_name": "com.example.media_vault"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "31030779030-mcvtrf3kjlq169oci7kde3l7c9pe9g04.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCnkgfKMuGi7613IX3BTvqOni1Q5WDTmAU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "31030779030-mcvtrf3kjlq169oci7kde3l7c9pe9g04.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
