@@ -6,16 +6,16 @@ class AppTheme {
   static const Color _lightPrimaryColor = Colors.white;
   static final Color _lightOnPrimaryColor = Colors.grey[900] as Color;
   static const Color _lightTextColorPrimary = Colors.black;
+  static final Color _lightSecondaryColor = Colors.grey[900] as Color;
   static const Color _appbarColorLight = Colors.white;
 
   static const Color _darkPrimaryColor = Colors.black;
-  static final Color _darkOnPrimaryColor = Colors.grey[50] as Color;
+  static final Color _darkOnPrimaryColor = Colors.grey[100] as Color;
   static const Color _darkTextColorPrimary = Colors.white;
+  static final Color _darkSecondaryColor = Colors.grey[100] as Color;
   static const Color _appbarColorDark = Colors.black;
 
-  static const Color _accentColorDark = Color.fromRGBO(74, 217, 217, 1);
-
-  static const TextStyle _lightHeadingText = TextStyle(color: _lightTextColorPrimary, fontFamily: "Rubik", fontSize: 20, fontWeight: FontWeight.bold);
+  static const TextStyle _lightHeadingText = TextStyle(color: _lightTextColorPrimary, fontFamily: "Rubik", fontSize: 32, fontWeight: FontWeight.bold);
 
   static const TextStyle _lightBodyText = TextStyle(color: _lightTextColorPrimary, fontFamily: "Rubik", fontWeight: FontWeight.w500, fontSize: 16);
 
@@ -50,7 +50,7 @@ class AppTheme {
       appBarTheme: AppBarTheme(color: _appbarColorLight, iconTheme: IconThemeData(color: _lightOnPrimaryColor)),
       iconTheme: IconThemeData(color: _lightOnPrimaryColor),
       bottomAppBarColor: _appbarColorLight,
-      colorScheme: ColorScheme.light(primary: _lightPrimaryColor, onPrimary: _lightOnPrimaryColor, secondary: _accentColorDark),
+      colorScheme: ColorScheme.light(primary: _lightPrimaryColor, onPrimary: _lightOnPrimaryColor, secondary: _lightSecondaryColor),
       textTheme: _lightTextTheme);
 
   static final ThemeData darkTheme = ThemeData(
@@ -61,7 +61,7 @@ class AppTheme {
     bottomAppBarColor: _appbarColorDark,
     colorScheme: ColorScheme.dark(
       primary: _darkPrimaryColor,
-      secondary: _accentColorDark,
+      secondary: _darkSecondaryColor,
       onPrimary: _darkOnPrimaryColor,
     ),
     textTheme: _darkTextTheme,
