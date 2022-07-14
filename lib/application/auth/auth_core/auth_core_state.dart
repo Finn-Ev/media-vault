@@ -6,3 +6,5 @@ abstract class AuthCoreState {}
 class AuthCoreInitial extends AuthCoreState {}
 
 class AuthCoreUnauthenticated extends AuthCoreState {}
+
+class AuthStateAuthenticated extends AuthCoreState {}

@@ -5,6 +5,4 @@ abstract class AuthCoreEvent {}
 
 class SignOutButtonPressed extends AuthCoreEvent {}
 
-class AuthStateAuthenticated extends AuthCoreState {}
-
 class AuthCheckRequested extends AuthCoreEvent {}

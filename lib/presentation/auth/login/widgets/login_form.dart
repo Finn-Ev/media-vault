@@ -1,0 +1,105 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:media_vault/application/auth/auth_form/auth_form_bloc.dart';
+import 'package:media_vault/core/failures/auth_failures.dart';
+import 'package:media_vault/core/validators.dart';
+import 'package:media_vault/presentation/_routes/routes.gr.dart';
+import 'package:media_vault/presentation/_widgets/custom_button.dart';
+
+class LoginForm extends StatelessWidget {
+  LoginForm({Key? key}) : super(key: key);
+
+  late String email;
+  late String password;
+
+  String? validateEmail(String? value) {
+    if (emailValidator(value) == null) {
+      email = value!;
+      return null;
+    } else {
+      return emailValidator(value);
+    }
+  }
+
+  String? validatePassword(String? value) {
+    if (passwordValidator(value) == null) {
+      password = value!;
+      return null;
+    } else {
+      return passwordValidator(value);
+    }
+  }
+
+  void submitForm(context) {
+    if (formKey.currentState!.validate()) {
+      BlocProvider.of<AuthFormBloc>(context).add(
+        SignInWithEmailAndPasswordPressed(email: email, password: password),
+      );
+    } else {
+      BlocProvider.of<AuthFormBloc>(context).add(
+        SignInWithEmailAndPasswordPressed(email: null, password: null),
+      );
+    }
+  }
+
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  @override
+  Widget build(BuildContext context) {
+    final themeData = Theme.of(context);
+    return BlocConsumer<AuthFormBloc, AuthFormState>(
+      listenWhen: (previous, current) => previous.authFailureOrSuccessOption != current.authFailureOrSuccessOption && previous.isSubmitting != current.isSubmitting,
+      listener: (context, state) {
+        state.authFailureOrSuccessOption.fold(
+            () => {}, // Option is none, do nothing
+            (eitherFailureOrSuccess) => eitherFailureOrSuccess.fold(
+                  (failure) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        backgroundColor: Colors.redAccent,
+                        content: Text(
+                          mapAuthFailureToMessage(failure),
+                          style: themeData.textTheme.bodyText1,
+                        ),
+                      ),
+                    );
+                  },
+                  (success) => AutoRouter.of(context).replace(const HomePageRoute()),
+                ));
+      },
+      builder: (context, state) {
+        return Form(
+          autovalidateMode: state.showValidationMessages ? AutovalidateMode.always : AutovalidateMode.disabled,
+          key: formKey,
+          child: Column(
+            children: [
+              TextFormField(
+                cursorColor: themeData.colorScheme.onPrimary,
+                decoration: const InputDecoration(
+                  labelText: "Email",
+                ),
+                validator: validateEmail,
+                keyboardType: TextInputType.emailAddress,
+                textInputAction: TextInputAction.next,
+              ),
+              const SizedBox(height: 16.0),
+              TextFormField(
+                cursorColor: themeData.colorScheme.onPrimary,
+                decoration: const InputDecoration(
+                  labelText: "Password",
+                ),
+                validator: validatePassword,
+                textInputAction: TextInputAction.done,
+                onEditingComplete: () => submitForm(context),
+                obscureText: true,
+              ),
+              const SizedBox(height: 16.0),
+              CustomButton(text: "Login", isLoading: state.isSubmitting, onPressed: () => submitForm(context)),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
