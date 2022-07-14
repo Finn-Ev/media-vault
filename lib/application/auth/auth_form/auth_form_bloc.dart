@@ -41,5 +41,23 @@ class AuthFormBloc extends Bloc<AuthFormEvent, AuthFormState> {
         emit(state.copyWith(isSubmitting: false, authFailureOrSuccessOption: optionOf(failureOrSuccess)));
       }
     });
+
+    on<SignInWithGooglePressed>((event, emit) async {
+      emit(state.copyWith(isSubmitting: false));
+      final failureOrSuccess = await authRepository.signInWithGoogle();
+      emit(state.copyWith(isSubmitting: false, authFailureOrSuccessOption: optionOf(failureOrSuccess)));
+    });
+
+    on<ForgotPasswordPressed>((event, emit) async {
+      if (event.email == null) {
+        emit(state.copyWith(isSubmitting: false, showValidationMessages: true));
+      } else {
+        emit(state.copyWith(isSubmitting: true, showValidationMessages: false));
+        final failureOrSuccess = await authRepository.sendPasswordResetEmail(
+          email: event.email!,
+        );
+        emit(state.copyWith(isSubmitting: false, authFailureOrSuccessOption: optionOf(failureOrSuccess)));
+      }
+    });
   }
 }

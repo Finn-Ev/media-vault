@@ -15,6 +15,11 @@ class SignInWithEmailAndPasswordPressed extends AuthFormEvent {
   SignInWithEmailAndPasswordPressed({required this.email, required this.password});
 }
 
+class ForgotPasswordPressed extends AuthFormEvent {
+  final String? email;
+  ForgotPasswordPressed({required this.email});
+}
+
 class SignInWithGooglePressed extends AuthFormEvent {}
 
 class SignInWithApplePressed extends AuthFormEvent {}

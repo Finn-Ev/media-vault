@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:media_vault/application/auth/auth_form/auth_form_bloc.dart';
 import 'package:media_vault/core/failures/auth_failures.dart';
 import 'package:media_vault/core/validators.dart';
@@ -71,7 +72,22 @@ class RegisterForm extends StatelessWidget {
                       ),
                     );
                   },
-                  (success) => AutoRouter.of(context).replace(const HomePageRoute()),
+                  (success) {
+                    showDialog(
+                        context: context,
+                        builder: (_) {
+                          return PlatformAlertDialog(
+                            title: Text("Success"),
+                            content: Text("To complete your registration, please check your email for a confirmation link."),
+                            actions: [
+                              PlatformDialogAction(
+                                child: Text("OK"),
+                                onPressed: () => AutoRouter.of(context).replace(const LoginPageRoute()),
+                              )
+                            ],
+                          );
+                        });
+                  },
                 ));
       },
       builder: (context, state) {

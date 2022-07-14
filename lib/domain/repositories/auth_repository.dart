@@ -13,6 +13,14 @@ abstract class AuthRepository {
     required String password,
   });
 
+  Future<Either<AuthFailure, Unit>> signInWithGoogle();
+
+  Future<Either<AuthFailure, Unit>> signInWithApple();
+
+  Future<Either<AuthFailure, Unit>> sendPasswordResetEmail({
+    required String email,
+  });
+
   Future<void> signOut();
 
   Option<CustomUser> getSignedInUser();

@@ -5,6 +5,8 @@ import 'package:media_vault/application/auth/auth_form/auth_form_bloc.dart';
 import 'package:media_vault/injection.dart';
 import 'package:media_vault/presentation/_routes/routes.gr.dart';
 import 'package:media_vault/presentation/_widgets/horizontal_text_divider.dart';
+import 'package:media_vault/presentation/auth/login/widgets/apple_sign_in_button.dart';
+import 'package:media_vault/presentation/auth/login/widgets/google_sign_in_button.dart';
 import 'package:media_vault/presentation/auth/login/widgets/login_form.dart';
 
 class LoginPage extends StatelessWidget {
@@ -14,6 +16,7 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: const Text(""), // workaround because replace() doesn't work as intended
         title: const Text("Media Vault"),
       ),
       body: BlocProvider(
@@ -49,15 +52,30 @@ class LoginPage extends StatelessWidget {
                   ),
                 ],
               ),
+              const SizedBox(height: 24.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  InkResponse(
+                    onTap: () => AutoRouter.of(context).push(const ForgotPasswordPageRoute()),
+                    child: const Text("Forgot password?", textAlign: TextAlign.center),
+                  ),
+                ],
+              ),
               const SizedBox(height: 24),
               const HorizontalTextDivider("or"),
               const SizedBox(height: 24.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Text("Google"),
-                  SizedBox(width: 8.0),
-                  Text("Apple"),
+                children: [
+                  AppleSignInButton(),
+                ],
+              ),
+              SizedBox(height: 16.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GoogleSignInButton(),
                 ],
               ),
             ],
