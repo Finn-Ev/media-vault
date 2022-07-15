@@ -15,28 +15,30 @@ class ForgotPasswordPage extends StatelessWidget {
       ),
       body: BlocProvider(
         create: (context) => sl<AuthFormBloc>(),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 80.0),
-              const Text(
-                "Reset Password",
-                style: TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 80.0),
+                const Text(
+                  "Reset Password",
+                  style: TextStyle(
+                    fontSize: 32,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.start,
                 ),
-                textAlign: TextAlign.start,
-              ),
-              const SizedBox(height: 12.0),
-              const Text(
-                "Please enter the email-address of your account.",
-                style: TextStyle(fontSize: 16),
-              ),
-              const SizedBox(height: 16.0),
-              ForgotPasswordForm(),
-            ],
+                const SizedBox(height: 12.0),
+                const Text(
+                  "Please enter the email-address of your account.",
+                  style: TextStyle(fontSize: 16),
+                ),
+                const SizedBox(height: 16.0),
+                ForgotPasswordForm(),
+              ],
+            ),
           ),
         ),
       ),

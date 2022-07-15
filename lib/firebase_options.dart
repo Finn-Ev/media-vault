@@ -55,7 +55,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyCnkgfKMuGi7613IX3BTvqOni1Q5WDTmAU',
-    appId: '1:31030779030:android:27df02271180d2215036b7',
+    appId: '1:31030779030:android:ea4fc454e029d2555036b7',
     messagingSenderId: '31030779030',
     projectId: 'fe--media-vault',
     storageBucket: 'fe--media-vault.appspot.com',
@@ -63,17 +63,17 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyDvqQZJB0EBJT5mq0Y5Z8qTDSb64KaCvqg',
-    appId: '1:31030779030:ios:87fa7fb8b2f330c35036b7',
+    appId: '1:31030779030:ios:feab506f781a31c85036b7',
     messagingSenderId: '31030779030',
     projectId: 'fe--media-vault',
     storageBucket: 'fe--media-vault.appspot.com',
-    iosClientId: '31030779030-ftnrborc9j08s9m3sh5pnre753ota36s.apps.googleusercontent.com',
-    iosBundleId: 'com.example.mediaVault',
+    iosClientId: '31030779030-ej3jprjqqjb1faaup142lkpm68kfmujn.apps.googleusercontent.com',
+    iosBundleId: 'com.finnevermann.mediavault',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyDvqQZJB0EBJT5mq0Y5Z8qTDSb64KaCvqg',
-    appId: '1:31030779030:ios:87fa7fb8b2f330c35036b7',
+    appId: '1:31030779030:ios:da83bd3b773ce8345036b7',
     messagingSenderId: '31030779030',
     projectId: 'fe--media-vault',
     storageBucket: 'fe--media-vault.appspot.com',

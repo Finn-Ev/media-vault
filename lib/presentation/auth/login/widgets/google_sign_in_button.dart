@@ -1,8 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:media_vault/application/auth/auth_core/auth_core_bloc.dart';
 import 'package:media_vault/application/auth/auth_form/auth_form_bloc.dart';
+import 'package:media_vault/core/failures/auth_failures.dart';
 import 'package:media_vault/presentation/_routes/routes.gr.dart';
 
 class GoogleSignInButton extends StatelessWidget {
@@ -10,13 +10,25 @@ class GoogleSignInButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthCoreBloc, AuthCoreState>(
+    return BlocListener<AuthFormBloc, AuthFormState>(
       listener: (context, state) {
-        if (state is AuthCoreUnauthenticated) {
-          AutoRouter.of(context).replace(const LoginPageRoute());
-        } else if (state is AuthStateAuthenticated) {
-          AutoRouter.of(context).replace(const HomePageRoute());
-        }
+        state.authFailureOrSuccessOption.fold(
+          () {},
+          (either) => either.fold(
+            (failure) {
+              if (failure is EmailAlreadyInUseFailure) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('An account with this email already exists. Please login with this account instead.'),
+                  ),
+                );
+              }
+            },
+            (_) {
+              AutoRouter.of(context).replace(const HomePageRoute());
+            },
+          ),
+        );
       },
       child: Material(
         elevation: 10,

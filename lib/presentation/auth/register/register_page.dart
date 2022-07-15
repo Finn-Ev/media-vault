@@ -16,38 +16,40 @@ class RegisterPage extends StatelessWidget {
       ),
       body: BlocProvider(
         create: (context) => sl<AuthFormBloc>(),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 80.0),
-              const Text(
-                "Register",
-                style: TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
-                ),
-                textAlign: TextAlign.start,
-              ),
-              const SizedBox(height: 12.0),
-              const Text(
-                "Create your personal account",
-                style: TextStyle(fontSize: 16),
-              ),
-              const SizedBox(height: 16.0),
-              RegisterForm(),
-              const SizedBox(height: 16.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  InkResponse(
-                    onTap: () => AutoRouter.of(context).pop(),
-                    child: const Text("Already have an account?"),
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 80.0),
+                const Text(
+                  "Register",
+                  style: TextStyle(
+                    fontSize: 32,
+                    fontWeight: FontWeight.bold,
                   ),
-                ],
-              ),
-            ],
+                  textAlign: TextAlign.start,
+                ),
+                const SizedBox(height: 12.0),
+                const Text(
+                  "Create your personal account",
+                  style: TextStyle(fontSize: 16),
+                ),
+                const SizedBox(height: 16.0),
+                RegisterForm(),
+                const SizedBox(height: 16.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    InkResponse(
+                      onTap: () => AutoRouter.of(context).pop(),
+                      child: const Text("Already have an account?"),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -1,7 +1,9 @@
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:media_vault/constants.dart';
 import 'package:media_vault/core/failures/auth_failures.dart';
+import 'package:media_vault/core/util.dart';
 import 'package:media_vault/domain/entities/auth/user.dart';
 import 'package:media_vault/domain/repositories/auth_repository.dart';
 import 'package:media_vault/infrastructure/extensions/firebase_extensions.dart';
@@ -65,7 +67,7 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<Either<AuthFailure, Unit>> signInWithGoogle() async {
     final GoogleSignIn googleSignIn = GoogleSignIn(
-      clientId: '31030779030-ftnrborc9j08s9m3sh5pnre753ota36s.apps.googleusercontent.com',
+      clientId: FIREBASE_CLIENT_ID,
       scopes: [
         'email',
       ],
@@ -74,7 +76,7 @@ class AuthRepositoryImpl implements AuthRepository {
     final GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
 
     if (googleSignInAccount != null) {
-      final GoogleSignInAuthentication googleSignInAuthentication = await googleSignInAccount.authentication;
+      final googleSignInAuthentication = await googleSignInAccount.authentication;
 
       final AuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleSignInAuthentication.accessToken,
@@ -97,17 +99,22 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<Either<AuthFailure, Unit>> signInWithApple() async {
+    final rawNonce = generateNonce();
+    final nonce = sha256ofString(rawNonce);
+
     try {
-      print('signInWithApple');
-      final credential = await SignInWithApple.getAppleIDCredential(
-        scopes: [
-          AppleIDAuthorizationScopes.email,
-        ],
-      ) as AuthCredential;
+      final appleCredential = await SignInWithApple.getAppleIDCredential(
+        scopes: [AppleIDAuthorizationScopes.email],
+        nonce: nonce,
+      );
 
-      print(credential);
+      final oauthCredential = OAuthProvider("apple.com").credential(
+        idToken: appleCredential.identityToken,
+        rawNonce: rawNonce,
+      );
 
-      await firebaseAuth.signInWithCredential(credential);
+      await firebaseAuth.signInWithCredential(oauthCredential);
+
       return right(unit);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'account-exists-with-different-credential') {

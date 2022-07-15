@@ -7,7 +7,7 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:31030779030:android:27df02271180d2215036b7",
+        "mobilesdk_app_id": "1:31030779030:android:ea4fc454e029d2555036b7",
         "android_client_info": {
           "package_name": "com.example.media_vault"
         }
@@ -29,6 +29,49 @@
             {
               "client_id": "31030779030-mcvtrf3kjlq169oci7kde3l7c9pe9g04.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "31030779030-ej3jprjqqjb1faaup142lkpm68kfmujn.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.finnevermann.mediavault"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:31030779030:android:b7322a04e8f851b95036b7",
+        "android_client_info": {
+          "package_name": "com.finnevermann.mediavault"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "31030779030-mcvtrf3kjlq169oci7kde3l7c9pe9g04.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCnkgfKMuGi7613IX3BTvqOni1Q5WDTmAU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "31030779030-mcvtrf3kjlq169oci7kde3l7c9pe9g04.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "31030779030-ej3jprjqqjb1faaup142lkpm68kfmujn.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.finnevermann.mediavault"
+              }
             }
           ]
         }

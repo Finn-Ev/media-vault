@@ -21,64 +21,66 @@ class LoginPage extends StatelessWidget {
       ),
       body: BlocProvider(
         create: (context) => sl<AuthFormBloc>(),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 80.0),
-              const Text(
-                "Login",
-                style: TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 80.0),
+                const Text(
+                  "Login",
+                  style: TextStyle(
+                    fontSize: 32,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.start,
                 ),
-                textAlign: TextAlign.start,
-              ),
-              const SizedBox(height: 12.0),
-              const Text(
-                "Please login to your account",
-                style: TextStyle(fontSize: 16),
-              ),
-              const SizedBox(height: 16.0),
-              LoginForm(),
-              const SizedBox(height: 24.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  InkResponse(
-                    onTap: () => AutoRouter.of(context).push(const RegisterPageRoute()),
-                    child: const Text("Don't have an account?", textAlign: TextAlign.center),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 24.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  InkResponse(
-                    onTap: () => AutoRouter.of(context).push(const ForgotPasswordPageRoute()),
-                    child: const Text("Forgot password?", textAlign: TextAlign.center),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 24),
-              const HorizontalTextDivider("or"),
-              const SizedBox(height: 24.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  AppleSignInButton(),
-                ],
-              ),
-              SizedBox(height: 16.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  GoogleSignInButton(),
-                ],
-              ),
-            ],
+                const SizedBox(height: 12.0),
+                const Text(
+                  "Please login to your account",
+                  style: TextStyle(fontSize: 16),
+                ),
+                const SizedBox(height: 16.0),
+                LoginForm(),
+                const SizedBox(height: 24.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    InkResponse(
+                      onTap: () => AutoRouter.of(context).push(const RegisterPageRoute()),
+                      child: const Text("Don't have an account?", textAlign: TextAlign.center),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 24.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    InkResponse(
+                      onTap: () => AutoRouter.of(context).push(const ForgotPasswordPageRoute()),
+                      child: const Text("Forgot password?", textAlign: TextAlign.center),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 24),
+                const HorizontalTextDivider("or"),
+                const SizedBox(height: 24.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    AppleSignInButton(),
+                  ],
+                ),
+                SizedBox(height: 16.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    GoogleSignInButton(),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
