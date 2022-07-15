@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:media_vault/application/auth/auth_core/auth_core_bloc.dart';
 import 'package:media_vault/presentation/_routes/routes.gr.dart';
+import 'package:media_vault/presentation/_widgets/loading_indicator.dart';
 
 class SplashPage extends StatelessWidget {
   const SplashPage({Key? key}) : super(key: key);
@@ -17,11 +18,9 @@ class SplashPage extends StatelessWidget {
           AutoRouter.of(context).replace(const HomePageRoute());
         }
       },
-      child: Scaffold(
+      child: const Scaffold(
         body: Center(
-          child: CircularProgressIndicator(
-            color: Theme.of(context).colorScheme.secondary,
-          ),
+          child: LoadingIndicator(),
         ),
       ),
     );

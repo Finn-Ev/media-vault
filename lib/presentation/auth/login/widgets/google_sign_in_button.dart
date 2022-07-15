@@ -18,7 +18,7 @@ class GoogleSignInButton extends StatelessWidget {
             (failure) {
               if (failure is EmailAlreadyInUseFailure) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
+                  const SnackBar(
                     content: Text('An account with this email already exists. Please login with this account instead.'),
                   ),
                 );

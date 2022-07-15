@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:media_vault/presentation/_widgets/loading_indicator.dart';
 
 class CustomButton extends StatelessWidget {
   final String text;
@@ -26,19 +26,15 @@ class CustomButton extends StatelessWidget {
           color: themeData.colorScheme.secondary,
         ),
         child: Center(
-          child: !isLoading
-              ? Text(
-                  text,
-                  style: TextStyle(
-                    color: themeData.colorScheme.onSecondary,
-                    fontSize: 20,
-                  ),
-                )
-              : PlatformCircularProgressIndicator(
-                  material: (_, __) => MaterialProgressIndicatorData(color: themeData.colorScheme.onSecondary),
-                  cupertino: (_, __) => CupertinoProgressIndicatorData(color: themeData.colorScheme.onSecondary),
-                ),
-        ),
+            child: !isLoading
+                ? Text(
+                    text,
+                    style: TextStyle(
+                      color: themeData.colorScheme.onSecondary,
+                      fontSize: 20,
+                    ),
+                  )
+                : const LoadingIndicator()),
       ),
     );
   }
