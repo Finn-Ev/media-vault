@@ -21,7 +21,7 @@ class ForgotPasswordPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 80.0),
+                const SizedBox(height: 40.0),
                 const Text(
                   "Reset Password",
                   style: TextStyle(

@@ -27,7 +27,7 @@ class LoginPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 80.0),
+                const SizedBox(height: 40.0),
                 const Text(
                   "Login",
                   style: TextStyle(
@@ -68,11 +68,11 @@ class LoginPage extends StatelessWidget {
                 const SizedBox(height: 24.0),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
+                  children: const [
                     AppleSignInButton(),
                   ],
                 ),
-                SizedBox(height: 16.0),
+                const SizedBox(height: 16.0),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

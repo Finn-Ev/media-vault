@@ -34,8 +34,8 @@ class GoogleSignInButton extends StatelessWidget {
         elevation: 10,
         borderRadius: BorderRadius.circular(10),
         child: Container(
-          height: 50,
-          width: 225,
+          height: 60,
+          width: 250,
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
@@ -52,7 +52,7 @@ class GoogleSignInButton extends StatelessWidget {
                 SizedBox(height: 32, child: Image.asset('images/google_logo.png', fit: BoxFit.cover)),
                 const Text(
                   'Sign-In with Google',
-                  style: TextStyle(color: Colors.black, fontSize: 15),
+                  style: TextStyle(color: Colors.black, fontSize: 20),
                 ),
                 const SizedBox(
                   width: 5.0,

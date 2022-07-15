@@ -34,8 +34,8 @@ class AppleSignInButton extends StatelessWidget {
           );
         },
         child: Container(
-          height: 50,
-          width: 225,
+          height: 65,
+          width: 250,
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
@@ -55,7 +55,7 @@ class AppleSignInButton extends StatelessWidget {
                 ),
                 const Text(
                   'Sign-In with Apple',
-                  style: TextStyle(color: Colors.white, fontSize: 15),
+                  style: TextStyle(color: Colors.white, fontSize: 20),
                 ),
                 const SizedBox(
                   width: 5.0,
