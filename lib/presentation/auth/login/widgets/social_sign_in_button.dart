@@ -10,7 +10,6 @@ import 'package:media_vault/presentation/_routes/routes.gr.dart';
 enum SocialProvider {
   google,
   apple,
-  // facebook,
 }
 
 class SocialSignInButton extends StatelessWidget {
@@ -40,9 +39,21 @@ class SocialSignInButton extends StatelessWidget {
     }
   }
 
+  /// hide the button if the platform is not iOS but the provider is apple
+  bool _shouldBeDisplayed() {
+    if (socialProvider == SocialProvider.apple) {
+      if (Platform.isIOS) {
+        return true;
+      }
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    if (Platform.isIOS) {
+    if (_shouldBeDisplayed()) {
       return BlocListener<AuthFormBloc, AuthFormState>(
         listener: (context, state) {
           state.authFailureOrSuccessOption.fold(
