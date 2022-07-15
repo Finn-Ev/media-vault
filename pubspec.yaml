@@ -45,6 +45,7 @@ dependencies:
   cloud_firestore: ^3.2.1
   flutter_platform_widgets: ^2.0.0
   google_sign_in: ^5.4.0
+  sign_in_with_apple: ^4.0.0
 
 dev_dependencies:
   flutter_test:

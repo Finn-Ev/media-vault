@@ -5,6 +5,7 @@ import 'package:media_vault/core/failures/auth_failures.dart';
 import 'package:media_vault/domain/entities/auth/user.dart';
 import 'package:media_vault/domain/repositories/auth_repository.dart';
 import 'package:media_vault/infrastructure/extensions/firebase_extensions.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final FirebaseAuth firebaseAuth;
@@ -95,9 +96,28 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<AuthFailure, Unit>> signInWithApple() {
-    // TODO: implement signInWithApple
-    throw UnimplementedError();
+  Future<Either<AuthFailure, Unit>> signInWithApple() async {
+    try {
+      print('signInWithApple');
+      final credential = await SignInWithApple.getAppleIDCredential(
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+        ],
+      ) as AuthCredential;
+
+      print(credential);
+
+      await firebaseAuth.signInWithCredential(credential);
+      return right(unit);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'account-exists-with-different-credential') {
+        left(EmailAlreadyInUseFailure());
+      }
+      return left(ServerFailure());
+    } catch (e) {
+      print(e);
+      return left(ServerFailure());
+    }
   }
 
   @override
