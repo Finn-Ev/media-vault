@@ -5,9 +5,8 @@ import 'package:media_vault/application/auth/auth_form/auth_form_bloc.dart';
 import 'package:media_vault/injection.dart';
 import 'package:media_vault/presentation/_routes/routes.gr.dart';
 import 'package:media_vault/presentation/_widgets/horizontal_text_divider.dart';
-import 'package:media_vault/presentation/auth/login/widgets/apple_sign_in_button.dart';
-import 'package:media_vault/presentation/auth/login/widgets/google_sign_in_button.dart';
 import 'package:media_vault/presentation/auth/login/widgets/login_form.dart';
+import 'package:media_vault/presentation/auth/login/widgets/social_sign_in_button.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -69,14 +68,14 @@ class LoginPage extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: const [
-                    AppleSignInButton(),
+                    SocialSignInButton(socialProvider: SocialProvider.apple),
                   ],
                 ),
                 const SizedBox(height: 16.0),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    GoogleSignInButton(),
+                  children: const [
+                    SocialSignInButton(socialProvider: SocialProvider.google),
                   ],
                 ),
               ],
