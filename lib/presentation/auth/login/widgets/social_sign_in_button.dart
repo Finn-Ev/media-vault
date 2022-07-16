@@ -42,10 +42,7 @@ class SocialSignInButton extends StatelessWidget {
   /// hide the button if the platform is not iOS but the provider is apple
   bool _shouldBeDisplayed() {
     if (socialProvider == SocialProvider.apple) {
-      if (Platform.isIOS) {
-        return true;
-      }
-      return false;
+      return Platform.isIOS;
     } else {
       return true;
     }
@@ -69,7 +66,7 @@ class SocialSignInButton extends StatelessWidget {
                 }
               },
               (_) {
-                AutoRouter.of(context).replace(const HomePageRoute());
+                AutoRouter.of(context).replace(const AlbumListPageRoute());
               },
             ),
           );

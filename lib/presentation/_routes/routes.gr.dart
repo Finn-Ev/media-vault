@@ -16,7 +16,7 @@ import 'package:flutter/material.dart' as _i7;
 import '../auth/forgot_password/forgot_password_page.dart' as _i5;
 import '../auth/login/login_page.dart' as _i3;
 import '../auth/register/register_page.dart' as _i4;
-import '../home_page.dart' as _i2;
+import '../media/album_list/album_list_page.dart' as _i2;
 import '../splash/splash_page.dart' as _i1;
 
 class AppRouter extends _i6.RootStackRouter {
@@ -29,9 +29,9 @@ class AppRouter extends _i6.RootStackRouter {
       return _i6.MaterialPageX<dynamic>(
           routeData: routeData, child: const _i1.SplashPage());
     },
-    HomePageRoute.name: (routeData) {
+    AlbumListPageRoute.name: (routeData) {
       return _i6.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i2.HomePage());
+          routeData: routeData, child: const _i2.AlbumListPage());
     },
     LoginPageRoute.name: (routeData) {
       return _i6.MaterialPageX<dynamic>(
@@ -50,7 +50,7 @@ class AppRouter extends _i6.RootStackRouter {
   @override
   List<_i6.RouteConfig> get routes => [
         _i6.RouteConfig(SplashPageRoute.name, path: '/'),
-        _i6.RouteConfig(HomePageRoute.name, path: '/home-page'),
+        _i6.RouteConfig(AlbumListPageRoute.name, path: '/album-list-page'),
         _i6.RouteConfig(LoginPageRoute.name, path: '/login-page'),
         _i6.RouteConfig(RegisterPageRoute.name, path: '/register-page'),
         _i6.RouteConfig(ForgotPasswordPageRoute.name,
@@ -67,11 +67,12 @@ class SplashPageRoute extends _i6.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i2.HomePage]
-class HomePageRoute extends _i6.PageRouteInfo<void> {
-  const HomePageRoute() : super(HomePageRoute.name, path: '/home-page');
+/// [_i2.AlbumListPage]
+class AlbumListPageRoute extends _i6.PageRouteInfo<void> {
+  const AlbumListPageRoute()
+      : super(AlbumListPageRoute.name, path: '/album-list-page');
 
-  static const String name = 'HomePageRoute';
+  static const String name = 'AlbumListPageRoute';
 }
 
 /// generated route for

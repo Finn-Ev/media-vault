@@ -80,7 +80,7 @@ class LoginForm extends StatelessWidget {
                       );
                     }
                   },
-                  (success) => AutoRouter.of(context).replace(const HomePageRoute()),
+                  (success) => AutoRouter.of(context).replace(const AlbumListPageRoute()),
                 ));
       },
       builder: (context, state) {
