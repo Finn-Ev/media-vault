@@ -2,22 +2,27 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
-class InputAlert extends StatelessWidget {
+class CustomInputAlert extends StatelessWidget {
   final String title;
   final String hintText;
-  final Function(String) onSubmit;
+  final String initialInputValue;
+  final String confirmText;
+  final Function(String) onConfirm;
 
   final TextEditingController _controller = TextEditingController();
 
-  InputAlert({
+  CustomInputAlert({
     required this.title,
     required this.hintText,
-    required this.onSubmit,
+    required this.onConfirm,
+    this.initialInputValue = '',
+    this.confirmText = 'Confirm',
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    _controller.text = initialInputValue;
     final themeData = Theme.of(context);
     return PlatformAlertDialog(
       title: Text(title),
@@ -48,11 +53,11 @@ class InputAlert extends StatelessWidget {
           child: const Text('Create'),
           cupertino: (_, __) => CupertinoDialogActionData(
             isDefaultAction: true,
-            child: const Text('Create'),
+            child: Text(confirmText),
           ),
           onPressed: () {
             if (_controller.text.isNotEmpty) {
-              onSubmit(_controller.text);
+              onConfirm(_controller.text);
               Navigator.of(context).pop();
             }
           },
