@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:media_vault/application/albums/controller/album_controller_bloc.dart';
 import 'package:media_vault/application/auth/auth_core/auth_core_bloc.dart';
 import 'package:media_vault/firebase_options.dart';
 import 'package:media_vault/presentation/_routes/routes.gr.dart' as router;
@@ -30,6 +31,9 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider<AuthCoreBloc>(
           create: (context) => sl<AuthCoreBloc>()..add(AuthCheckRequested()),
+        ),
+        BlocProvider<AlbumControllerBloc>(
+          create: (context) => sl<AlbumControllerBloc>(),
         ),
       ],
       child: MaterialApp.router(

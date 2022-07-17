@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
+import 'package:media_vault/application/albums/controller/album_controller_bloc.dart';
 import 'package:media_vault/application/albums/observer/album_observer_bloc.dart';
 import 'package:media_vault/application/assets/observer/asset_observer_bloc.dart';
 import 'package:media_vault/application/auth/auth_core/auth_core_bloc.dart';
@@ -29,6 +30,8 @@ Future<void> init() async {
   // Albums
   // state management
   sl.registerFactory(() => AlbumObserverBloc(albumRepository: sl()));
+  sl.registerFactory(() => AlbumControllerBloc(albumRepository: sl()));
+
   // repositories
   sl.registerLazySingleton<AlbumRepository>(() => AlbumRepositoryImpl(firestore: sl()));
 

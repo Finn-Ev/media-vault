@@ -6,7 +6,7 @@ import 'package:media_vault/domain/entities/media/album.dart';
 abstract class AlbumRepository {
   Stream<Either<MediaFailure, List<Album>>> watchAll();
 
-  Future<Either<MediaFailure, Unit>> create(Album album);
+  Future<Either<MediaFailure, Unit>> create(String title);
 
   Future<Either<MediaFailure, Unit>> update(Album album);
 

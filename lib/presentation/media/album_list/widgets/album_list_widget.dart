@@ -23,7 +23,7 @@ class AlbumList extends StatelessWidget {
               crossAxisSpacing: 12,
               mainAxisSpacing: 12,
               crossAxisCount: 2,
-              childAspectRatio: .89,
+              childAspectRatio: .88,
               children: state.albums.map((album) {
                 return AlbumPreviewCard(album: album);
               }).toList(),

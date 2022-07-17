@@ -2,9 +2,11 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:media_vault/application/albums/controller/album_controller_bloc.dart';
 import 'package:media_vault/application/albums/observer/album_observer_bloc.dart';
 import 'package:media_vault/application/auth/auth_core/auth_core_bloc.dart';
 import 'package:media_vault/presentation/_routes/routes.gr.dart';
+import 'package:media_vault/presentation/_widgets/input_alert.dart';
 import 'package:media_vault/presentation/media/album_list/widgets/album_list_widget.dart';
 
 import '../../../injection.dart';
@@ -44,7 +46,18 @@ class AlbumListPage extends StatelessWidget {
               IconButton(
                 icon: const Icon(Icons.add),
                 onPressed: () {
-                  // AutoRouter.of(context).replace(const AlbumCreatePageRoute());
+                  showDialog(
+                    context: context,
+                    builder: (_) {
+                      return InputAlert(
+                        title: 'Create Album',
+                        hintText: 'Enter the name of the album',
+                        onSubmit: (value) {
+                          BlocProvider.of<AlbumControllerBloc>(context).add(CreateAlbum(title: value));
+                        },
+                      );
+                    },
+                  );
                 },
               ),
             ],

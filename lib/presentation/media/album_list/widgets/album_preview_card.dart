@@ -28,22 +28,13 @@ class AlbumPreviewCard extends StatelessWidget {
                 children: [
                   AspectRatio(
                     aspectRatio: 1,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.grey,
-                          width: 1.0,
-                        ),
-                      ),
-                      child: Image.network(
-                        state.assets.isNotEmpty ? state.assets.last.url : "https://songline-marketing.de/wp-content/uploads/2021/08/image-placeholder.jpg",
-                        fit: BoxFit.cover,
-                      ),
+                    child: Image.network(
+                      state.assets.isNotEmpty ? state.assets.last.url : "https://songline-marketing.de/wp-content/uploads/2021/08/image-placeholder.jpg",
+                      fit: BoxFit.cover,
                     ),
                   ),
                   const SizedBox(height: 4.0),
                   Row(
-                    // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(album.title),
                       const SizedBox(

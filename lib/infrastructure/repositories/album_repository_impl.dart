@@ -12,12 +12,12 @@ class AlbumRepositoryImpl extends AlbumRepository {
   AlbumRepositoryImpl({required this.firestore});
 
   @override
-  Future<Either<MediaFailure, Unit>> create(Album album) async {
+  Future<Either<MediaFailure, Unit>> create(String title) async {
     try {
       final userDoc = await firestore.userDocument();
 
       // go 'reverse' from domain to infrastructure
-      final todoModel = AlbumModel.fromEntity(album);
+      final todoModel = AlbumModel.fromEntity(Album.empty().copyWith(title: title));
 
       await userDoc.albumCollection.doc(todoModel.id).set(todoModel.toMap());
 
@@ -38,7 +38,7 @@ class AlbumRepositoryImpl extends AlbumRepository {
       // go 'reverse' from domain to infrastructure
       final todoModel = AlbumModel.fromEntity(album);
 
-      await userDoc.albumCollection.doc(todoModel.id).update(todoModel.copyWith(updatedAt: todoModel.updatedAt).toMap());
+      await userDoc.albumCollection.doc(todoModel.id).update(todoModel.copyWith(updatedAt: FieldValue.serverTimestamp()).toMap());
 
       return right(unit);
     } on FirebaseException catch (e) {

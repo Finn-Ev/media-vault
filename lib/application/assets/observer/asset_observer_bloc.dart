@@ -26,7 +26,9 @@ class AssetObserverBloc extends Bloc<AssetObserverEvent, AssetObserverState> {
 
     on<AssetsUpdated>(
       (event, emit) async {
-        event.failureOrAssets.fold((failure) => emit(AssetObserverFailure(failure)), (assets) {
+        event.failureOrAssets.fold((failure) {
+          emit(AssetObserverFailure(failure));
+        }, (assets) {
           assets.sort((a, b) => a.createdAt.compareTo(b.createdAt));
           emit(AssetObserverLoaded(assets: assets));
         });
