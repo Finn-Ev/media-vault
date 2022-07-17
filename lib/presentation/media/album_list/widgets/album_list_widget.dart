@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:media_vault/application/albums/observer/album_observer_bloc.dart';
+import 'package:media_vault/presentation/media/album_list/widgets/album_preview_card.dart';
 
 class AlbumList extends StatelessWidget {
   const AlbumList({Key? key}) : super(key: key);
@@ -18,14 +19,14 @@ class AlbumList extends StatelessWidget {
         } else if (state is AlbumObserverLoaded) {
           return Padding(
             padding: const EdgeInsets.all(8.0),
-            child: ListView.builder(
-              itemCount: state.albums.length,
-              itemBuilder: (context, index) {
-                return Text(
-                  state.albums[index].title,
-                  style: TextStyle(color: Colors.white),
-                );
-              },
+            child: GridView.count(
+              crossAxisSpacing: 12,
+              mainAxisSpacing: 12,
+              crossAxisCount: 2,
+              childAspectRatio: .89,
+              children: state.albums.map((album) {
+                return AlbumPreviewCard(album: album);
+              }).toList(),
             ),
           );
         } else {

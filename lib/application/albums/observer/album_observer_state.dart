@@ -14,7 +14,7 @@ class AlbumObserverLoaded extends AlbumObserverState {
 }
 
 class AlbumObserverFailure extends AlbumObserverState {
-  final AlbumFailure failure;
+  final MediaFailure failure;
 
   AlbumObserverFailure(this.failure);
 }

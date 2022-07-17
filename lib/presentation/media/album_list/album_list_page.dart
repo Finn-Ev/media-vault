@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:media_vault/application/albums/observer/album_observer_bloc.dart';
@@ -32,14 +33,23 @@ class AlbumListPage extends StatelessWidget {
         child: Scaffold(
           appBar: AppBar(
             leading: IconButton(
-              icon: const Icon(Icons.logout),
+              icon: const Icon(Icons.settings),
               onPressed: () {
                 BlocProvider.of<AuthCoreBloc>(context).add(SignOutButtonPressed());
+                // AutoRouter.of(context).push(const SettingsPageRoute());
               },
             ),
-            title: Text('My Albums'),
+            title: const Text('My Albums'),
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.add),
+                onPressed: () {
+                  // AutoRouter.of(context).replace(const AlbumCreatePageRoute());
+                },
+              ),
+            ],
           ),
-          body: AlbumList(),
+          body: const AlbumList(),
         ),
       ),
     );

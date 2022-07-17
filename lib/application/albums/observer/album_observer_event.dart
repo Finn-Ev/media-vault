@@ -6,13 +6,13 @@ abstract class AlbumObserverEvent {}
 class AlbumsObserveAll extends AlbumObserverEvent {}
 
 class AlbumsUpdated extends AlbumObserverEvent {
-  final Either<AlbumFailure, List<Album>> failureOrAlbums;
+  final Either<MediaFailure, List<Album>> failureOrAlbums;
 
   AlbumsUpdated({required this.failureOrAlbums});
 }
 
 class AlbumObserverFailureEvent extends AlbumObserverEvent {
-  final AlbumFailure failure;
+  final MediaFailure failure;
 
   AlbumObserverFailureEvent(this.failure);
 }

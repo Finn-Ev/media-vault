@@ -1,10 +1,10 @@
-abstract class AlbumFailure {}
+abstract class MediaFailure {}
 
-class InsufficientPermissions extends AlbumFailure {}
+class InsufficientPermissions extends MediaFailure {}
 
-class UnexpectedFailure extends AlbumFailure {}
+class UnexpectedFailure extends MediaFailure {}
 
-String mapTodosFailureToMessage(AlbumFailure failure) {
+String mapTodosFailureToMessage(MediaFailure failure) {
   switch (failure.runtimeType) {
     case InsufficientPermissions:
       return 'Insufficient Permissions. Please relaunch the app';

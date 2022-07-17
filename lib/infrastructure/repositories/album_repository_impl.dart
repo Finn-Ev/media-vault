@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
-import 'package:media_vault/core/failures/album_failures.dart';
+import 'package:media_vault/core/failures/media_failures.dart';
 import 'package:media_vault/domain/entities/auth/user_id.dart';
 import 'package:media_vault/domain/entities/media/album.dart';
 import 'package:media_vault/domain/repositories/album_repository.dart';
@@ -12,7 +12,7 @@ class AlbumRepositoryImpl extends AlbumRepository {
   AlbumRepositoryImpl({required this.firestore});
 
   @override
-  Future<Either<AlbumFailure, Unit>> create(Album album) async {
+  Future<Either<MediaFailure, Unit>> create(Album album) async {
     try {
       final userDoc = await firestore.userDocument();
 
@@ -31,7 +31,7 @@ class AlbumRepositoryImpl extends AlbumRepository {
   }
 
   @override
-  Future<Either<AlbumFailure, Unit>> update(Album album) async {
+  Future<Either<MediaFailure, Unit>> update(Album album) async {
     try {
       final userDoc = await firestore.userDocument();
 
@@ -50,7 +50,7 @@ class AlbumRepositoryImpl extends AlbumRepository {
   }
 
   @override
-  Future<Either<AlbumFailure, Unit>> delete(UniqueID id) async {
+  Future<Either<MediaFailure, Unit>> delete(UniqueID id) async {
     try {
       final userDoc = await firestore.userDocument();
 
@@ -66,14 +66,15 @@ class AlbumRepositoryImpl extends AlbumRepository {
   }
 
   @override
-  Stream<Either<AlbumFailure, List<Album>>> watchAll() async* {
+  Stream<Either<MediaFailure, List<Album>>> watchAll() async* {
     final userDoc = await firestore.userDocument();
 
     // right side listen on albums collection
     // yield* userDoc.albumCollection
+
     yield* userDoc.albumCollection
         .snapshots()
-        .map((snapshot) => right<AlbumFailure, List<Album>>(snapshot.docs.map((doc) => AlbumModel.fromFirestore(doc).toEntity()).toList()))
+        .map((snapshot) => right<MediaFailure, List<Album>>(snapshot.docs.map((doc) => AlbumModel.fromFirestore(doc).toEntity()).toList()))
         .handleError((e) {
       if (e is FirebaseException) {
         if (e.code.contains('permission-denied') || e.code.contains("PERMISSION_DENIED")) {
