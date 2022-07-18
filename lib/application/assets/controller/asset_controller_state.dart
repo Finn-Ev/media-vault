@@ -7,7 +7,8 @@ class AssetControllerInitial extends AssetControllerState {}
 
 class AssetControllerLoading extends AssetControllerState {
   final int currentStep;
-  AssetControllerLoading({this.currentStep = -1});
+  final int totalSteps;
+  AssetControllerLoading({this.currentStep = -1, this.totalSteps = -1});
 }
 
 class AssetControllerLoaded extends AssetControllerState {}

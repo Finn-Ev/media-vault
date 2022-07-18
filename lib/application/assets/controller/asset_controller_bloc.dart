@@ -15,16 +15,19 @@ class AssetControllerBloc extends Bloc<AssetControllerEvent, AssetControllerStat
   AssetControllerBloc({required this.albumRepository}) : super(AssetControllerInitial()) {
     on<UploadImages>((event, emit) async {
       emit(AssetControllerLoading());
-      final failureOrSuccess = await albumRepository.uploadImages(event.images, event.albumId);
 
-      failureOrSuccess.fold(
-        (failure) => emit(AssetControllerFailure(failure)),
-        (success) => emit(AssetControllerLoaded()),
-      );
+      for (int i = 0; i < event.images.length; i++) {
+        final failureOrSuccess = await albumRepository.uploadImage(event.images[i], event.albumId);
+        failureOrSuccess.fold(
+          (failure) => emit(AssetControllerFailure(failure)),
+          (success) => emit(AssetControllerLoading(currentStep: i + 1, totalSteps: event.images.length)),
+        );
+      }
+      emit(AssetControllerLoaded());
     });
 
     on<UploadVideo>((event, emit) async {
-      emit(AssetControllerLoading());
+      emit(AssetControllerLoading(currentStep: 0, totalSteps: 1));
       final failureOrSuccess = await albumRepository.uploadVideo(event.video, event.albumId);
 
       failureOrSuccess.fold(

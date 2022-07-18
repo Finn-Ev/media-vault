@@ -18,29 +18,27 @@ class AssetRepositoryImpl extends AssetRepository {
   AssetRepositoryImpl({required this.firestore, required this.storage});
 
   @override
-  Future<Either<MediaFailure, Unit>> uploadImages(List<XFile> images, UniqueID albumId) async {
+  Future<Either<MediaFailure, Unit>> uploadImage(XFile image, UniqueID albumId) async {
     try {
       final userDoc = await firestore.userDocument();
 
-      for (final image in images) {
-        final file = File(image.path);
+      final file = File(image.path);
 
-        final lastModified = await image.lastModified();
+      final lastModified = await image.lastModified();
 
-        await storage
-            .ref(userDoc.id)
-            .child(const Uuid().v4())
-            .putFile(file)
-            .then(
-              (taskSnapshot) async {
-                final downloadUrl = await taskSnapshot.ref.getDownloadURL();
-                final assetModel = AssetModel.fromEntity(Asset.empty()).copyWith(url: downloadUrl, createdAt: lastModified);
-                await userDoc.collection('albums/$albumId/assets').doc(assetModel.id).set(assetModel.toMap());
-              },
-            )
-            .catchError((e) => print(e))
-            .whenComplete(() => file.delete());
-      }
+      await storage
+          .ref(userDoc.id)
+          .child(const Uuid().v4())
+          .putFile(file)
+          .then(
+            (taskSnapshot) async {
+              final downloadUrl = await taskSnapshot.ref.getDownloadURL();
+              final assetModel = AssetModel.fromEntity(Asset.empty()).copyWith(url: downloadUrl, createdAt: lastModified);
+              await userDoc.collection('albums/$albumId/assets').doc(assetModel.id).set(assetModel.toMap());
+            },
+          )
+          .catchError((e) => print(e))
+          .whenComplete(() => file.delete());
 
       return right(unit);
     } on FirebaseException catch (e) {

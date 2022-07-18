@@ -100,10 +100,10 @@ class AssetListPage extends StatelessWidget {
                       child: Column(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        LoadingIndicator(),
-                        SizedBox(height: 10),
-                        Text('Data is being synced...'),
+                      children: [
+                        const LoadingIndicator(),
+                        const SizedBox(height: 10),
+                        state.currentStep >= 0 ? Text('Uploading asset: ${state.currentStep}/${state.totalSteps}') : Container(),
                       ],
                     ))
                   : AssetList(albumId: album.id.toString())),

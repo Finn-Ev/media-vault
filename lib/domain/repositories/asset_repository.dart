@@ -5,7 +5,7 @@ import 'package:media_vault/domain/entities/auth/user_id.dart';
 import 'package:media_vault/domain/entities/media/asset.dart';
 
 abstract class AssetRepository {
-  Future<Either<MediaFailure, Unit>> uploadImages(List<XFile> images, UniqueID albumId);
+  Future<Either<MediaFailure, Unit>> uploadImage(XFile image, UniqueID albumId);
 
   Future<Either<MediaFailure, Unit>> uploadVideo(XFile video, UniqueID albumId);
 

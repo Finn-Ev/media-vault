@@ -9,6 +9,9 @@ import 'package:media_vault/domain/entities/media/album.dart';
 import 'package:media_vault/presentation/_routes/routes.gr.dart';
 import 'package:media_vault/presentation/_widgets/custom_alert_dialog.dart';
 import 'package:media_vault/presentation/_widgets/custom_input_alert.dart';
+import 'package:media_vault/presentation/_widgets/loading_indicator.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:video_thumbnail/video_thumbnail.dart';
 
 import '../../../../injection.dart';
 
@@ -111,6 +114,25 @@ class AlbumPreviewCard extends StatelessWidget {
       );
     }
 
+    Future<String> _previewImagePath({asset}) async {
+      if (asset.isVideo) {
+        final thumbnail = await VideoThumbnail.thumbnailFile(
+          video: asset.url,
+          thumbnailPath: (await getTemporaryDirectory()).path,
+          imageFormat: ImageFormat.JPEG,
+          maxWidth: 300,
+          maxHeight: 300,
+        );
+
+        if (thumbnail != null) {
+          return thumbnail.toString();
+        }
+        return "";
+      } else {
+        return asset.url;
+      }
+    }
+
     return BlocProvider(
       create: (context) => assetObserverBloc,
       child: BlocBuilder<AssetObserverBloc, AssetObserverState>(
@@ -133,10 +155,37 @@ class AlbumPreviewCard extends StatelessWidget {
                 children: [
                   AspectRatio(
                     aspectRatio: 1,
-                    child: Image.network(
-                      state.assets.isNotEmpty ? state.assets.last.url : "https://songline-marketing.de/wp-content/uploads/2021/08/image-placeholder.jpg",
-                      fit: BoxFit.cover,
-                    ),
+                    child: state.assets.isEmpty
+                        ? Image.network(
+                            "https://songline-marketing.de/wp-content/uploads/2021/08/image-placeholder.jpg",
+                            fit: BoxFit.cover,
+                          )
+                        : FutureBuilder<String>(
+                            future: _previewImagePath(asset: state.assets.last),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData && state.assets.last.isVideo) {
+                                return AspectRatio(
+                                  aspectRatio: 1,
+                                  child: Image.asset(
+                                    snapshot.data!,
+                                    fit: BoxFit.cover,
+                                  ),
+                                );
+                              } else if (snapshot.hasData && !state.assets.last.isVideo) {
+                                return AspectRatio(
+                                  aspectRatio: 1,
+                                  child: Image.network(
+                                    snapshot.data!,
+                                    fit: BoxFit.cover,
+                                  ),
+                                );
+                              } else if (snapshot.hasError) {
+                                return const Center(child: Text('Error'));
+                              } else {
+                                return const Center(child: LoadingIndicator());
+                              }
+                              return const Center(child: Text('Loading'));
+                            }),
                   ),
                   const SizedBox(height: 4.0),
                   Row(
