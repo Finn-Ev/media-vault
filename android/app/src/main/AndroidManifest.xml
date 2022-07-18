@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.media_vault">
+    <uses-permission android:name="android.permission.INTERNET"/>
    <application
         android:label="media_vault"
         android:name="${applicationName}"

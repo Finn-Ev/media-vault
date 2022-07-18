@@ -21,27 +21,6 @@ class AlbumPreviewCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final assetObserverBloc = sl<AssetObserverBloc>()..add(ObserveAlbumAssets(albumId: album.id.value));
 
-    _deleteDialog({required String albumTitle}) {
-      return PlatformAlertDialog(
-        title: Text('Delete $albumTitle?'),
-        content: const Text('This action cannot be undone.'),
-        actions: <Widget>[
-          PlatformDialogAction(
-            child: const Text('Cancel'),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-          PlatformDialogAction(
-            child: const Text('Confirm'),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-        ],
-      );
-    }
-
     _materialPopupContent() {
       return BottomSheet(
         onClosing: () {},

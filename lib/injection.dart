@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:media_vault/application/albums/controller/album_controller_bloc.dart';
 import 'package:media_vault/application/albums/observer/album_observer_bloc.dart';
+import 'package:media_vault/application/assets/controller/asset_controller_bloc.dart';
 import 'package:media_vault/application/assets/observer/asset_observer_bloc.dart';
 import 'package:media_vault/application/auth/auth_core/auth_core_bloc.dart';
 import 'package:media_vault/application/auth/auth_form/auth_form_bloc.dart';
@@ -19,6 +21,7 @@ Future<void> init() async {
   // Firebase
   sl.registerLazySingleton(() => FirebaseFirestore.instance);
   sl.registerLazySingleton(() => FirebaseAuth.instance);
+  sl.registerLazySingleton(() => FirebaseStorage.instance);
 
   // Auth
   // state management
@@ -38,7 +41,8 @@ Future<void> init() async {
   // Assets
   // state management
   sl.registerFactory(() => AssetObserverBloc(assetRepository: sl()));
+  sl.registerFactory(() => AssetControllerBloc(albumRepository: sl()));
   // repositories
-  sl.registerLazySingleton<AssetRepository>(() => AssetRepositoryImpl(firestore: sl()));
+  sl.registerLazySingleton<AssetRepository>(() => AssetRepositoryImpl(firestore: sl(), storage: sl()));
   // external
 }
