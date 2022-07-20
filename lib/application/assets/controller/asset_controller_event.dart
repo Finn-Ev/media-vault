@@ -17,9 +17,9 @@ class UploadVideo extends AssetControllerEvent {
   UploadVideo({required this.video, required this.albumId});
 }
 
-class DeleteAsset extends AssetControllerEvent {
-  final Asset assetToDelete;
+class DeleteAssets extends AssetControllerEvent {
+  final List<Asset> assetsToDelete;
   final UniqueID albumId;
 
-  DeleteAsset({required this.assetToDelete, required this.albumId});
+  DeleteAssets({required this.assetsToDelete, required this.albumId});
 }

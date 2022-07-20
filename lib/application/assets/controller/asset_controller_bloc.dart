@@ -10,14 +10,14 @@ part 'asset_controller_event.dart';
 part 'asset_controller_state.dart';
 
 class AssetControllerBloc extends Bloc<AssetControllerEvent, AssetControllerState> {
-  final AssetRepository albumRepository;
+  final AssetRepository assetRepository;
 
-  AssetControllerBloc({required this.albumRepository}) : super(AssetControllerInitial()) {
+  AssetControllerBloc({required this.assetRepository}) : super(AssetControllerInitial()) {
     on<UploadImages>((event, emit) async {
       emit(AssetControllerLoading());
 
       for (int i = 0; i < event.images.length; i++) {
-        final failureOrSuccess = await albumRepository.uploadImage(event.images[i], event.albumId);
+        final failureOrSuccess = await assetRepository.uploadImage(event.images[i], event.albumId);
         failureOrSuccess.fold(
           (failure) => emit(AssetControllerFailure(failure)),
           (success) => emit(AssetControllerLoading(currentStep: i + 1, totalSteps: event.images.length)),
@@ -28,7 +28,7 @@ class AssetControllerBloc extends Bloc<AssetControllerEvent, AssetControllerStat
 
     on<UploadVideo>((event, emit) async {
       emit(AssetControllerLoading(currentStep: 0, totalSteps: 1));
-      final failureOrSuccess = await albumRepository.uploadVideo(event.video, event.albumId);
+      final failureOrSuccess = await assetRepository.uploadVideo(event.video, event.albumId);
 
       failureOrSuccess.fold(
         (failure) => emit(AssetControllerFailure(failure)),
@@ -36,9 +36,9 @@ class AssetControllerBloc extends Bloc<AssetControllerEvent, AssetControllerStat
       );
     });
 
-    on<DeleteAsset>((event, emit) async {
+    on<DeleteAssets>((event, emit) async {
       emit(AssetControllerLoading());
-      final failureOrSuccess = await albumRepository.delete(event.assetToDelete, event.albumId);
+      final failureOrSuccess = await assetRepository.delete(event.assetsToDelete, event.albumId);
 
       failureOrSuccess.fold(
         (failure) => emit(AssetControllerFailure(failure)),

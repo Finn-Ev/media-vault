@@ -5,13 +5,15 @@ class CustomAlertDialog extends StatelessWidget {
   final String title;
   final String content;
   final Function onConfirm;
+  final String confirmButtonText;
   final bool confirmIsDestructive;
 
   const CustomAlertDialog({
     required this.title,
     required this.content,
     required this.onConfirm,
-    required this.confirmIsDestructive,
+    this.confirmButtonText = "Confirm",
+    this.confirmIsDestructive = false,
     Key? key,
   }) : super(key: key);
 
@@ -32,7 +34,7 @@ class CustomAlertDialog extends StatelessWidget {
           cupertino: (_, __) => CupertinoDialogActionData(
             isDefaultAction: !confirmIsDestructive,
             isDestructiveAction: confirmIsDestructive,
-            child: const Text('Confirm'),
+            child: Text(confirmButtonText),
           ),
           onPressed: () {
             onConfirm();

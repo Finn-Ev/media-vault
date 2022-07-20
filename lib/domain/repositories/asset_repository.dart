@@ -9,7 +9,7 @@ abstract class AssetRepository {
 
   Future<Either<MediaFailure, Unit>> uploadVideo(XFile video, UniqueID albumId);
 
-  Future<Either<MediaFailure, Unit>> delete(Asset assetToDelete, UniqueID albumId);
+  Future<Either<MediaFailure, Unit>> delete(List<Asset> assetsToDelete, UniqueID albumId);
 
   Stream<Either<MediaFailure, List<Asset>>> watchAlbum(albumId);
 }

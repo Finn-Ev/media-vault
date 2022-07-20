@@ -1,8 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:media_vault/application/assets/controller/asset_controller_bloc.dart';
-import 'package:media_vault/domain/entities/auth/user_id.dart';
+import 'package:media_vault/application/assets/asset_list/asset_list_bloc.dart';
 import 'package:media_vault/domain/entities/media/asset.dart';
 import 'package:media_vault/presentation/_widgets/loading_indicator.dart';
 import 'package:path_provider/path_provider.dart';
@@ -11,8 +10,9 @@ import 'package:video_thumbnail/video_thumbnail.dart';
 class AssetPreviewCard extends StatelessWidget {
   final Asset asset;
   final String albumId;
+  final bool isSelected;
 
-  const AssetPreviewCard({required this.asset, required this.albumId, Key? key}) : super(key: key);
+  const AssetPreviewCard({required this.asset, required this.albumId, required this.isSelected, Key? key}) : super(key: key);
 
   Future<String> _previewImagePath() async {
     if (asset.isVideo) {
@@ -35,45 +35,64 @@ class AssetPreviewCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkResponse(
-      onTap: () {
-        BlocProvider.of<AssetControllerBloc>(context).add(
-          DeleteAsset(assetToDelete: asset, albumId: UniqueID.fromString(albumId)),
+    return BlocBuilder<AssetListBloc, AssetListState>(
+      builder: (context, state) {
+        return GestureDetector(
+          onTap: () {
+            if (state.isSelectModeEnabled) {
+              BlocProvider.of<AssetListBloc>(context).add(ToggleAsset(asset: asset));
+            } else {
+              // open asset carousel
+            }
+          },
+          onLongPress: () {
+            if (!state.isSelectModeEnabled) {
+              BlocProvider.of<AssetListBloc>(context).add(EnableSelectMode(initialSelectedAsset: asset));
+            }
+
+            // activate select mode and set this asset as selected
+          },
+          child: Stack(
+            textDirection: TextDirection.rtl,
+            alignment: Alignment.bottomRight,
+            children: [
+              FutureBuilder<String>(
+                future: _previewImagePath(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData && asset.isVideo) {
+                    return AspectRatio(
+                      aspectRatio: 1,
+                      child: Image.asset(
+                        snapshot.data!,
+                        fit: BoxFit.cover,
+                      ),
+                    );
+                  } else if (snapshot.hasData && !asset.isVideo) {
+                    return AspectRatio(
+                      aspectRatio: 1,
+                      child: Image.network(
+                        snapshot.data!,
+                        fit: BoxFit.cover,
+                      ),
+                    );
+                  } else if (snapshot.hasError) {
+                    return const Center(child: Text('Error'));
+                  } else {
+                    return const Center(child: LoadingIndicator());
+                  }
+                },
+              ),
+              if (asset.isVideo) const Icon(CupertinoIcons.video_camera_solid),
+              if (isSelected)
+                Container(
+                  constraints: const BoxConstraints.expand(),
+                  color: Colors.black.withOpacity(0.5),
+                  child: Icon(size: 35.0, Icons.check_circle),
+                ),
+            ],
+          ),
         );
       },
-      child: Stack(
-        textDirection: TextDirection.rtl,
-        alignment: Alignment.bottomRight,
-        children: [
-          FutureBuilder<String>(
-            future: _previewImagePath(),
-            builder: (context, snapshot) {
-              if (snapshot.hasData && asset.isVideo) {
-                return AspectRatio(
-                  aspectRatio: 1,
-                  child: Image.asset(
-                    snapshot.data!,
-                    fit: BoxFit.cover,
-                  ),
-                );
-              } else if (snapshot.hasData && !asset.isVideo) {
-                return AspectRatio(
-                  aspectRatio: 1,
-                  child: Image.network(
-                    snapshot.data!,
-                    fit: BoxFit.cover,
-                  ),
-                );
-              } else if (snapshot.hasError) {
-                return const Center(child: Text('Error'));
-              } else {
-                return const Center(child: LoadingIndicator());
-              }
-            },
-          ),
-          if (asset.isVideo) const Icon(CupertinoIcons.video_camera_solid),
-        ],
-      ),
     );
   }
 }

@@ -161,9 +161,9 @@ class AlbumPreviewCard extends StatelessWidget {
                             fit: BoxFit.cover,
                           )
                         : FutureBuilder<String>(
-                            future: _previewImagePath(asset: state.assets.last),
+                            future: _previewImagePath(asset: state.assets.first),
                             builder: (context, snapshot) {
-                              if (snapshot.hasData && state.assets.last.isVideo) {
+                              if (snapshot.hasData && state.assets.first.isVideo) {
                                 return AspectRatio(
                                   aspectRatio: 1,
                                   child: Image.asset(
@@ -171,7 +171,7 @@ class AlbumPreviewCard extends StatelessWidget {
                                     fit: BoxFit.cover,
                                   ),
                                 );
-                              } else if (snapshot.hasData && !state.assets.last.isVideo) {
+                              } else if (snapshot.hasData && !state.assets.first.isVideo) {
                                 return AspectRatio(
                                   aspectRatio: 1,
                                   child: Image.network(

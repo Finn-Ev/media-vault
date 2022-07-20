@@ -80,13 +80,15 @@ class AssetRepositoryImpl extends AssetRepository {
   }
 
   @override
-  Future<Either<MediaFailure, Unit>> delete(Asset assetToDelete, UniqueID albumId) async {
+  Future<Either<MediaFailure, Unit>> delete(List<Asset> assetsToDelete, UniqueID albumId) async {
     try {
       final userDoc = await firestore.userDocument();
 
-      await userDoc.collection('albums/$albumId/assets').doc(assetToDelete.id.toString()).delete();
+      for (final asset in assetsToDelete) {
+        await userDoc.collection('albums/$albumId/assets').doc(asset.id.toString()).delete();
 
-      await storage.refFromURL(assetToDelete.url).delete();
+        await storage.refFromURL(asset.url).delete();
+      }
 
       return right(unit);
     } on FirebaseException catch (e) {
