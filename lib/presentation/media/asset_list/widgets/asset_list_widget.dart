@@ -53,22 +53,23 @@ class AssetList extends StatelessWidget {
                                   InkResponse(
                                       onTap: () {
                                         showDialog(
-                                            context: context,
-                                            builder: (_) => CustomAlertDialog(
-                                                  title: assetListState.selectedAssets.length > 1 ? "Delete assets" : "Delete asset",
-                                                  content: "Are you sure you want to delete all of the ${assetListState.selectedAssets.length} selected assets?",
-                                                  confirmIsDestructive: true,
-                                                  confirmButtonText: "Delete",
-                                                  onConfirm: () {
-                                                    BlocProvider.of<AssetControllerBloc>(context).add(
-                                                      DeleteAssets(
-                                                        assetsToDelete: assetListState.selectedAssets,
-                                                        albumId: UniqueID.fromString(albumId),
-                                                      ),
-                                                    );
-                                                    BlocProvider.of<AssetListBloc>(context).add(DisableSelectMode());
-                                                  },
-                                                ));
+                                          context: context,
+                                          builder: (_) => CustomAlertDialog(
+                                            title: assetListState.selectedAssets.length > 1 ? "Delete assets" : "Delete asset",
+                                            content: "Are you sure you want to delete all of the ${assetListState.selectedAssets.length} selected assets?",
+                                            confirmIsDestructive: true,
+                                            confirmButtonText: "Delete",
+                                            onConfirm: () {
+                                              BlocProvider.of<AssetControllerBloc>(context).add(
+                                                DeleteAssets(
+                                                  assetsToDelete: assetListState.selectedAssets,
+                                                  albumId: UniqueID.fromString(albumId),
+                                                ),
+                                              );
+                                              BlocProvider.of<AssetListBloc>(context).add(DisableSelectMode());
+                                            },
+                                          ),
+                                        );
                                       },
                                       child: const Text("Delete")),
                                 Text("${assetListState.selectedAssets.length.toString()} selected"),

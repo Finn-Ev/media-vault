@@ -43,7 +43,10 @@ class AssetListAppBarActions extends StatelessWidget {
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [
-                      Text("Select"),
+                      Padding(
+                        padding: EdgeInsets.only(right: 12.0),
+                        child: Text("Select"),
+                      ),
                     ],
                   ),
                 );
