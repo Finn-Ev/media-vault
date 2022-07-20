@@ -9,6 +9,7 @@ import 'package:media_vault/application/auth/auth_core/auth_core_bloc.dart';
 import 'package:media_vault/domain/entities/media/album.dart';
 import 'package:media_vault/presentation/_routes/routes.gr.dart';
 import 'package:media_vault/presentation/_widgets/loading_indicator.dart';
+import 'package:media_vault/presentation/media/asset_list/widgets/add_assets_floating_button.dart';
 import 'package:media_vault/presentation/media/asset_list/widgets/asset_list_app_bar_actions.dart';
 import 'package:media_vault/presentation/media/asset_list/widgets/asset_list_widget.dart';
 
@@ -16,6 +17,7 @@ import '../../../injection.dart';
 
 class AssetListPage extends StatelessWidget {
   final Album album;
+
   const AssetListPage({required this.album, Key? key}) : super(key: key);
 
   @override
@@ -41,13 +43,18 @@ class AssetListPage extends StatelessWidget {
         ],
         child: BlocBuilder<AssetControllerBloc, AssetControllerState>(
           builder: (context, state) {
+            final showUI = state is AssetControllerInitial || state is AssetControllerLoaded;
             return Scaffold(
               appBar: AppBar(
                 title: Text(album.title),
                 actions: [
-                  if (state is AssetControllerInitial || state is AssetControllerLoaded) AssetListAppBarActions(albumId: album.id) else Container(),
+                  if (showUI)
+                    AssetListAppBarActions(
+                      albumId: album.id,
+                    )
                 ],
               ),
+              floatingActionButton: showUI ? AddAssetsFloatingButton(albumId: album.id) : Container(),
               body: (state is AssetControllerLoading
                   ? Center(
                       child: Column(
