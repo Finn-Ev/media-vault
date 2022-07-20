@@ -29,7 +29,11 @@ class AssetObserverBloc extends Bloc<AssetObserverEvent, AssetObserverState> {
         event.failureOrAssets.fold((failure) {
           emit(AssetObserverFailure(failure));
         }, (assets) {
-          assets.sort((a, b) => a.createdAt.compareTo(b.createdAt));
+          assets.sort((a, b) => a.uploadedAt.compareTo(b.uploadedAt)); // asc
+          // assets.sort((a, b) => b.uploadedAt.compareTo(a.uploadedAt)); // desc
+
+          // assets.sort((a, b) => a.createdAt.compareTo(b.createdAt)); // asc
+          // assets.sort((a, b) => b.createdAt.compareTo(a.createdAt)); // desc
           emit(AssetObserverLoaded(assets: assets));
         });
       },

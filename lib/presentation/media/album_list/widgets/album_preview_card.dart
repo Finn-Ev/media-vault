@@ -6,6 +6,7 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:media_vault/application/albums/controller/album_controller_bloc.dart';
 import 'package:media_vault/application/assets/observer/asset_observer_bloc.dart';
 import 'package:media_vault/domain/entities/media/album.dart';
+import 'package:media_vault/domain/entities/media/asset.dart';
 import 'package:media_vault/presentation/_routes/routes.gr.dart';
 import 'package:media_vault/presentation/_widgets/custom_alert_dialog.dart';
 import 'package:media_vault/presentation/_widgets/custom_input_alert.dart';
@@ -114,7 +115,7 @@ class AlbumPreviewCard extends StatelessWidget {
       );
     }
 
-    Future<String> _previewImagePath({asset}) async {
+    Future<String> _previewImagePath(Asset asset) async {
       if (asset.isVideo) {
         final thumbnail = await VideoThumbnail.thumbnailFile(
           video: asset.url,
@@ -161,7 +162,7 @@ class AlbumPreviewCard extends StatelessWidget {
                             fit: BoxFit.cover,
                           )
                         : FutureBuilder<String>(
-                            future: _previewImagePath(asset: state.assets.first),
+                            future: _previewImagePath(state.assets.first),
                             builder: (context, snapshot) {
                               if (snapshot.hasData && state.assets.first.isVideo) {
                                 return AspectRatio(
@@ -184,7 +185,6 @@ class AlbumPreviewCard extends StatelessWidget {
                               } else {
                                 return const Center(child: LoadingIndicator());
                               }
-                              return const Center(child: Text('Loading'));
                             }),
                   ),
                   const SizedBox(height: 4.0),
@@ -205,7 +205,7 @@ class AlbumPreviewCard extends StatelessWidget {
               ),
             );
           } else {
-            return Container();
+            return const Center(child: Text("Observer Error"));
           }
         },
       ),

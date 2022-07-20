@@ -51,6 +51,7 @@ dependencies:
   firebase_storage: ^10.3.2
   video_thumbnail: ^0.5.2
   path_provider: ^2.0.11
+  wechat_assets_picker: ^7.3.2
 
 dev_dependencies:
   flutter_test:

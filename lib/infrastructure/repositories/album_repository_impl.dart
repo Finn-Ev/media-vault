@@ -17,9 +17,9 @@ class AlbumRepositoryImpl extends AlbumRepository {
       final userDoc = await firestore.userDocument();
 
       // go 'reverse' from domain to infrastructure
-      final todoModel = AlbumModel.fromEntity(Album.empty().copyWith(title: title));
+      final albumModel = AlbumModel.fromEntity(Album.empty().copyWith(title: title));
 
-      await userDoc.albumCollection.doc(todoModel.id).set(todoModel.toMap());
+      await userDoc.albumCollection.doc(albumModel.id).set(albumModel.toMap());
 
       return right(unit);
     } on FirebaseException catch (e) {
@@ -36,9 +36,9 @@ class AlbumRepositoryImpl extends AlbumRepository {
       final userDoc = await firestore.userDocument();
 
       // go 'reverse' from domain to infrastructure
-      final todoModel = AlbumModel.fromEntity(album);
+      final albumModel = AlbumModel.fromEntity(album);
 
-      await userDoc.albumCollection.doc(todoModel.id).update(todoModel.copyWith(updatedAt: FieldValue.serverTimestamp()).toMap());
+      await userDoc.albumCollection.doc(albumModel.id).update(albumModel.copyWith(updatedAt: FieldValue.serverTimestamp()).toMap());
 
       return right(unit);
     } on FirebaseException catch (e) {
@@ -69,14 +69,12 @@ class AlbumRepositoryImpl extends AlbumRepository {
   Stream<Either<MediaFailure, List<Album>>> watchAll() async* {
     final userDoc = await firestore.userDocument();
 
-    // right side listen on albums collection
-    // yield* userDoc.albumCollection
-
     yield* userDoc.albumCollection
         .snapshots()
         .map((snapshot) => right<MediaFailure, List<Album>>(snapshot.docs.map((doc) => AlbumModel.fromFirestore(doc).toEntity()).toList()))
         .handleError((e) {
       if (e is FirebaseException) {
+        print(e);
         if (e.code.contains('permission-denied') || e.code.contains("PERMISSION_DENIED")) {
           return left(InsufficientPermissions());
         } else {

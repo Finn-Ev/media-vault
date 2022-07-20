@@ -5,23 +5,23 @@ import 'package:media_vault/domain/entities/media/asset.dart';
 class AssetModel {
   final String id;
   final String url;
-  final bool isVideo;
-  final dynamic createdAt;
+  final int duration;
   final dynamic uploadedAt;
+  final dynamic createdAt;
 
   AssetModel({
     required this.id,
     required this.url,
-    required this.isVideo,
     required this.createdAt,
     required this.uploadedAt,
+    required this.duration,
   });
 
   Map<String, dynamic> toMap() {
     return {
       'id': id,
       'url': url,
-      'isVideo': isVideo,
+      'duration': duration,
       'createdAt': createdAt,
       'uploadedAt': uploadedAt,
     };
@@ -31,7 +31,7 @@ class AssetModel {
     return AssetModel(
       id: "",
       url: map['url'] as String,
-      isVideo: map['isVideo'] as bool,
+      duration: map['duration'] as int,
       createdAt: map['createdAt'],
       uploadedAt: map['uploadedAt'],
     );
@@ -40,14 +40,14 @@ class AssetModel {
   AssetModel copyWith({
     String? id,
     String? url,
-    bool? isVideo,
+    int? duration,
     DateTime? createdAt,
     DateTime? uploadedAt,
   }) {
     return AssetModel(
       id: id ?? this.id,
       url: url ?? this.url,
-      isVideo: isVideo ?? this.isVideo,
+      duration: duration ?? this.duration,
       createdAt: createdAt ?? this.createdAt,
       uploadedAt: uploadedAt ?? this.uploadedAt,
     );
@@ -61,7 +61,8 @@ class AssetModel {
     return Asset(
       id: UniqueID.fromString(id),
       url: url,
-      isVideo: isVideo,
+      isVideo: duration > 0,
+      duration: duration,
       createdAt: createdAt,
       uploadedAt: uploadedAt,
     );
@@ -71,7 +72,7 @@ class AssetModel {
     return AssetModel(
       id: asset.id.toString(),
       url: asset.url,
-      isVideo: asset.isVideo,
+      duration: asset.duration,
       createdAt: asset.createdAt,
       uploadedAt: asset.uploadedAt,
     );

@@ -3,18 +3,11 @@ part of 'asset_controller_bloc.dart';
 @immutable
 abstract class AssetControllerEvent {}
 
-class UploadImages extends AssetControllerEvent {
-  final List<XFile> images;
+class UploadAssets extends AssetControllerEvent {
+  final List<asset_picker.AssetEntity> assets;
   final UniqueID albumId;
 
-  UploadImages({required this.images, required this.albumId});
-}
-
-class UploadVideo extends AssetControllerEvent {
-  final XFile video;
-  final UniqueID albumId;
-
-  UploadVideo({required this.video, required this.albumId});
+  UploadAssets({required this.assets, required this.albumId});
 }
 
 class DeleteAssets extends AssetControllerEvent {

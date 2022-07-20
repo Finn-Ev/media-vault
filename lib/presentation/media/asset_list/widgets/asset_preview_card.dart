@@ -12,10 +12,10 @@ class AssetPreviewCard extends StatelessWidget {
   final String albumId;
   final bool isSelected;
 
-  const AssetPreviewCard({required this.asset, required this.albumId, required this.isSelected, Key? key}) : super(key: key);
+  AssetPreviewCard({required this.asset, required this.albumId, required this.isSelected, Key? key}) : super(key: key);
 
-  Future<String> _previewImagePath() async {
-    if (asset.isVideo) {
+  Future<String> _previewImagePath(isVideo) async {
+    if (isVideo) {
       final thumbnail = await VideoThumbnail.thumbnailFile(
         video: asset.url,
         thumbnailPath: (await getTemporaryDirectory()).path,
@@ -56,7 +56,7 @@ class AssetPreviewCard extends StatelessWidget {
             alignment: Alignment.bottomRight,
             children: [
               FutureBuilder<String>(
-                future: _previewImagePath(),
+                future: _previewImagePath(asset.isVideo),
                 builder: (context, snapshot) {
                   if (snapshot.hasData && asset.isVideo) {
                     return AspectRatio(
@@ -82,6 +82,7 @@ class AssetPreviewCard extends StatelessWidget {
                 },
               ),
               if (asset.isVideo) const Icon(CupertinoIcons.video_camera_solid),
+              // if (asset.isVideo) Text(asset.duration.toString()),
               if (isSelected)
                 Container(
                   constraints: const BoxConstraints.expand(),
