@@ -50,7 +50,11 @@ class AppTheme {
       appBarTheme: AppBarTheme(color: _appbarColorLight, iconTheme: IconThemeData(color: _lightOnPrimaryColor)),
       iconTheme: IconThemeData(color: _lightOnPrimaryColor),
       bottomAppBarColor: _appbarColorLight,
-      colorScheme: ColorScheme.light(primary: _lightPrimaryColor, onPrimary: _lightOnPrimaryColor, secondary: _lightSecondaryColor),
+      colorScheme: ColorScheme.light(
+        primary: _lightTextColorPrimary,
+        onPrimary: _lightOnPrimaryColor,
+        secondary: _lightSecondaryColor,
+      ),
       textTheme: _lightTextTheme);
 
   static final ThemeData darkTheme = ThemeData(
@@ -60,7 +64,7 @@ class AppTheme {
     iconTheme: IconThemeData(color: _darkOnPrimaryColor),
     bottomAppBarColor: _appbarColorDark,
     colorScheme: ColorScheme.dark(
-      primary: _darkPrimaryColor,
+      primary: _darkTextColorPrimary,
       secondary: _darkSecondaryColor,
       onPrimary: _darkOnPrimaryColor,
     ),

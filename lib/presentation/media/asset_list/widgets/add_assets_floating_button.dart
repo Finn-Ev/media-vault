@@ -22,6 +22,14 @@ class AddAssetsFloatingButton extends StatelessWidget {
         pickerConfig: AssetPickerConfig(
           maxAssets: 10,
           themeColor: Colors.grey[800],
+          filterOptions: FilterOptionGroup(
+            videoOption: const FilterOption(
+              durationConstraint: DurationConstraint(
+                min: Duration(seconds: 1),
+                max: Duration(seconds: 180),
+              ),
+            ),
+          ),
           loadingIndicatorBuilder: (BuildContext context, bool isSelected) {
             return const Center(child: LoadingIndicator());
           },

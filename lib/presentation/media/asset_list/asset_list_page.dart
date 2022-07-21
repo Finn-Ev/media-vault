@@ -10,8 +10,8 @@ import 'package:media_vault/domain/entities/media/album.dart';
 import 'package:media_vault/presentation/_routes/routes.gr.dart';
 import 'package:media_vault/presentation/_widgets/loading_indicator.dart';
 import 'package:media_vault/presentation/media/asset_list/widgets/add_assets_floating_button.dart';
+import 'package:media_vault/presentation/media/asset_list/widgets/asset_list.dart';
 import 'package:media_vault/presentation/media/asset_list/widgets/asset_list_app_bar_actions.dart';
-import 'package:media_vault/presentation/media/asset_list/widgets/asset_list_widget.dart';
 
 import '../../../injection.dart';
 

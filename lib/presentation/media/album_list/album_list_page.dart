@@ -7,7 +7,7 @@ import 'package:media_vault/application/albums/observer/album_observer_bloc.dart
 import 'package:media_vault/application/auth/auth_core/auth_core_bloc.dart';
 import 'package:media_vault/presentation/_routes/routes.gr.dart';
 import 'package:media_vault/presentation/_widgets/custom_input_alert.dart';
-import 'package:media_vault/presentation/media/album_list/widgets/album_list_widget.dart';
+import 'package:media_vault/presentation/media/album_list/widgets/album_list.dart';
 
 import '../../../injection.dart';
 

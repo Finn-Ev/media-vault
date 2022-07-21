@@ -1,8 +1,11 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:media_vault/application/assets/asset_list/asset_list_bloc.dart';
 import 'package:media_vault/domain/entities/media/asset.dart';
+import 'package:media_vault/presentation/_routes/routes.gr.dart';
 import 'package:media_vault/presentation/_widgets/loading_indicator.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
@@ -49,7 +52,7 @@ class AssetPreviewCard extends StatelessWidget {
             if (state.isSelectModeEnabled) {
               BlocProvider.of<AssetListBloc>(context).add(ToggleAsset(asset: asset));
             } else {
-              // open asset carousel
+              AutoRouter.of(context).push(AssetCarouselPageRoute(albumId: albumId, initialAssetId: asset.id.value));
             }
           },
           onLongPress: () {
@@ -74,9 +77,11 @@ class AssetPreviewCard extends StatelessWidget {
                   } else if (snapshot.hasData && !asset.isVideo) {
                     return AspectRatio(
                       aspectRatio: 1,
-                      child: Image.network(
-                        snapshot.data!,
+                      child: CachedNetworkImage(
+                        imageUrl: snapshot.data!,
                         fit: BoxFit.cover,
+                        placeholder: (context, url) => const LoadingIndicator(),
+                        errorWidget: (context, url, error) => const Icon(Icons.error),
                       ),
                     );
                   } else if (snapshot.hasError) {
@@ -100,7 +105,7 @@ class AssetPreviewCard extends StatelessWidget {
                 Container(
                   constraints: const BoxConstraints.expand(),
                   color: Colors.black.withOpacity(0.5),
-                  child: Icon(size: 35.0, Icons.check_circle),
+                  child: const Icon(size: 35.0, Icons.check_circle),
                 ),
             ],
           ),
