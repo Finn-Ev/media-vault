@@ -33,6 +33,13 @@ class AssetPreviewCard extends StatelessWidget {
     }
   }
 
+  String _durationString(int secDuration) {
+    final duration = Duration(seconds: secDuration);
+    String minutes = (duration.inMinutes % 60).toString().padLeft(2, '0');
+    String seconds = (duration.inSeconds % 60).toString().padLeft(2, '0');
+    return "$minutes:$seconds";
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AssetListBloc, AssetListState>(
@@ -52,8 +59,6 @@ class AssetPreviewCard extends StatelessWidget {
             // activate select mode and set this asset as selected
           },
           child: Stack(
-            textDirection: TextDirection.rtl,
-            alignment: Alignment.bottomRight,
             children: [
               FutureBuilder<String>(
                 future: _previewImagePath(asset.isVideo),
@@ -81,8 +86,16 @@ class AssetPreviewCard extends StatelessWidget {
                   }
                 },
               ),
-              if (asset.isVideo) const Icon(CupertinoIcons.video_camera_solid),
+              if (asset.isVideo) const Positioned(top: 0, left: 0, child: Icon(CupertinoIcons.video_camera_solid)),
               // if (asset.isVideo) Text(asset.duration.toString()),
+              if (asset.isVideo)
+                Positioned(
+                  bottom: 0,
+                  right: 0,
+                  child: Text(
+                    _durationString(asset.duration),
+                  ),
+                ),
               if (isSelected)
                 Container(
                   constraints: const BoxConstraints.expand(),
