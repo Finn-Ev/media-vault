@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:media_vault/presentation/_widgets/loading_indicator.dart';
 import 'package:video_player/video_player.dart';
 
-class AssetVideoPlayer extends StatefulWidget {
+class AssetVideoPlayerPage extends StatefulWidget {
   final String url;
-  const AssetVideoPlayer({required this.url, Key? key}) : super(key: key);
+  const AssetVideoPlayerPage({required this.url, Key? key}) : super(key: key);
 
   @override
-  State<AssetVideoPlayer> createState() => _AssetVideoPlayerState();
+  State<AssetVideoPlayerPage> createState() => _AssetVideoPlayerPageState();
 }
 
-class _AssetVideoPlayerState extends State<AssetVideoPlayer> {
+class _AssetVideoPlayerPageState extends State<AssetVideoPlayerPage> {
   late VideoPlayerController videoPlayerController;
   ChewieController? chewieController;
 

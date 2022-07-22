@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:media_vault/application/assets/asset_list/asset_list_bloc.dart';
 import 'package:media_vault/application/assets/controller/asset_controller_bloc.dart';
 import 'package:media_vault/application/assets/observer/asset_observer_bloc.dart';
 import 'package:media_vault/application/auth/auth_core/auth_core_bloc.dart';
@@ -29,7 +28,6 @@ class AssetListPage extends StatelessWidget {
         BlocProvider<AssetObserverBloc>(
           create: (context) => assetObserverBloc,
         ),
-        BlocProvider<AssetListBloc>(create: (context) => sl<AssetListBloc>())
       ],
       child: MultiBlocListener(
         listeners: [

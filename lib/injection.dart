@@ -4,6 +4,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:media_vault/application/albums/controller/album_controller_bloc.dart';
 import 'package:media_vault/application/albums/observer/album_observer_bloc.dart';
+import 'package:media_vault/application/assets/asset_carousel/asset_carousel_bloc.dart';
 import 'package:media_vault/application/assets/asset_list/asset_list_bloc.dart';
 import 'package:media_vault/application/assets/controller/asset_controller_bloc.dart';
 import 'package:media_vault/application/assets/observer/asset_observer_bloc.dart';
@@ -44,6 +45,7 @@ Future<void> init() async {
   sl.registerFactory(() => AssetObserverBloc(assetRepository: sl()));
   sl.registerFactory(() => AssetControllerBloc(assetRepository: sl()));
   sl.registerFactory(() => AssetListBloc());
+  sl.registerFactory(() => AssetCarouselBloc());
   // repositories
   sl.registerLazySingleton<AssetRepository>(() => AssetRepositoryImpl(firestore: sl(), storage: sl()));
   // external

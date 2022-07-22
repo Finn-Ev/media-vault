@@ -19,8 +19,8 @@ import '../auth/login/login_page.dart' as _i3;
 import '../auth/register/register_page.dart' as _i4;
 import '../media/album_list/album_list_page.dart' as _i6;
 import '../media/asset_carousel/asset_carousel_page.dart' as _i8;
-import '../media/asset_carousel/widgets/asset_video_player.dart' as _i9;
 import '../media/asset_list/asset_list_page.dart' as _i7;
+import '../media/asset_video_player/asset_video_player_page.dart' as _i9;
 import '../other/settings/settings_page.dart' as _i2;
 import '../other/splash/splash_page.dart' as _i1;
 
@@ -72,11 +72,11 @@ class AppRouter extends _i10.RootStackRouter {
               key: args.key),
           fullscreenDialog: true);
     },
-    AssetVideoPlayerRoute.name: (routeData) {
-      final args = routeData.argsAs<AssetVideoPlayerRouteArgs>();
+    AssetVideoPlayerPageRoute.name: (routeData) {
+      final args = routeData.argsAs<AssetVideoPlayerPageRouteArgs>();
       return _i10.MaterialPageX<dynamic>(
           routeData: routeData,
-          child: _i9.AssetVideoPlayer(url: args.url, key: args.key),
+          child: _i9.AssetVideoPlayerPage(url: args.url, key: args.key),
           fullscreenDialog: true);
     }
   };
@@ -93,8 +93,8 @@ class AppRouter extends _i10.RootStackRouter {
         _i10.RouteConfig(AssetListPageRoute.name, path: '/asset-list-page'),
         _i10.RouteConfig(AssetCarouselPageRoute.name,
             path: '/asset-carousel-page'),
-        _i10.RouteConfig(AssetVideoPlayerRoute.name,
-            path: '/asset-video-player')
+        _i10.RouteConfig(AssetVideoPlayerPageRoute.name,
+            path: '/asset-video-player-page')
       ];
 }
 
@@ -205,19 +205,19 @@ class AssetCarouselPageRouteArgs {
 }
 
 /// generated route for
-/// [_i9.AssetVideoPlayer]
-class AssetVideoPlayerRoute
-    extends _i10.PageRouteInfo<AssetVideoPlayerRouteArgs> {
-  AssetVideoPlayerRoute({required String url, _i11.Key? key})
-      : super(AssetVideoPlayerRoute.name,
-            path: '/asset-video-player',
-            args: AssetVideoPlayerRouteArgs(url: url, key: key));
+/// [_i9.AssetVideoPlayerPage]
+class AssetVideoPlayerPageRoute
+    extends _i10.PageRouteInfo<AssetVideoPlayerPageRouteArgs> {
+  AssetVideoPlayerPageRoute({required String url, _i11.Key? key})
+      : super(AssetVideoPlayerPageRoute.name,
+            path: '/asset-video-player-page',
+            args: AssetVideoPlayerPageRouteArgs(url: url, key: key));
 
-  static const String name = 'AssetVideoPlayerRoute';
+  static const String name = 'AssetVideoPlayerPageRoute';
 }
 
-class AssetVideoPlayerRouteArgs {
-  const AssetVideoPlayerRouteArgs({required this.url, this.key});
+class AssetVideoPlayerPageRouteArgs {
+  const AssetVideoPlayerPageRouteArgs({required this.url, this.key});
 
   final String url;
 
@@ -225,6 +225,6 @@ class AssetVideoPlayerRouteArgs {
 
   @override
   String toString() {
-    return 'AssetVideoPlayerRouteArgs{url: $url, key: $key}';
+    return 'AssetVideoPlayerPageRouteArgs{url: $url, key: $key}';
   }
 }

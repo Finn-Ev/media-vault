@@ -41,7 +41,7 @@ class AssetVideoPreview extends StatelessWidget {
                     ),
                     child: Center(
                       child: GestureDetector(
-                        onTap: () => AutoRouter.of(context).push(AssetVideoPlayerRoute(url: url)),
+                        onTap: () => AutoRouter.of(context).push(AssetVideoPlayerPageRoute(url: url)),
                         child: Icon(size: 100, Icons.play_arrow_rounded),
                       ),
                     ),
