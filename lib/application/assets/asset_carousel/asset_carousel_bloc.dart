@@ -14,6 +14,10 @@ class AssetCarouselBloc extends Bloc<AssetCarouselEvent, AssetCarouselState> {
       emit(state.copyWith(carouselIndex: event.newIndex));
     });
 
+    on<CarouselItemCountChanged>((event, emit) {
+      emit(state.copyWith(carouselItemCount: event.newCount));
+    });
+
     on<InitCarouselIndex>((event, emit) {
       emit(state.copyWith(carouselIndex: event.initialCarouselIndex, carouselItemCount: event.carouselItemCount));
     });

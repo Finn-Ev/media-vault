@@ -1,9 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:media_vault/application/assets/asset_carousel/asset_carousel_bloc.dart';
 import 'package:media_vault/application/assets/observer/asset_observer_bloc.dart';
+import 'package:media_vault/domain/entities/media/asset.dart';
 import 'package:media_vault/presentation/_widgets/loading_indicator.dart';
 import 'package:media_vault/presentation/media/asset_carousel/widgets/asset_video_preview.dart';
 import 'package:photo_view/photo_view.dart';
@@ -16,19 +18,48 @@ class AssetCarousel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final carouselController = CarouselController();
+    final assetCarouselBloc = BlocProvider.of<AssetCarouselBloc>(context);
 
-    return BlocBuilder<AssetObserverBloc, AssetObserverState>(
+    final carouselController = CarouselController();
+    int initialIndex;
+
+    return BlocConsumer<AssetObserverBloc, AssetObserverState>(
+      listenWhen: (previous, current) {
+        // detect it when an asset of the album is deleted while the carousel is open
+        if (previous is AssetObserverLoaded && current is AssetObserverLoaded) {
+          return previous.assets.length != current.assets.length;
+        }
+        return false;
+      },
+      listener: (context, state) {
+        if (state is AssetObserverLoaded) {
+          // update the carouselItemCount, when an asset of the album is deleted while the carousel is open
+          assetCarouselBloc.add(CarouselItemCountChanged(newCount: state.assets.length));
+        }
+      },
       builder: (context, state) {
         if (state is AssetObserverLoaded) {
-          final initialIndex = state.assets.indexOf(state.assets.firstWhere((asset) => asset.id.value == initialAssetId));
+          // firstWhereOrNull is necessary, because the initial asset might not be in the list of assets anymore
+          // e.g. when the user deletes the initial asset while the carousel is open
+          final Asset? initialAsset = state.assets.firstWhereOrNull((asset) => asset.id.value == initialAssetId);
 
-          carouselController.onReady.then((_) => {
-                BlocProvider.of<AssetCarouselBloc>(context).add(InitCarouselIndex(
-                  initialCarouselIndex: initialIndex + 1,
-                  carouselItemCount: state.assets.length,
-                ))
-              });
+          if (initialAsset != null) {
+            initialIndex = state.assets.indexOf(initialAsset);
+
+            carouselController.onReady.then(
+              (_) => {
+                assetCarouselBloc.add(
+                  InitCarouselIndex(
+                    initialCarouselIndex: initialIndex + 1,
+                    carouselItemCount: state.assets.length,
+                  ),
+                ),
+                carouselController.jumpToPage(initialIndex),
+              },
+            );
+          } else {
+            initialIndex = 0;
+          }
 
           return CarouselSlider(
             carouselController: carouselController,
@@ -52,7 +83,7 @@ class AssetCarousel extends StatelessWidget {
               height: MediaQuery.of(context).size.height,
 
               onPageChanged: (index, __) {
-                BlocProvider.of<AssetCarouselBloc>(context).add(CarouselIndexChanged(newIndex: index + 1));
+                assetCarouselBloc.add(CarouselIndexChanged(newIndex: index + 1));
               },
               viewportFraction: 1.0, // to make the carousel full-width
             ),

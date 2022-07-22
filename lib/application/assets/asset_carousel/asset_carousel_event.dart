@@ -11,6 +11,12 @@ class CarouselIndexChanged extends AssetCarouselEvent {
   CarouselIndexChanged({required this.newIndex}) : super();
 }
 
+class CarouselItemCountChanged extends AssetCarouselEvent {
+  final int newCount;
+
+  CarouselItemCountChanged({required this.newCount}) : super();
+}
+
 class InitCarouselIndex extends AssetCarouselEvent {
   final int initialCarouselIndex;
   final int carouselItemCount;

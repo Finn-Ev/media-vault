@@ -25,7 +25,7 @@ class AssetCarouselTopMenu extends StatelessWidget {
                     color: themeData.scaffoldBackgroundColor,
                     size: 28, // invisible, but needed to exactly center the counter
                   ),
-                  Text('${state.carouselIndex}/${state.carouselItemCount}', style: TextStyle(fontSize: 16.0)),
+                  Text('${state.carouselIndex}/${state.carouselItemCount}', style: const TextStyle(fontSize: 16.0)),
                   GestureDetector(
                     onTap: () {
                       Navigator.pop(context);
