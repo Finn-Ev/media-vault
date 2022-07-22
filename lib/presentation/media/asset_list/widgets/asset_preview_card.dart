@@ -4,33 +4,21 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:media_vault/application/assets/asset_list/asset_list_bloc.dart';
+import 'package:media_vault/core/util/video_thumbnail.dart';
 import 'package:media_vault/domain/entities/media/asset.dart';
 import 'package:media_vault/presentation/_routes/routes.gr.dart';
 import 'package:media_vault/presentation/_widgets/loading_indicator.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:video_thumbnail/video_thumbnail.dart';
 
 class AssetPreviewCard extends StatelessWidget {
   final Asset asset;
   final String albumId;
   final bool isSelected;
 
-  AssetPreviewCard({required this.asset, required this.albumId, required this.isSelected, Key? key}) : super(key: key);
+  const AssetPreviewCard({required this.asset, required this.albumId, required this.isSelected, Key? key}) : super(key: key);
 
   Future<String> _previewImagePath(isVideo) async {
     if (isVideo) {
-      final thumbnail = await VideoThumbnail.thumbnailFile(
-        video: asset.url,
-        thumbnailPath: (await getTemporaryDirectory()).path,
-        imageFormat: ImageFormat.JPEG,
-        maxWidth: 300,
-        maxHeight: 300,
-      );
-
-      if (thumbnail != null) {
-        return thumbnail.toString();
-      }
-      return "";
+      return getThumbnail(asset.url);
     } else {
       return asset.url;
     }
@@ -78,14 +66,14 @@ class AssetPreviewCard extends StatelessWidget {
                     return AspectRatio(
                       aspectRatio: 1,
                       child: CachedNetworkImage(
-                        imageUrl: snapshot.data!,
+                        imageUrl: asset.url,
                         fit: BoxFit.cover,
                         placeholder: (context, url) => const LoadingIndicator(),
                         errorWidget: (context, url, error) => const Icon(Icons.error),
                       ),
                     );
                   } else if (snapshot.hasError) {
-                    return const Center(child: Text('Error'));
+                    return const Center(child: Icon(Icons.videocam_off));
                   } else {
                     return const Center(child: LoadingIndicator());
                   }
@@ -105,7 +93,7 @@ class AssetPreviewCard extends StatelessWidget {
                 Container(
                   constraints: const BoxConstraints.expand(),
                   color: Colors.black.withOpacity(0.5),
-                  child: const Icon(size: 35.0, Icons.check_circle),
+                  child: Icon(size: 35.0, Icons.check_circle),
                 ),
             ],
           ),

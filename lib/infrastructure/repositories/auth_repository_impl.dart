@@ -1,9 +1,11 @@
+import 'dart:convert';
+
+import 'package:crypto/crypto.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:media_vault/constants.dart';
 import 'package:media_vault/core/failures/auth_failures.dart';
-import 'package:media_vault/core/util.dart';
 import 'package:media_vault/domain/entities/auth/user.dart';
 import 'package:media_vault/domain/repositories/auth_repository.dart';
 import 'package:media_vault/infrastructure/extensions/firebase_extensions.dart';
@@ -99,6 +101,12 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<Either<AuthFailure, Unit>> signInWithApple() async {
+    String sha256ofString(String input) {
+      final bytes = utf8.encode(input);
+      final digest = sha256.convert(bytes);
+      return digest.toString();
+    }
+
     final rawNonce = generateNonce();
     final nonce = sha256ofString(rawNonce);
 

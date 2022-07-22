@@ -5,13 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:media_vault/application/assets/observer/asset_observer_bloc.dart';
+import 'package:media_vault/core/util/video_thumbnail.dart';
 import 'package:media_vault/domain/entities/media/album.dart';
 import 'package:media_vault/domain/entities/media/asset.dart';
 import 'package:media_vault/presentation/_routes/routes.gr.dart';
 import 'package:media_vault/presentation/_widgets/loading_indicator.dart';
 import 'package:media_vault/presentation/media/album_list/widgets/album_action_sheet.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:video_thumbnail/video_thumbnail.dart';
 
 import '../../../../injection.dart';
 
@@ -26,18 +25,7 @@ class AlbumPreviewCard extends StatelessWidget {
 
     Future<String> _previewImagePath(Asset asset) async {
       if (asset.isVideo) {
-        final thumbnail = await VideoThumbnail.thumbnailFile(
-          video: asset.url,
-          thumbnailPath: (await getTemporaryDirectory()).path,
-          imageFormat: ImageFormat.JPEG,
-          maxWidth: 300,
-          maxHeight: 300,
-        );
-
-        if (thumbnail != null) {
-          return thumbnail.toString();
-        }
-        return "";
+        return getThumbnail(asset.url);
       } else {
         return asset.url;
       }
@@ -63,9 +51,10 @@ class AlbumPreviewCard extends StatelessWidget {
                   AspectRatio(
                     aspectRatio: 1,
                     child: state.assets.isEmpty
-                        ? Image.network(
-                            "https://songline-marketing.de/wp-content/uploads/2021/08/image-placeholder.jpg",
-                            fit: BoxFit.cover,
+                        ? CachedNetworkImage(
+                            imageUrl: "https://songline-marketing.de/wp-content/uploads/2021/08/image-placeholder.jpg",
+                            placeholder: (context, url) => const LoadingIndicator(),
+                            errorWidget: (context, url, error) => const Icon(Icons.image),
                           )
                         : FutureBuilder<String>(
                             future: _previewImagePath(state.assets.first),
@@ -89,7 +78,7 @@ class AlbumPreviewCard extends StatelessWidget {
                                   ),
                                 );
                               } else if (snapshot.hasError) {
-                                return const Center(child: Text('Error'));
+                                return const Center(child: Center(child: Icon(Icons.image)));
                               } else {
                                 return const Center(child: LoadingIndicator());
                               }

@@ -1,11 +1,7 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:media_vault/presentation/_widgets/loading_indicator.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:photo_view/photo_view.dart';
 import 'package:video_player/video_player.dart';
-import 'package:video_thumbnail/video_thumbnail.dart';
 
 class AssetVideoPlayer extends StatefulWidget {
   final String url;
@@ -20,7 +16,7 @@ class _AssetVideoPlayerState extends State<AssetVideoPlayer> {
   ChewieController? chewieController;
 
   @override
-  void initState() {
+  initState() {
     initializePlayer();
     super.initState();
   }
@@ -45,69 +41,18 @@ class _AssetVideoPlayerState extends State<AssetVideoPlayer> {
     );
   }
 
-  Future<String> _previewImagePath() async {
-    final thumbnail = await VideoThumbnail.thumbnailFile(
-      video: widget.url,
-      thumbnailPath: (await getTemporaryDirectory()).path,
-      imageFormat: ImageFormat.PNG,
-    );
-
-    if (thumbnail != null) {
-      return thumbnail.toString();
-    }
-    return "";
-  }
-
-  openVideoPlayer() {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        fullscreenDialog: true,
-        builder: (context) => Scaffold(
-          body: SafeArea(
-            child: Center(
-              child: Chewie(
-                controller: chewieController!,
-              ),
-            ),
-          ),
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(),
+      body: SafeArea(
+        child: Center(
+          child: chewieController != null && chewieController!.videoPlayerController.value.isInitialized
+              ? Chewie(controller: chewieController!)
+              : const Center(child: LoadingIndicator()),
         ),
       ),
     );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder<String>(
-        future: _previewImagePath(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return SafeArea(
-              child: Stack(
-                children: [
-                  PhotoView(imageProvider: AssetImage(snapshot.data!)),
-                  Container(
-                    constraints: const BoxConstraints.expand(),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.black.withOpacity(0.5),
-                    ),
-                    child: Center(child: GestureDetector(onTap: openVideoPlayer, child: Icon(size: 100, Icons.play_arrow_rounded))),
-                  ),
-                  Positioned(
-                    top: 0,
-                    right: 0,
-                    child: InkResponse(
-                      onTap: () => AutoRouter.of(context).pop(),
-                      child: Icon(size: 30.0, Icons.close, color: Colors.grey),
-                    ),
-                  )
-                ],
-              ),
-            );
-          } else {
-            return const LoadingIndicator();
-          }
-        });
   }
 
   @override
