@@ -7,7 +7,9 @@ import 'package:wechat_assets_picker/wechat_assets_picker.dart' as asset_picker;
 abstract class AssetRepository {
   Future<Either<MediaFailure, Unit>> uploadAsset(asset_picker.AssetEntity asset, UniqueID albumId);
 
-  Future<Either<MediaFailure, Unit>> delete(List<Asset> assetsToDelete, UniqueID albumId);
+  Future<Either<MediaFailure, Unit>> delete(Asset assetToDelete, UniqueID albumId);
+
+  Future<Either<MediaFailure, Unit>> export(Asset assetToExport);
 
   Stream<Either<MediaFailure, List<Asset>>> watchAlbum(albumId);
 }

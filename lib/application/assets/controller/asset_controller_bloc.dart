@@ -29,12 +29,29 @@ class AssetControllerBloc extends Bloc<AssetControllerEvent, AssetControllerStat
 
     on<DeleteAssets>((event, emit) async {
       emit(AssetControllerLoading());
-      final failureOrSuccess = await assetRepository.delete(event.assetsToDelete, event.albumId);
 
-      failureOrSuccess.fold(
-        (failure) => emit(AssetControllerFailure(failure)),
-        (success) => emit(AssetControllerLoaded()),
-      );
+      for (int i = 0; i < event.assetsToDelete.length; i++) {
+        final failureOrSuccess = await assetRepository.delete(event.assetsToDelete[i], event.albumId);
+
+        failureOrSuccess.fold(
+          (failure) => emit(AssetControllerFailure(failure)),
+          (success) => emit(AssetControllerLoaded()),
+        );
+      }
+    });
+
+    on<ExportAssets>((event, emit) async {
+      emit(AssetControllerLoading());
+
+      for (int i = 0; i < event.assetsToExport.length; i++) {
+        final failureOrSuccess = await assetRepository.export(event.assetsToExport[i]);
+        failureOrSuccess.fold(
+          (failure) => emit(AssetControllerFailure(failure)),
+          (success) => emit(AssetControllerLoading()),
+        );
+      }
+
+      emit(AssetControllerLoaded());
     });
   }
 }

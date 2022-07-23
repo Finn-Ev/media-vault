@@ -73,7 +73,7 @@ class AlbumPreviewCard extends StatelessWidget {
                                   child: CachedNetworkImage(
                                     imageUrl: snapshot.data!,
                                     fit: BoxFit.cover,
-                                    placeholder: (context, url) => const LoadingIndicator(),
+                                    // placeholder: (context, url) => const LoadingIndicator(),
                                     errorWidget: (context, url, error) => const Icon(Icons.error),
                                   ),
                                 );

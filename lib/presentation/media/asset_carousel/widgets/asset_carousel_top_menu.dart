@@ -10,36 +10,38 @@ class AssetCarouselTopMenu extends StatelessWidget {
     final themeData = Theme.of(context);
     return BlocBuilder<AssetCarouselBloc, AssetCarouselState>(
       builder: (context, state) {
-        return Positioned(
-          width: MediaQuery.of(context).size.width,
-          top: 0.0,
-          child: Container(
-            color: themeData.scaffoldBackgroundColor,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Icon(
-                    Icons.close,
-                    color: themeData.scaffoldBackgroundColor,
-                    size: 28, // invisible, but needed to exactly center the counter
-                  ),
-                  Text('${state.carouselIndex}/${state.carouselItemCount}', style: const TextStyle(fontSize: 16.0)),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Icon(
-                      Icons.close,
-                      size: 28,
+        return state.showMenuUI
+            ? Positioned(
+                width: MediaQuery.of(context).size.width,
+                top: 0.0,
+                child: Container(
+                  color: themeData.scaffoldBackgroundColor,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Icon(
+                          Icons.close,
+                          color: themeData.scaffoldBackgroundColor,
+                          size: 28, // invisible, but needed to exactly center the counter
+                        ),
+                        Text('${state.carouselIndex + 1}/${state.carouselItemCount}', style: const TextStyle(fontSize: 16.0)),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Icon(
+                            Icons.close,
+                            size: 28,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ],
-              ),
-            ),
-          ),
-        );
+                ),
+              )
+            : Container();
       },
     );
   }

@@ -11,6 +11,10 @@ class AssetCarouselBloc extends Bloc<AssetCarouselEvent, AssetCarouselState> {
     });
 
     on<CarouselIndexChanged>((event, emit) {
+      if (event.newIndex == -1) {
+        emit(state.copyWith(carouselIndex: state.carouselIndex - 1));
+        return;
+      }
       emit(state.copyWith(carouselIndex: event.newIndex));
     });
 

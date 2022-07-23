@@ -46,35 +46,38 @@ class AssetList extends StatelessWidget {
                     assetListState.isSelectModeEnabled
                         ? Padding(
                             padding: const EdgeInsets.symmetric(vertical: 8.0),
-                            child: Row(
-                              mainAxisAlignment: assetListState.selectedAssets.isNotEmpty ? MainAxisAlignment.spaceBetween : MainAxisAlignment.center,
-                              children: [
-                                if (assetListState.selectedAssets.isNotEmpty)
-                                  InkResponse(
-                                      onTap: () {
-                                        showDialog(
-                                          context: context,
-                                          builder: (_) => CustomAlertDialog(
-                                            title: assetListState.selectedAssets.length > 1 ? "Delete assets" : "Delete asset",
-                                            content: "Are you sure you want to delete all of the ${assetListState.selectedAssets.length} selected assets?",
-                                            confirmIsDestructive: true,
-                                            confirmButtonText: "Delete",
-                                            onConfirm: () {
-                                              BlocProvider.of<AssetControllerBloc>(context).add(
-                                                DeleteAssets(
-                                                  assetsToDelete: assetListState.selectedAssets,
-                                                  albumId: UniqueID.fromString(albumId),
-                                                ),
-                                              );
-                                              BlocProvider.of<AssetListBloc>(context).add(DisableSelectMode());
-                                            },
-                                          ),
-                                        );
-                                      },
-                                      child: const Text("Delete")),
-                                Text("${assetListState.selectedAssets.length.toString()} selected"),
-                                if (assetListState.selectedAssets.isNotEmpty) const Text("Share"),
-                              ],
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                              child: Row(
+                                mainAxisAlignment: assetListState.selectedAssets.isNotEmpty ? MainAxisAlignment.spaceBetween : MainAxisAlignment.center,
+                                children: [
+                                  if (assetListState.selectedAssets.isNotEmpty)
+                                    InkResponse(
+                                        onTap: () {
+                                          showDialog(
+                                            context: context,
+                                            builder: (_) => CustomAlertDialog(
+                                              title: assetListState.selectedAssets.length > 1 ? "Delete assets" : "Delete asset",
+                                              content: "Are you sure you want to delete all of the ${assetListState.selectedAssets.length} selected assets?",
+                                              confirmIsDestructive: true,
+                                              confirmButtonText: "Delete",
+                                              onConfirm: () {
+                                                BlocProvider.of<AssetControllerBloc>(context).add(
+                                                  DeleteAssets(
+                                                    assetsToDelete: assetListState.selectedAssets,
+                                                    albumId: UniqueID.fromString(albumId),
+                                                  ),
+                                                );
+                                                BlocProvider.of<AssetListBloc>(context).add(DisableSelectMode());
+                                              },
+                                            ),
+                                          );
+                                        },
+                                        child: const Text("Delete")),
+                                  Text("${assetListState.selectedAssets.length.toString()} selected"),
+                                  if (assetListState.selectedAssets.isNotEmpty) const Text("Share"),
+                                ],
+                              ),
                             ),
                           )
                         : Container(),

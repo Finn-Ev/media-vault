@@ -68,7 +68,7 @@ class AssetPreviewCard extends StatelessWidget {
                       child: CachedNetworkImage(
                         imageUrl: asset.url,
                         fit: BoxFit.cover,
-                        placeholder: (context, url) => const LoadingIndicator(),
+                        // placeholder: (context, url) => Container(),
                         errorWidget: (context, url, error) => const Icon(Icons.error),
                       ),
                     );

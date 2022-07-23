@@ -16,3 +16,9 @@ class DeleteAssets extends AssetControllerEvent {
 
   DeleteAssets({required this.assetsToDelete, required this.albumId});
 }
+
+class ExportAssets extends AssetControllerEvent {
+  final List<Asset> assetsToExport;
+
+  ExportAssets({required this.assetsToExport});
+}

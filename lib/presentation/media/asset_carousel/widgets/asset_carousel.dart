@@ -50,7 +50,7 @@ class AssetCarousel extends StatelessWidget {
               (_) => {
                 assetCarouselBloc.add(
                   InitCarouselIndex(
-                    initialCarouselIndex: initialIndex + 1,
+                    initialCarouselIndex: initialIndex,
                     carouselItemCount: state.assets.length,
                   ),
                 ),
@@ -69,12 +69,13 @@ class AssetCarousel extends StatelessWidget {
               }
               return CachedNetworkImage(
                 imageUrl: asset.url,
+
                 imageBuilder: (context, imageProvider) => PhotoView(
-                  gestureDetectorBehavior: HitTestBehavior.translucent,
-                  minScale: 0.2,
+                  gestureDetectorBehavior: HitTestBehavior.opaque,
+                  // minScale: 0.2,
                   imageProvider: imageProvider,
                 ),
-                placeholder: (context, url) => const LoadingIndicator(),
+                // placeholder: (context, url) => const LoadingIndicator(),
                 errorWidget: (context, url, error) => const Icon(Icons.error),
               );
             }).toList(),
@@ -83,7 +84,7 @@ class AssetCarousel extends StatelessWidget {
               height: MediaQuery.of(context).size.height,
 
               onPageChanged: (index, __) {
-                assetCarouselBloc.add(CarouselIndexChanged(newIndex: index + 1));
+                assetCarouselBloc.add(CarouselIndexChanged(newIndex: index));
               },
               viewportFraction: 1.0, // to make the carousel full-width
             ),
