@@ -6,6 +6,7 @@ import 'package:media_vault/presentation/media/album_list/album_list_page.dart';
 import 'package:media_vault/presentation/media/asset_carousel/asset_carousel_page.dart';
 import 'package:media_vault/presentation/media/asset_list/asset_list_page.dart';
 import 'package:media_vault/presentation/media/asset_video_player/asset_video_player_page.dart';
+import 'package:media_vault/presentation/media/move_assets/move_assets_page.dart';
 import 'package:media_vault/presentation/other/settings/settings_page.dart';
 import 'package:media_vault/presentation/other/splash/splash_page.dart';
 
@@ -28,5 +29,6 @@ import 'package:media_vault/presentation/other/splash/splash_page.dart';
   AutoRoute(page: AssetListPage),
   AutoRoute(page: AssetCarouselPage, fullscreenDialog: true),
   AutoRoute(page: AssetVideoPlayerPage, fullscreenDialog: true),
+  AutoRoute(page: MoveAssetsPage, fullscreenDialog: true),
 ])
 class $AppRouter {}

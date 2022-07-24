@@ -21,7 +21,7 @@ class AssetRepositoryImpl extends AssetRepository {
   AssetRepositoryImpl({required this.firestore, required this.storage});
 
   @override
-  Future<Either<MediaFailure, Unit>> uploadAsset(asset_picker.AssetEntity asset, UniqueID albumId) async {
+  Future<Either<MediaFailure, Unit>> upload(asset_picker.AssetEntity asset, UniqueID albumId) async {
     try {
       final userDoc = await firestore.userDocument();
 
@@ -48,8 +48,9 @@ class AssetRepositoryImpl extends AssetRepository {
       // .whenComplete(() => file.delete());
 
       return right(unit);
-    } on FirebaseException catch (e) {
-      if (e.code == 'permission-denied' || e.code == 'PERMISSION_DENIED') {
+    } on FirebaseException catch (error) {
+      print("upload-error: " + error.toString());
+      if (error.code == 'permission-denied' || error.code == 'PERMISSION_DENIED') {
         return left(InsufficientPermissions());
       }
       return left(UnexpectedFailure());
@@ -66,8 +67,47 @@ class AssetRepositoryImpl extends AssetRepository {
       await storage.refFromURL(assetToDelete.url).delete();
 
       return right(unit);
-    } on FirebaseException catch (e) {
-      if (e.code == 'permission-denied' || e.code == 'PERMISSION_DENIED') {
+    } on FirebaseException catch (error) {
+      print("delete-error: " + error.toString());
+      if (error.code == 'permission-denied' || error.code == 'PERMISSION_DENIED') {
+        return left(InsufficientPermissions());
+      }
+      return left(UnexpectedFailure());
+    }
+  }
+
+  @override
+  Future<Either<MediaFailure, Unit>> copy(Asset assetToCopy, UniqueID destinationAlbumId) async {
+    try {
+      final userDoc = await firestore.userDocument();
+
+      // todo: just upload the asset again to the destination album
+
+      return right(unit);
+    } on FirebaseException catch (error) {
+      print("delete-error: " + error.toString());
+      if (error.code == 'permission-denied' || error.code == 'PERMISSION_DENIED') {
+        return left(InsufficientPermissions());
+      }
+      return left(UnexpectedFailure());
+    }
+  }
+
+  @override
+  Future<Either<MediaFailure, Unit>> move(Asset assetToMove, UniqueID sourceAlbumId, UniqueID destinationAlbumId) async {
+    try {
+      final userDoc = await firestore.userDocument();
+
+      await userDoc.collection('albums/$sourceAlbumId/assets').doc(assetToMove.id.toString()).delete();
+
+      await storage.refFromURL(assetToMove.url).delete();
+
+      // todo: just upload the asset again to the destination album
+
+      return right(unit);
+    } on FirebaseException catch (error) {
+      print("delete-error: " + error.toString());
+      if (error.code == 'permission-denied' || error.code == 'PERMISSION_DENIED') {
         return left(InsufficientPermissions());
       }
       return left(UnexpectedFailure());
@@ -87,8 +127,6 @@ class AssetRepositoryImpl extends AssetRepository {
 
       await Dio().download(assetToExport.url, path);
 
-      print("path: $path");
-
       if (assetToExport.isVideo) {
         await GallerySaver.saveVideo(path);
       } else {
@@ -97,8 +135,8 @@ class AssetRepositoryImpl extends AssetRepository {
 
       File(path).delete();
       return right(unit);
-    } catch (e) {
-      print("export-error: " + e.toString());
+    } catch (error) {
+      print("export-error: " + error.toString());
       return left(UnexpectedFailure());
     }
   }
@@ -111,17 +149,19 @@ class AssetRepositoryImpl extends AssetRepository {
         .collection("albums/$albumId/assets")
         .snapshots()
         .map((snapshot) => right<MediaFailure, List<Asset>>(snapshot.docs.map((doc) => AssetModel.fromFirestore(doc).toEntity()).toList()))
-        .handleError((e) {
-      print(e);
-      if (e is FirebaseException) {
-        if (e.code.contains('permission-denied') || e.code.contains("PERMISSION_DENIED")) {
-          return left(InsufficientPermissions());
+        .handleError(
+      (error) {
+        print("observer-error: " + error.toString());
+        if (error is FirebaseException) {
+          if (error.code.contains('permission-denied') || error.code.contains("PERMISSION_DENIED")) {
+            return left(InsufficientPermissions());
+          } else {
+            return left(UnexpectedFailure());
+          }
         } else {
           return left(UnexpectedFailure());
         }
-      } else {
-        return left(UnexpectedFailure());
-      }
-    });
+      },
+    );
   }
 }

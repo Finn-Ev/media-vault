@@ -17,7 +17,7 @@ class AssetControllerBloc extends Bloc<AssetControllerEvent, AssetControllerStat
       emit(AssetControllerLoading());
 
       for (int i = 0; i < event.assets.length; i++) {
-        final failureOrSuccess = await assetRepository.uploadAsset(event.assets[i], event.albumId);
+        final failureOrSuccess = await assetRepository.upload(event.assets[i], event.albumId);
         failureOrSuccess.fold(
           (failure) => emit(AssetControllerFailure(failure)),
           (success) => emit(AssetControllerLoading(currentStep: i + 1, totalSteps: event.assets.length)),
@@ -51,6 +51,29 @@ class AssetControllerBloc extends Bloc<AssetControllerEvent, AssetControllerStat
         );
       }
 
+      emit(AssetControllerLoaded());
+    });
+
+    on<MoveAssets>((event, emit) async {
+      emit(AssetControllerLoading());
+
+      if (event.copy) {
+        for (int i = 0; i < event.assetsToMove.length; i++) {
+          final failureOrSuccess = await assetRepository.copy(event.assetsToMove[i], event.destinationAlbumId);
+          failureOrSuccess.fold(
+            (failure) => emit(AssetControllerFailure(failure)),
+            (success) => {},
+          );
+        }
+      } else {
+        for (int i = 0; i < event.assetsToMove.length; i++) {
+          final failureOrSuccess = await assetRepository.move(event.assetsToMove[i], event.sourceAlbumId, event.destinationAlbumId);
+          failureOrSuccess.fold(
+            (failure) => emit(AssetControllerFailure(failure)),
+            (success) {},
+          );
+        }
+      }
       emit(AssetControllerLoaded());
     });
   }

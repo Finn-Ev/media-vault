@@ -22,3 +22,17 @@ class ExportAssets extends AssetControllerEvent {
 
   ExportAssets({required this.assetsToExport});
 }
+
+class MoveAssets extends AssetControllerEvent {
+  final List<Asset> assetsToMove;
+  final UniqueID sourceAlbumId;
+  final UniqueID destinationAlbumId;
+  final bool copy;
+
+  MoveAssets({
+    required this.assetsToMove,
+    required this.sourceAlbumId,
+    required this.destinationAlbumId,
+    required this.copy,
+  });
+}

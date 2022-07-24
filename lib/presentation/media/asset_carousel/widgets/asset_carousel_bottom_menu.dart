@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -5,6 +6,7 @@ import 'package:media_vault/application/assets/asset_carousel/asset_carousel_blo
 import 'package:media_vault/application/assets/controller/asset_controller_bloc.dart';
 import 'package:media_vault/domain/entities/auth/user_id.dart';
 import 'package:media_vault/domain/entities/media/asset.dart';
+import 'package:media_vault/presentation/_routes/routes.gr.dart';
 import 'package:media_vault/presentation/_widgets/custom_alert_dialog.dart';
 
 class AssetCarouselBottomMenu extends StatelessWidget {
@@ -42,18 +44,44 @@ class AssetCarouselBottomMenu extends StatelessWidget {
       );
     }
 
-    void exportAsset() {
-      showDialog(
-          context: context,
-          builder: (_) {
-            return CustomAlertDialog(
-              title: 'Export',
-              content: 'Are you sure you want to export this asset into your device gallery?',
-              onConfirm: () {
-                BlocProvider.of<AssetControllerBloc>(context).add(ExportAssets(assetsToExport: [currentAsset]));
-              },
-            );
-          });
+    void openAssetMenu() {
+      showModalBottomSheet(
+        context: context,
+        builder: (_) {
+          return Column(
+            children: [
+              ListTile(
+                title: const Text('Export'),
+                onTap: () {
+                  showDialog(
+                      context: context,
+                      builder: (_) {
+                        return CustomAlertDialog(
+                          title: 'Export',
+                          content: 'Are you sure you want to export this asset into your device gallery?',
+                          onConfirm: () {
+                            BlocProvider.of<AssetControllerBloc>(context).add(ExportAssets(assetsToExport: [currentAsset]));
+                          },
+                        );
+                      });
+                },
+              ),
+              ListTile(
+                title: const Text('Copy to another album'),
+                onTap: () {
+                  AutoRouter.of(context).push(MoveAssetsPageRoute(assetsToMove: [currentAsset], sourceAlbumId: albumId, destinationAlbumId: "", copy: false));
+                },
+              ),
+              ListTile(
+                title: const Text('Move to another album'),
+                onTap: () {
+                  AutoRouter.of(context).push(MoveAssetsPageRoute(assetsToMove: [currentAsset], sourceAlbumId: albumId, destinationAlbumId: "", copy: true));
+                },
+              ),
+            ],
+          );
+        },
+      );
     }
 
     final themeData = Theme.of(context);
@@ -100,7 +128,7 @@ class AssetCarouselBottomMenu extends StatelessWidget {
                           GestureDetector(onTap: deleteAsset, child: const Icon(CupertinoIcons.delete)),
                           GestureDetector(onTap: openDiaShowMenu, child: const Icon(CupertinoIcons.play_arrow)),
                           GestureDetector(
-                            onTap: exportAsset,
+                            onTap: openAssetMenu,
                             child: const Icon(CupertinoIcons.share),
                           ),
                         ],

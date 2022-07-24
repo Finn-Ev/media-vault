@@ -1,9 +1,11 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:media_vault/application/assets/asset_list/asset_list_bloc.dart';
 import 'package:media_vault/application/assets/controller/asset_controller_bloc.dart';
 import 'package:media_vault/application/assets/observer/asset_observer_bloc.dart';
 import 'package:media_vault/domain/entities/auth/user_id.dart';
+import 'package:media_vault/presentation/_routes/routes.gr.dart';
 import 'package:media_vault/presentation/_widgets/custom_alert_dialog.dart';
 import 'package:media_vault/presentation/_widgets/loading_indicator.dart';
 import 'package:media_vault/presentation/media/asset_list/widgets/asset_preview_card.dart';
@@ -15,6 +17,45 @@ class AssetList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    void openMenu({required selectedAssets}) {
+      showModalBottomSheet(
+          context: context,
+          builder: (_) {
+            return Column(
+              children: [
+                ListTile(
+                  title: const Text('Export'),
+                  onTap: () {
+                    showDialog(
+                        context: context,
+                        builder: (_) {
+                          return CustomAlertDialog(
+                            title: 'Export',
+                            content: 'Are you sure you want to export this asset into your device gallery?',
+                            onConfirm: () {
+                              BlocProvider.of<AssetControllerBloc>(context).add(ExportAssets(assetsToExport: selectedAssets));
+                            },
+                          );
+                        });
+                  },
+                ),
+                ListTile(
+                  title: const Text('Copy to another album'),
+                  onTap: () {
+                    AutoRouter.of(context).push(MoveAssetsPageRoute(assetsToMove: selectedAssets, sourceAlbumId: albumId, destinationAlbumId: "", copy: false));
+                  },
+                ),
+                ListTile(
+                  title: const Text('Move to another album'),
+                  onTap: () {
+                    AutoRouter.of(context).push(MoveAssetsPageRoute(assetsToMove: selectedAssets, sourceAlbumId: albumId, destinationAlbumId: "", copy: true));
+                  },
+                ),
+              ],
+            );
+          });
+    }
+
     return BlocBuilder<AssetObserverBloc, AssetObserverState>(
       builder: (context, assetObserverState) {
         if (assetObserverState is AssetObserverInitial) {
@@ -75,7 +116,8 @@ class AssetList extends StatelessWidget {
                                         },
                                         child: const Text("Delete")),
                                   Text("${assetListState.selectedAssets.length.toString()} selected"),
-                                  if (assetListState.selectedAssets.isNotEmpty) const Text("Share"),
+                                  if (assetListState.selectedAssets.isNotEmpty)
+                                    GestureDetector(onTap: () => openMenu(selectedAssets: assetListState.selectedAssets), child: const Text("Share")),
                                 ],
                               ),
                             ),
