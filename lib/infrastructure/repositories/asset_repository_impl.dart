@@ -75,40 +75,55 @@ class AssetRepositoryImpl extends AssetRepository {
   }
 
   @override
-  Future<Either<MediaFailure, Unit>> move(Asset assetToMove, String sourceAlbumId, String destinationAlbumId, bool keepAsset) async {
+  Future<Either<MediaFailure, Unit>> move(Asset assetToMove, String sourceAlbumId, String destinationAlbumId) async {
     try {
       final userDoc = await firestore.userDocument();
-      if (!keepAsset) {
-        // just delete the asset from the source album and add it to the destination album
-        await userDoc.collection('albums/$sourceAlbumId/assets').doc(assetToMove.id).delete();
 
-        await userDoc.collection('albums/$destinationAlbumId/assets').doc(assetToMove.id).set(
-              AssetModel.fromEntity(assetToMove).toMap(),
-            );
-      } else {
-        // basically just upload the asset from scratch to the destination album
-        // this is necessary because the copy of the asset has to be fully independent of the origin-asset
-        // otherwise for example the origin-asset-file would be deleted when the copy is deleted, as they would share the same file-path
-        final assetMetaData = await storage.refFromURL(assetToMove.url).getMetadata();
+      // just delete the asset from the source album and add it to the destination album
+      // the storage-file stays untouched
+      await userDoc.collection('albums/$sourceAlbumId/assets').doc(assetToMove.id).delete();
 
-        final fileEnding = assetMetaData.contentType!.split('/').last;
+      await userDoc.collection('albums/$destinationAlbumId/assets').doc(assetToMove.id).set(
+            AssetModel.fromEntity(assetToMove).toMap(),
+          );
 
-        final tempDir = await getTemporaryDirectory();
-
-        final path = '${tempDir.path}/${assetToMove.id}.$fileEnding';
-
-        await Dio().download(assetToMove.url, path);
-
-        await storage.ref(userDoc.id).child(const Uuid().v4()).putFile(File(path)).then(
-          (taskSnapshot) async {
-            final downloadUrl = await taskSnapshot.ref.getDownloadURL();
-            final assetModel = AssetModel.fromEntity(assetToMove.copyWith(url: downloadUrl));
-            await userDoc.collection('albums/$destinationAlbumId/assets').doc(const Uuid().v4()).set(
-                  assetModel.toMap(),
-                );
-          },
-        ).catchError((e) => print("upload-error: " + e.toString()));
+      return right(unit);
+    } on FirebaseException catch (error) {
+      print("delete-error: " + error.toString());
+      if (error.code == 'permission-denied' || error.code == 'PERMISSION_DENIED') {
+        return left(InsufficientPermissions());
       }
+      return left(UnexpectedFailure());
+    }
+  }
+
+  @override
+  Future<Either<MediaFailure, Unit>> copy(Asset assetToCopy, String destinationAlbumId) async {
+    try {
+      final userDoc = await firestore.userDocument();
+
+      // basically just upload the asset from scratch to the destination album
+      // this is necessary because the copy of the asset has to be fully independent of the origin-asset
+      // otherwise the origin-asset-file would be deleted, for example when the copy is deleted, as they would share the same file-path
+      final assetMetaData = await storage.refFromURL(assetToCopy.url).getMetadata();
+
+      final fileEnding = assetMetaData.contentType!.split('/').last;
+
+      final tempDir = await getTemporaryDirectory();
+
+      final path = '${tempDir.path}/${assetToCopy.id}.$fileEnding';
+
+      await Dio().download(assetToCopy.url, path);
+
+      await storage.ref(userDoc.id).child(const Uuid().v4()).putFile(File(path)).then(
+        (taskSnapshot) async {
+          final downloadUrl = await taskSnapshot.ref.getDownloadURL();
+          final assetModel = AssetModel.fromEntity(assetToCopy.copyWith(url: downloadUrl));
+          await userDoc.collection('albums/$destinationAlbumId/assets').doc(const Uuid().v4()).set(
+                assetModel.toMap(),
+              );
+        },
+      ).catchError((e) => print("upload-error: " + e.toString()));
 
       return right(unit);
     } on FirebaseException catch (error) {

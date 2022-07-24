@@ -25,8 +25,9 @@ class AssetList extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 ListTile(
-                  title: const Text('Export'),
+                  title: const Text('Export assets to device\'s gallery'),
                   onTap: () {
+                    Navigator.pop(context);
                     showDialog(
                         context: context,
                         builder: (_) {
@@ -34,9 +35,22 @@ class AssetList extends StatelessWidget {
                             title: 'Export',
                             content: 'Are you sure you want to export the selected assets into your device gallery?',
                             onConfirm: () {
-                              Navigator.of(context).pop();
                               BlocProvider.of<AssetControllerBloc>(context).add(ExportAssets(assetsToExport: selectedAssets));
                               BlocProvider.of<AssetListBloc>(context).add(DisableSelectMode());
+                              // showDialog(
+                              //   context: context,
+                              //   builder: (_) => CustomAlertDialog(
+                              //     title: 'Delete exported assets?',
+                              //     content: 'Do you want to delete the exported assets from Media-Vault?',
+                              //     onConfirm: () {
+                              //       BlocProvider.of<AssetControllerBloc>(context).add(
+                              //         DeleteAssets(albumId: albumId, assetsToDelete: selectedAssets),
+                              //       );
+                              //       BlocProvider.of<AssetListBloc>(context).add(DisableSelectMode());
+                              //       Navigator.pop(context);
+                              //     },
+                              //   ),
+                              // );
                             },
                           );
                         });

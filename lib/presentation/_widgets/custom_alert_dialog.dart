@@ -37,8 +37,8 @@ class CustomAlertDialog extends StatelessWidget {
             child: Text(confirmButtonText),
           ),
           onPressed: () {
-            onConfirm();
             Navigator.pop(context);
+            onConfirm();
           },
         ),
       ],

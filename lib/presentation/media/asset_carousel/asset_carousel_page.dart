@@ -41,7 +41,16 @@ class AssetCarouselPage extends StatelessWidget {
               child: Scaffold(
                 body: BlocBuilder<AssetCarouselBloc, AssetCarouselState>(
                   builder: (context, state) {
-                    final Asset currentAsset = assetObserverState.assets[state.carouselIndex];
+                    if (assetObserverState.assets.isEmpty) {
+                      return const Center(child: Text('No assets found'));
+                    }
+
+                    // if the carousel-index exceeds the number of assets (e.g. when an asset has been moved or deleted),
+                    // it will be set to last element of the array.
+                    final Asset currentAsset = state.carouselIndex >= assetObserverState.assets.length
+                        ? assetObserverState.assets[assetObserverState.assets.length - 1]
+                        : assetObserverState.assets[state.carouselIndex];
+
                     final bool isLastAsset = state.carouselIndex == assetObserverState.assets.length - 1;
                     return SafeArea(
                       child: Stack(

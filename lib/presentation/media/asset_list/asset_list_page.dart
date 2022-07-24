@@ -61,7 +61,7 @@ class AssetListPage extends StatelessWidget {
                       children: [
                         const LoadingIndicator(),
                         const SizedBox(height: 10),
-                        state.currentStep >= 0 ? Text('Uploading asset: ${state.currentStep}/${state.totalSteps}') : Container(),
+                        Text(state.message),
                       ],
                     ))
                   : AssetList(albumId: album.id.toString())),

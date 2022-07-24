@@ -10,12 +10,12 @@ import '../../../injection.dart';
 
 class MoveAssetsPage extends StatelessWidget {
   final String sourceAlbumId;
-  final List<Asset> assetsToMove;
+  final List<Asset> assets;
   final bool copy;
 
   const MoveAssetsPage({
     required this.sourceAlbumId,
-    required this.assetsToMove,
+    required this.assets,
     required this.copy,
     Key? key,
   }) : super(key: key);
@@ -45,14 +45,20 @@ class MoveAssetsPage extends StatelessWidget {
                   return ListTile(
                     title: Text(album.title),
                     onTap: () {
-                      BlocProvider.of<AssetControllerBloc>(context).add(
-                        MoveAssets(
-                          assetsToMove: assetsToMove,
-                          sourceAlbumId: sourceAlbumId,
+                      if (copy) {
+                        BlocProvider.of<AssetControllerBloc>(context).add(CopyAssets(
+                          assetsToCopy: assets,
                           destinationAlbumId: album.id,
-                          keepAssets: copy,
-                        ),
-                      );
+                        ));
+                      } else {
+                        BlocProvider.of<AssetControllerBloc>(context).add(
+                          MoveAssets(
+                            assetsToMove: assets,
+                            sourceAlbumId: sourceAlbumId,
+                            destinationAlbumId: album.id,
+                          ),
+                        );
+                      }
                       AutoRouter.of(context).replace(const AlbumListPageRoute());
                       AutoRouter.of(context).push(AssetListPageRoute(album: album));
                     },
