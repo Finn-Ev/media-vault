@@ -56,23 +56,14 @@ class AssetControllerBloc extends Bloc<AssetControllerEvent, AssetControllerStat
     on<MoveAssets>((event, emit) async {
       emit(AssetControllerLoading());
 
-      if (event.copy) {
-        for (int i = 0; i < event.assetsToMove.length; i++) {
-          final failureOrSuccess = await assetRepository.copy(event.assetsToMove[i], event.destinationAlbumId);
-          failureOrSuccess.fold(
-            (failure) => emit(AssetControllerFailure(failure)),
-            (success) => {},
-          );
-        }
-      } else {
-        for (int i = 0; i < event.assetsToMove.length; i++) {
-          final failureOrSuccess = await assetRepository.move(event.assetsToMove[i], event.sourceAlbumId, event.destinationAlbumId);
-          failureOrSuccess.fold(
-            (failure) => emit(AssetControllerFailure(failure)),
-            (success) {},
-          );
-        }
+      for (int i = 0; i < event.assetsToMove.length; i++) {
+        final failureOrSuccess = await assetRepository.move(event.assetsToMove[i], event.sourceAlbumId, event.destinationAlbumId, event.keepAssets);
+        failureOrSuccess.fold(
+          (failure) => emit(AssetControllerFailure(failure)),
+          (success) {},
+        );
       }
+
       emit(AssetControllerLoaded());
     });
   }

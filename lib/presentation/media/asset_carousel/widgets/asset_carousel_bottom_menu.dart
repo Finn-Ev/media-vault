@@ -48,10 +48,12 @@ class AssetCarouselBottomMenu extends StatelessWidget {
         context: context,
         builder: (_) {
           return Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               ListTile(
-                title: const Text('Export'),
+                title: const Text('Export asset'),
                 onTap: () {
+                  Navigator.of(context).pop();
                   showDialog(
                       context: context,
                       builder: (_) {
@@ -60,6 +62,9 @@ class AssetCarouselBottomMenu extends StatelessWidget {
                           content: 'Are you sure you want to export this asset into your device gallery?',
                           onConfirm: () {
                             BlocProvider.of<AssetControllerBloc>(context).add(ExportAssets(assetsToExport: [currentAsset]));
+                            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                              content: Text('Asset exported'),
+                            ));
                           },
                         );
                       });
@@ -68,15 +73,16 @@ class AssetCarouselBottomMenu extends StatelessWidget {
               ListTile(
                 title: const Text('Copy to another album'),
                 onTap: () {
-                  AutoRouter.of(context).push(MoveAssetsPageRoute(assetsToMove: [currentAsset], sourceAlbumId: albumId, copy: false));
+                  AutoRouter.of(context).push(MoveAssetsPageRoute(assetsToMove: [currentAsset], sourceAlbumId: albumId, copy: true));
                 },
               ),
               ListTile(
                 title: const Text('Move to another album'),
                 onTap: () {
-                  AutoRouter.of(context).push(MoveAssetsPageRoute(assetsToMove: [currentAsset], sourceAlbumId: albumId, copy: true));
+                  AutoRouter.of(context).push(MoveAssetsPageRoute(assetsToMove: [currentAsset], sourceAlbumId: albumId, copy: false));
                 },
               ),
+              SizedBox(height: 8),
             ],
           );
         },

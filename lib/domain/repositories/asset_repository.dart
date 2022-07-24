@@ -8,9 +8,7 @@ abstract class AssetRepository {
 
   Future<Either<MediaFailure, Unit>> delete(Asset assetToDelete, String albumId);
 
-  Future<Either<MediaFailure, Unit>> move(Asset assetToMove, String sourceAlbumId, String destinationAlbumId);
-
-  Future<Either<MediaFailure, Unit>> copy(Asset assetToCopy, String destinationAlbumId);
+  Future<Either<MediaFailure, Unit>> move(Asset assetToMove, String sourceAlbumId, String destinationAlbumId, bool keepAsset);
 
   Future<Either<MediaFailure, Unit>> export(Asset assetToExport);
 

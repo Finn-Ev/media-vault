@@ -44,10 +44,10 @@ class AssetPreviewCard extends StatelessWidget {
             }
           },
           onLongPress: () {
+            // activate select mode and set this asset as selected
             if (!state.isSelectModeEnabled) {
               BlocProvider.of<AssetListBloc>(context).add(EnableSelectMode(initialSelectedAsset: asset));
             }
-            // activate select mode and set this asset as selected
           },
           child: Stack(
             children: [

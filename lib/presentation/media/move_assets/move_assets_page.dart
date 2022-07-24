@@ -1,5 +1,12 @@
-import 'package:flutter/widgets.dart';
+import 'package:auto_route/auto_route.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:media_vault/application/albums/observer/album_observer_bloc.dart';
+import 'package:media_vault/application/assets/controller/asset_controller_bloc.dart';
 import 'package:media_vault/domain/entities/media/asset.dart';
+import 'package:media_vault/presentation/_routes/routes.gr.dart';
+
+import '../../../injection.dart';
 
 class MoveAssetsPage extends StatelessWidget {
   final String sourceAlbumId;
@@ -15,7 +22,51 @@ class MoveAssetsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // todo display all albums except source album
-    return Container();
+    final albumObserver = sl<AlbumObserverBloc>()..add(AlbumsObserveAll());
+    return BlocProvider(
+      create: (context) => albumObserver,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Choose an album'),
+        ),
+        body: BlocBuilder<AlbumObserverBloc, AlbumObserverState>(
+          builder: (context, state) {
+            if (state is AlbumObserverLoaded) {
+              return ListView.builder(
+                itemCount: state.albums.length,
+                itemBuilder: (context, index) {
+                  final album = state.albums[index];
+
+                  if (album.id == sourceAlbumId) {
+                    // source album can't be the destination album
+                    return Container();
+                  }
+
+                  return ListTile(
+                    title: Text(album.title),
+                    onTap: () {
+                      BlocProvider.of<AssetControllerBloc>(context).add(
+                        MoveAssets(
+                          assetsToMove: assetsToMove,
+                          sourceAlbumId: sourceAlbumId,
+                          destinationAlbumId: album.id,
+                          keepAssets: copy,
+                        ),
+                      );
+                      AutoRouter.of(context).replace(const AlbumListPageRoute());
+                      AutoRouter.of(context).push(AssetListPageRoute(album: album));
+                    },
+                  );
+                },
+              );
+            } else {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          },
+        ),
+      ),
+    );
   }
 }

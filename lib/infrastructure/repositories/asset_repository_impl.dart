@@ -35,7 +35,6 @@ class AssetRepositoryImpl extends AssetRepository {
 
       // final file = await asset.file; // always jpg
       final file = await asset.originFile; // original file ending
-      print("uploading asset: ${file}");
 
       await storage.ref(userDoc.id).child(const Uuid().v4()).putFile(file!).then(
         (taskSnapshot) async {
@@ -76,32 +75,40 @@ class AssetRepositoryImpl extends AssetRepository {
   }
 
   @override
-  Future<Either<MediaFailure, Unit>> copy(Asset assetToCopy, String destinationAlbumId) async {
+  Future<Either<MediaFailure, Unit>> move(Asset assetToMove, String sourceAlbumId, String destinationAlbumId, bool keepAsset) async {
     try {
       final userDoc = await firestore.userDocument();
+      if (!keepAsset) {
+        // just delete the asset from the source album and add it to the destination album
+        await userDoc.collection('albums/$sourceAlbumId/assets').doc(assetToMove.id).delete();
 
-      // todo: just upload the asset again to the destination album
+        await userDoc.collection('albums/$destinationAlbumId/assets').doc(assetToMove.id).set(
+              AssetModel.fromEntity(assetToMove).toMap(),
+            );
+      } else {
+        // basically just upload the asset from scratch to the destination album
+        // this is necessary because the copy of the asset has to be fully independent of the origin-asset
+        // otherwise for example the origin-asset-file would be deleted when the copy is deleted, as they would share the same file-path
+        final assetMetaData = await storage.refFromURL(assetToMove.url).getMetadata();
 
-      return right(unit);
-    } on FirebaseException catch (error) {
-      print("delete-error: " + error.toString());
-      if (error.code == 'permission-denied' || error.code == 'PERMISSION_DENIED') {
-        return left(InsufficientPermissions());
+        final fileEnding = assetMetaData.contentType!.split('/').last;
+
+        final tempDir = await getTemporaryDirectory();
+
+        final path = '${tempDir.path}/${assetToMove.id}.$fileEnding';
+
+        await Dio().download(assetToMove.url, path);
+
+        await storage.ref(userDoc.id).child(const Uuid().v4()).putFile(File(path)).then(
+          (taskSnapshot) async {
+            final downloadUrl = await taskSnapshot.ref.getDownloadURL();
+            final assetModel = AssetModel.fromEntity(assetToMove.copyWith(url: downloadUrl));
+            await userDoc.collection('albums/$destinationAlbumId/assets').doc(const Uuid().v4()).set(
+                  assetModel.toMap(),
+                );
+          },
+        ).catchError((e) => print("upload-error: " + e.toString()));
       }
-      return left(UnexpectedFailure());
-    }
-  }
-
-  @override
-  Future<Either<MediaFailure, Unit>> move(Asset assetToMove, String sourceAlbumId, String destinationAlbumId) async {
-    try {
-      final userDoc = await firestore.userDocument();
-
-      await userDoc.collection('albums/$sourceAlbumId/assets').doc(assetToMove.id.toString()).delete();
-
-      await storage.refFromURL(assetToMove.url).delete();
-
-      // todo: just upload the asset again to the destination album
 
       return right(unit);
     } on FirebaseException catch (error) {

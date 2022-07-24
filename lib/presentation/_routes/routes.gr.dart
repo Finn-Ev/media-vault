@@ -12,10 +12,9 @@
 
 import 'package:auto_route/auto_route.dart' as _i11;
 import 'package:flutter/material.dart' as _i12;
-import 'package:flutter/widgets.dart' as _i14;
 
 import '../../domain/entities/media/album.dart' as _i13;
-import '../../domain/entities/media/asset.dart' as _i15;
+import '../../domain/entities/media/asset.dart' as _i14;
 import '../auth/forgot_password/forgot_password_page.dart' as _i5;
 import '../auth/login/login_page.dart' as _i3;
 import '../auth/register/register_page.dart' as _i4;
@@ -63,7 +62,8 @@ class AppRouter extends _i11.RootStackRouter {
       final args = routeData.argsAs<AssetListPageRouteArgs>();
       return _i11.MaterialPageX<dynamic>(
           routeData: routeData,
-          child: _i7.AssetListPage(album: args.album, key: args.key));
+          child: _i7.AssetListPage(album: args.album, key: args.key),
+          maintainState: false);
     },
     AssetCarouselPageRoute.name: (routeData) {
       final args = routeData.argsAs<AssetCarouselPageRouteArgs>();
@@ -168,7 +168,7 @@ class AlbumListPageRoute extends _i11.PageRouteInfo<void> {
 /// generated route for
 /// [_i7.AssetListPage]
 class AssetListPageRoute extends _i11.PageRouteInfo<AssetListPageRouteArgs> {
-  AssetListPageRoute({required _i13.Album album, _i14.Key? key})
+  AssetListPageRoute({required _i13.Album album, _i12.Key? key})
       : super(AssetListPageRoute.name,
             path: '/asset-list-page',
             args: AssetListPageRouteArgs(album: album, key: key));
@@ -181,7 +181,7 @@ class AssetListPageRouteArgs {
 
   final _i13.Album album;
 
-  final _i14.Key? key;
+  final _i12.Key? key;
 
   @override
   String toString() {
@@ -194,7 +194,7 @@ class AssetListPageRouteArgs {
 class AssetCarouselPageRoute
     extends _i11.PageRouteInfo<AssetCarouselPageRouteArgs> {
   AssetCarouselPageRoute(
-      {required String albumId, required String initialAssetId, _i14.Key? key})
+      {required String albumId, required String initialAssetId, _i12.Key? key})
       : super(AssetCarouselPageRoute.name,
             path: '/asset-carousel-page',
             args: AssetCarouselPageRouteArgs(
@@ -211,7 +211,7 @@ class AssetCarouselPageRouteArgs {
 
   final String initialAssetId;
 
-  final _i14.Key? key;
+  final _i12.Key? key;
 
   @override
   String toString() {
@@ -223,7 +223,7 @@ class AssetCarouselPageRouteArgs {
 /// [_i9.AssetVideoPlayerPage]
 class AssetVideoPlayerPageRoute
     extends _i11.PageRouteInfo<AssetVideoPlayerPageRouteArgs> {
-  AssetVideoPlayerPageRoute({required String url, _i14.Key? key})
+  AssetVideoPlayerPageRoute({required String url, _i12.Key? key})
       : super(AssetVideoPlayerPageRoute.name,
             path: '/asset-video-player-page',
             args: AssetVideoPlayerPageRouteArgs(url: url, key: key));
@@ -236,7 +236,7 @@ class AssetVideoPlayerPageRouteArgs {
 
   final String url;
 
-  final _i14.Key? key;
+  final _i12.Key? key;
 
   @override
   String toString() {
@@ -249,9 +249,9 @@ class AssetVideoPlayerPageRouteArgs {
 class MoveAssetsPageRoute extends _i11.PageRouteInfo<MoveAssetsPageRouteArgs> {
   MoveAssetsPageRoute(
       {required String sourceAlbumId,
-      required List<_i15.Asset> assetsToMove,
+      required List<_i14.Asset> assetsToMove,
       required bool copy,
-      _i14.Key? key})
+      _i12.Key? key})
       : super(MoveAssetsPageRoute.name,
             path: '/move-assets-page',
             args: MoveAssetsPageRouteArgs(
@@ -272,11 +272,11 @@ class MoveAssetsPageRouteArgs {
 
   final String sourceAlbumId;
 
-  final List<_i15.Asset> assetsToMove;
+  final List<_i14.Asset> assetsToMove;
 
   final bool copy;
 
-  final _i14.Key? key;
+  final _i12.Key? key;
 
   @override
   String toString() {

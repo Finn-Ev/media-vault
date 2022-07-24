@@ -27,12 +27,12 @@ class MoveAssets extends AssetControllerEvent {
   final List<Asset> assetsToMove;
   final String sourceAlbumId;
   final String destinationAlbumId;
-  final bool copy;
+  final bool keepAssets;
 
   MoveAssets({
     required this.assetsToMove,
     required this.sourceAlbumId,
     required this.destinationAlbumId,
-    required this.copy,
+    required this.keepAssets,
   });
 }
