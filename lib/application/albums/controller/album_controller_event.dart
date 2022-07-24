@@ -16,7 +16,7 @@ class UpdateAlbum extends AlbumControllerEvent {
 }
 
 class DeleteAlbum extends AlbumControllerEvent {
-  final UniqueID id;
+  final String id;
 
   DeleteAlbum({required this.id});
 }

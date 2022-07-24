@@ -5,14 +5,14 @@ abstract class AssetControllerEvent {}
 
 class UploadAssets extends AssetControllerEvent {
   final List<asset_picker.AssetEntity> assets;
-  final UniqueID albumId;
+  final String albumId;
 
   UploadAssets({required this.assets, required this.albumId});
 }
 
 class DeleteAssets extends AssetControllerEvent {
   final List<Asset> assetsToDelete;
-  final UniqueID albumId;
+  final String albumId;
 
   DeleteAssets({required this.assetsToDelete, required this.albumId});
 }
@@ -25,8 +25,8 @@ class ExportAssets extends AssetControllerEvent {
 
 class MoveAssets extends AssetControllerEvent {
   final List<Asset> assetsToMove;
-  final UniqueID sourceAlbumId;
-  final UniqueID destinationAlbumId;
+  final String sourceAlbumId;
+  final String destinationAlbumId;
   final bool copy;
 
   MoveAssets({

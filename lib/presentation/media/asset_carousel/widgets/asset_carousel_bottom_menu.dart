@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:media_vault/application/assets/asset_carousel/asset_carousel_bloc.dart';
 import 'package:media_vault/application/assets/controller/asset_controller_bloc.dart';
-import 'package:media_vault/domain/entities/auth/user_id.dart';
 import 'package:media_vault/domain/entities/media/asset.dart';
 import 'package:media_vault/presentation/_routes/routes.gr.dart';
 import 'package:media_vault/presentation/_widgets/custom_alert_dialog.dart';
@@ -32,7 +31,7 @@ class AssetCarouselBottomMenu extends StatelessWidget {
             title: 'Delete',
             content: 'Are you sure you want to delete this asset?',
             onConfirm: () {
-              BlocProvider.of<AssetControllerBloc>(context).add(DeleteAssets(albumId: UniqueID.fromString(albumId), assetsToDelete: [currentAsset]));
+              BlocProvider.of<AssetControllerBloc>(context).add(DeleteAssets(albumId: albumId, assetsToDelete: [currentAsset]));
               if (lastAlbumAssetIsViewedInCarousel) {
                 BlocProvider.of<AssetCarouselBloc>(context).add(CarouselIndexChanged(newIndex: -1));
               }
@@ -69,13 +68,13 @@ class AssetCarouselBottomMenu extends StatelessWidget {
               ListTile(
                 title: const Text('Copy to another album'),
                 onTap: () {
-                  AutoRouter.of(context).push(MoveAssetsPageRoute(assetsToMove: [currentAsset], sourceAlbumId: albumId, destinationAlbumId: "", copy: false));
+                  AutoRouter.of(context).push(MoveAssetsPageRoute(assetsToMove: [currentAsset], sourceAlbumId: albumId, copy: false));
                 },
               ),
               ListTile(
                 title: const Text('Move to another album'),
                 onTap: () {
-                  AutoRouter.of(context).push(MoveAssetsPageRoute(assetsToMove: [currentAsset], sourceAlbumId: albumId, destinationAlbumId: "", copy: true));
+                  AutoRouter.of(context).push(MoveAssetsPageRoute(assetsToMove: [currentAsset], sourceAlbumId: albumId, copy: true));
                 },
               ),
             ],
@@ -89,28 +88,28 @@ class AssetCarouselBottomMenu extends StatelessWidget {
       listenWhen: (previous, current) =>
           (previous is AssetControllerLoading && current is AssetControllerFailure) || (previous is AssetControllerLoading && current is AssetControllerLoaded),
       listener: (context, state) {
-        if (state is AssetControllerLoaded) {
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text(
-              'The asset was exported successfully',
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white, fontSize: 16),
-            ),
-            backgroundColor: Colors.green,
-            duration: Duration(seconds: 2),
-          ));
-        }
-        if (state is AssetControllerFailure) {
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text(
-              'There was an error exporting the asset. Please try again',
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white, fontSize: 16),
-            ),
-            backgroundColor: Colors.redAccent,
-            duration: Duration(seconds: 2),
-          ));
-        }
+        // if (state is AssetControllerLoaded) {
+        //   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        //     content: Text(
+        //       'The asset was exported successfully',
+        //       textAlign: TextAlign.center,
+        //       style: TextStyle(color: Colors.white, fontSize: 16),
+        //     ),
+        //     backgroundColor: Colors.green,
+        //     duration: Duration(seconds: 2),
+        //   ));
+        // }
+        // if (state is AssetControllerFailure) {
+        //   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        //     content: Text(
+        //       'There was an error. Please try again',
+        //       textAlign: TextAlign.center,
+        //       style: TextStyle(color: Colors.white, fontSize: 16),
+        //     ),
+        //     backgroundColor: Colors.redAccent,
+        //     duration: Duration(seconds: 2),
+        //   ));
+        // }
       },
       child: BlocBuilder<AssetCarouselBloc, AssetCarouselState>(
         builder: (context, state) {

@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:media_vault/core/failures/media_failures.dart';
-import 'package:media_vault/domain/entities/auth/user_id.dart';
 import 'package:media_vault/domain/entities/media/album.dart';
 import 'package:media_vault/domain/repositories/album_repository.dart';
 import 'package:media_vault/infrastructure/extensions/firebase_extensions.dart';
@@ -50,11 +49,11 @@ class AlbumRepositoryImpl extends AlbumRepository {
   }
 
   @override
-  Future<Either<MediaFailure, Unit>> delete(UniqueID id) async {
+  Future<Either<MediaFailure, Unit>> delete(String albumId) async {
     try {
       final userDoc = await firestore.userDocument();
 
-      await userDoc.albumCollection.doc(id.toString()).delete();
+      await userDoc.albumCollection.doc(albumId.toString()).delete();
 
       return right(unit);
     } on FirebaseException catch (e) {

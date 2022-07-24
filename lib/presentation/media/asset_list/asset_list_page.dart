@@ -21,7 +21,7 @@ class AssetListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final assetObserverBloc = sl<AssetObserverBloc>()..add(ObserveAlbumAssets(albumId: album.id.value));
+    final assetObserverBloc = sl<AssetObserverBloc>()..add(ObserveAlbumAssets(albumId: album.id));
 
     return MultiBlocProvider(
       providers: [

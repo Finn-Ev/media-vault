@@ -1,7 +1,7 @@
-import 'package:media_vault/domain/entities/auth/user_id.dart';
+import 'package:uuid/uuid.dart';
 
 class Album {
-  final UniqueID id;
+  final String id;
   final String title;
   final String sortDirection;
   final dynamic createdAt;
@@ -16,11 +16,11 @@ class Album {
   });
 
   factory Album.empty() {
-    return Album(id: UniqueID(), title: "", sortDirection: "asc", createdAt: DateTime.now(), updatedAt: DateTime.now());
+    return Album(id: const Uuid().v4(), title: "", sortDirection: "asc", createdAt: DateTime.now(), updatedAt: DateTime.now());
   }
 
   Album copyWith({
-    UniqueID? id,
+    String? id,
     String? title,
     String? sortDirection,
     DateTime? createdAt,

@@ -3,12 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:media_vault/application/assets/asset_list/asset_list_bloc.dart';
 import 'package:media_vault/application/assets/controller/asset_controller_bloc.dart';
-import 'package:media_vault/domain/entities/auth/user_id.dart';
 import 'package:media_vault/presentation/_widgets/loading_indicator.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 class AddAssetsFloatingButton extends StatelessWidget {
-  final UniqueID albumId;
+  final String albumId;
 
   AddAssetsFloatingButton({required this.albumId, Key? key}) : super(key: key);
 

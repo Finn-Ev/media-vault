@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:media_vault/application/assets/asset_list/asset_list_bloc.dart';
 import 'package:media_vault/application/assets/observer/asset_observer_bloc.dart';
-import 'package:media_vault/domain/entities/auth/user_id.dart';
 
 class AssetListAppBarActions extends StatelessWidget {
-  final UniqueID albumId;
+  final String albumId;
 
   const AssetListAppBarActions({required this.albumId, Key? key}) : super(key: key);
 

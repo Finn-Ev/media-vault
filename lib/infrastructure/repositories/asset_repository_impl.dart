@@ -6,7 +6,6 @@ import 'package:dio/dio.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:media_vault/core/failures/media_failures.dart';
-import 'package:media_vault/domain/entities/auth/user_id.dart';
 import 'package:media_vault/domain/entities/media/asset.dart';
 import 'package:media_vault/domain/repositories/asset_repository.dart';
 import 'package:media_vault/infrastructure/extensions/firebase_extensions.dart';
@@ -21,12 +20,12 @@ class AssetRepositoryImpl extends AssetRepository {
   AssetRepositoryImpl({required this.firestore, required this.storage});
 
   @override
-  Future<Either<MediaFailure, Unit>> upload(asset_picker.AssetEntity asset, UniqueID albumId) async {
+  Future<Either<MediaFailure, Unit>> upload(asset_picker.AssetEntity asset, String albumId) async {
     try {
       final userDoc = await firestore.userDocument();
 
       final customAssetEntity = Asset(
-        id: UniqueID.fromString(const Uuid().v4()),
+        id: const Uuid().v4(),
         url: "",
         isVideo: asset.duration > 0,
         duration: asset.duration,
@@ -58,7 +57,7 @@ class AssetRepositoryImpl extends AssetRepository {
   }
 
   @override
-  Future<Either<MediaFailure, Unit>> delete(Asset assetToDelete, UniqueID albumId) async {
+  Future<Either<MediaFailure, Unit>> delete(Asset assetToDelete, String albumId) async {
     try {
       final userDoc = await firestore.userDocument();
 
@@ -77,7 +76,7 @@ class AssetRepositoryImpl extends AssetRepository {
   }
 
   @override
-  Future<Either<MediaFailure, Unit>> copy(Asset assetToCopy, UniqueID destinationAlbumId) async {
+  Future<Either<MediaFailure, Unit>> copy(Asset assetToCopy, String destinationAlbumId) async {
     try {
       final userDoc = await firestore.userDocument();
 
@@ -94,7 +93,7 @@ class AssetRepositoryImpl extends AssetRepository {
   }
 
   @override
-  Future<Either<MediaFailure, Unit>> move(Asset assetToMove, UniqueID sourceAlbumId, UniqueID destinationAlbumId) async {
+  Future<Either<MediaFailure, Unit>> move(Asset assetToMove, String sourceAlbumId, String destinationAlbumId) async {
     try {
       final userDoc = await firestore.userDocument();
 

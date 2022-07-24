@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:media_vault/domain/entities/auth/user_id.dart';
 import 'package:media_vault/domain/entities/media/asset.dart';
 
 class AssetModel {
@@ -59,7 +58,7 @@ class AssetModel {
 
   Asset toEntity() {
     return Asset(
-      id: UniqueID.fromString(id),
+      id: id,
       url: url,
       isVideo: duration > 0,
       duration: duration,

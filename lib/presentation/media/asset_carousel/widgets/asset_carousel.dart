@@ -41,7 +41,7 @@ class AssetCarousel extends StatelessWidget {
         if (state is AssetObserverLoaded) {
           // firstWhereOrNull is necessary, because the initial asset might not be in the list of assets anymore
           // e.g. when the user deletes the initial asset while the carousel is open
-          final Asset? initialAsset = state.assets.firstWhereOrNull((asset) => asset.id.value == initialAssetId);
+          final Asset? initialAsset = state.assets.firstWhereOrNull((asset) => asset.id == initialAssetId);
 
           if (initialAsset != null) {
             initialIndex = state.assets.indexOf(initialAsset);

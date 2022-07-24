@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:media_vault/application/assets/asset_list/asset_list_bloc.dart';
 import 'package:media_vault/application/assets/controller/asset_controller_bloc.dart';
 import 'package:media_vault/application/assets/observer/asset_observer_bloc.dart';
-import 'package:media_vault/domain/entities/auth/user_id.dart';
 import 'package:media_vault/presentation/_routes/routes.gr.dart';
 import 'package:media_vault/presentation/_widgets/custom_alert_dialog.dart';
 import 'package:media_vault/presentation/_widgets/loading_indicator.dart';
@@ -42,13 +41,13 @@ class AssetList extends StatelessWidget {
                 ListTile(
                   title: const Text('Copy to another album'),
                   onTap: () {
-                    AutoRouter.of(context).push(MoveAssetsPageRoute(assetsToMove: selectedAssets, sourceAlbumId: albumId, destinationAlbumId: "", copy: false));
+                    AutoRouter.of(context).push(MoveAssetsPageRoute(assetsToMove: selectedAssets, sourceAlbumId: albumId, copy: false));
                   },
                 ),
                 ListTile(
                   title: const Text('Move to another album'),
                   onTap: () {
-                    AutoRouter.of(context).push(MoveAssetsPageRoute(assetsToMove: selectedAssets, sourceAlbumId: albumId, destinationAlbumId: "", copy: true));
+                    AutoRouter.of(context).push(MoveAssetsPageRoute(assetsToMove: selectedAssets, sourceAlbumId: albumId, copy: true));
                   },
                 ),
               ],
@@ -106,7 +105,7 @@ class AssetList extends StatelessWidget {
                                                 BlocProvider.of<AssetControllerBloc>(context).add(
                                                   DeleteAssets(
                                                     assetsToDelete: assetListState.selectedAssets,
-                                                    albumId: UniqueID.fromString(albumId),
+                                                    albumId: albumId,
                                                   ),
                                                 );
                                                 BlocProvider.of<AssetListBloc>(context).add(DisableSelectMode());

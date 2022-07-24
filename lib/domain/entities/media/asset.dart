@@ -1,7 +1,7 @@
-import 'package:media_vault/domain/entities/auth/user_id.dart';
+import 'package:uuid/uuid.dart';
 
 class Asset {
-  final UniqueID id;
+  final String id;
   final String url;
   final bool isVideo;
   final int duration;
@@ -18,11 +18,11 @@ class Asset {
   });
 
   factory Asset.empty() {
-    return Asset(id: UniqueID(), url: "", isVideo: false, duration: 0, createdAt: DateTime.now(), uploadedAt: DateTime.now());
+    return Asset(id: const Uuid().v4(), url: "", isVideo: false, duration: 0, createdAt: DateTime.now(), uploadedAt: DateTime.now());
   }
 
   Asset copyWith({
-    UniqueID? id,
+    String? id,
     String? url,
     bool? isVideo,
     int? duration,

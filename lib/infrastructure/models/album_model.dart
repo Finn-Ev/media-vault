@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:media_vault/domain/entities/auth/user_id.dart';
 import 'package:media_vault/domain/entities/media/album.dart';
 
 class AlbumModel {
@@ -59,7 +58,7 @@ class AlbumModel {
 
   Album toEntity() {
     return Album(
-      id: UniqueID.fromString(id),
+      id: id,
       title: title,
       sortDirection: sortDirection,
       createdAt: createdAt,

@@ -40,7 +40,7 @@ class AssetPreviewCard extends StatelessWidget {
             if (state.isSelectModeEnabled) {
               BlocProvider.of<AssetListBloc>(context).add(ToggleAsset(asset: asset));
             } else {
-              AutoRouter.of(context).push(AssetCarouselPageRoute(albumId: albumId, initialAssetId: asset.id.value));
+              AutoRouter.of(context).push(AssetCarouselPageRoute(albumId: albumId, initialAssetId: asset.id));
             }
           },
           onLongPress: () {

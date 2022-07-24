@@ -1,9 +1,8 @@
 import 'package:flutter/widgets.dart';
-import 'package:media_vault/domain/entities/auth/user_id.dart';
 import 'package:media_vault/domain/entities/media/asset.dart';
 
 class MoveAssetsPage extends StatelessWidget {
-  final UniqueID sourceAlbumId;
+  final String sourceAlbumId;
   final List<Asset> assetsToMove;
   final bool copy;
 
