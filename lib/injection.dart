@@ -38,7 +38,7 @@ Future<void> init() async {
   sl.registerFactory(() => AlbumControllerBloc(albumRepository: sl()));
 
   // repositories
-  sl.registerLazySingleton<AlbumRepository>(() => AlbumRepositoryImpl(firestore: sl()));
+  sl.registerLazySingleton<AlbumRepository>(() => AlbumRepositoryImpl(firestore: sl(), storage: sl()));
 
   // Assets
   // state management

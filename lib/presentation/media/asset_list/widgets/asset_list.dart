@@ -60,7 +60,7 @@ class AssetList extends StatelessWidget {
                   title: const Text('Copy to another album'),
                   onTap: () {
                     Navigator.of(context).pop();
-                    AutoRouter.of(context).push(MoveAssetsPageRoute(assetsToMove: selectedAssets, sourceAlbumId: albumId, copy: true));
+                    AutoRouter.of(context).push(MoveAssetsPageRoute(assets: selectedAssets, sourceAlbumId: albumId, copy: true));
                     BlocProvider.of<AssetListBloc>(context).add(DisableSelectMode());
                   },
                 ),
@@ -68,7 +68,7 @@ class AssetList extends StatelessWidget {
                   title: const Text('Move to another album'),
                   onTap: () {
                     Navigator.of(context).pop();
-                    AutoRouter.of(context).push(MoveAssetsPageRoute(assetsToMove: selectedAssets, sourceAlbumId: albumId, copy: false));
+                    AutoRouter.of(context).push(MoveAssetsPageRoute(assets: selectedAssets, sourceAlbumId: albumId, copy: false));
                     BlocProvider.of<AssetListBloc>(context).add(DisableSelectMode());
                   },
                 ),

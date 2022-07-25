@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:media_vault/application/albums/controller/album_controller_bloc.dart';
 import 'package:media_vault/domain/entities/media/album.dart';
 import 'package:media_vault/presentation/_widgets/custom_alert_dialog.dart';
 import 'package:media_vault/presentation/_widgets/custom_input_alert.dart';
+import 'package:media_vault/presentation/_widgets/custom_modal_bottom_sheet.dart';
 
 class AlbumActionSheet extends StatelessWidget {
   final Album album;
@@ -14,103 +14,45 @@ class AlbumActionSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PlatformWidget(
-      material: (_, __) => BottomSheet(
-        onClosing: () {},
-        builder: (_) => Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            ListTile(
-              leading: const Icon(Icons.delete),
-              title: const Text('Delete'),
-              onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (_) => CustomAlertDialog(
-                    title: 'Delete the Album "${album.title}"?',
-                    content: 'This action cannot be undone.',
-                    onConfirm: () {
-                      BlocProvider.of<AlbumControllerBloc>(context).add(DeleteAlbum(id: album.id));
-                    },
-                    confirmIsDestructive: true,
-                  ),
-                );
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-                leading: const Icon(Icons.edit),
-                title: const Text('Edit'),
-                onTap: () {
+    return CustomModalBottomSheet(actions: [
+      CustomModalBottomSheetAction(
+        text: "Rename",
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (_) {
+              return CustomInputAlert(
+                title: 'Rename album',
+                hintText: 'Enter a new name for this album',
+                onConfirm: (String newTitle) {
+                  BlocProvider.of<AlbumControllerBloc>(context).add(UpdateAlbum(album: album.copyWith(title: newTitle)));
                   Navigator.pop(context);
-                  showDialog(
-                    context: context,
-                    builder: (_) => CustomInputAlert(
-                      title: 'Edit ${album.title}',
-                      hintText: 'Enter the new title for the album',
-                      initialInputValue: album.title,
-                      onConfirm: (value) {
-                        BlocProvider.of<AlbumControllerBloc>(context).add(UpdateAlbum(
-                          album: album.copyWith(title: value),
-                        ));
-                      },
-                    ),
-                  );
-                }),
-            ListTile(
-              leading: const Icon(Icons.cancel),
-              title: const Text('Cancel'),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-          ],
-        ),
-      ),
-      cupertino: (_, __) => CupertinoActionSheet(
-        actions: <Widget>[
-          CupertinoActionSheetAction(
-            child: Text('Delete "${album.title}"', style: const TextStyle(color: CupertinoColors.destructiveRed)),
-            onPressed: () {
-              Navigator.pop(context);
-              showDialog(
-                context: context,
-                builder: (_) => CustomAlertDialog(
-                  title: 'Delete the Album "${album.title}"?',
-                  content: 'This action cannot be undone.',
-                  onConfirm: () {
-                    BlocProvider.of<AlbumControllerBloc>(context).add(DeleteAlbum(id: album.id));
-                  },
-                  confirmIsDestructive: true,
-                ),
+                },
               );
             },
-          ),
-          CupertinoActionSheetAction(
-            child: Text('Edit "${album.title}"', style: const TextStyle(color: CupertinoColors.activeBlue)),
-            onPressed: () {
-              Navigator.pop(context);
-              showDialog(
-                context: context,
-                builder: (_) => CustomInputAlert(
-                  title: 'Edit ${album.title}',
-                  hintText: 'Enter the new title for the album',
-                  initialInputValue: album.title,
-                  onConfirm: (value) {
-                    BlocProvider.of<AlbumControllerBloc>(context).add(UpdateAlbum(album: album.copyWith(title: value)));
-                  },
-                ),
+          );
+        },
+      ),
+      CustomModalBottomSheetAction(
+        text: "Delete",
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (_) {
+              return CustomAlertDialog(
+                title: 'Delete',
+                content: 'Are you sure you want to delete this album?',
+                onConfirm: () {
+                  BlocProvider.of<AlbumControllerBloc>(context).add(DeleteAlbum(id: album.id));
+                  Navigator.pop(context);
+                },
+                confirmIsDestructive: true,
+                confirmButtonText: 'Delete',
               );
             },
-          ),
-          CupertinoActionSheetAction(
-            child: const Text('Cancel ', style: TextStyle(color: CupertinoColors.activeBlue)),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-        ],
+          );
+        },
       ),
-    );
+    ]);
   }
 }

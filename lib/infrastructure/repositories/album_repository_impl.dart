@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:media_vault/core/failures/media_failures.dart';
 import 'package:media_vault/domain/entities/media/album.dart';
 import 'package:media_vault/domain/repositories/album_repository.dart';
@@ -8,7 +9,8 @@ import 'package:media_vault/infrastructure/models/album_model.dart';
 
 class AlbumRepositoryImpl extends AlbumRepository {
   final FirebaseFirestore firestore;
-  AlbumRepositoryImpl({required this.firestore});
+  final FirebaseStorage storage;
+  AlbumRepositoryImpl({required this.firestore, required this.storage});
 
   @override
   Future<Either<MediaFailure, Unit>> create(String title) async {
@@ -34,7 +36,6 @@ class AlbumRepositoryImpl extends AlbumRepository {
     try {
       final userDoc = await firestore.userDocument();
 
-      // go 'reverse' from domain to infrastructure
       final albumModel = AlbumModel.fromEntity(album);
 
       await userDoc.albumCollection.doc(albumModel.id).update(albumModel.copyWith(updatedAt: FieldValue.serverTimestamp()).toMap());
@@ -53,7 +54,17 @@ class AlbumRepositoryImpl extends AlbumRepository {
     try {
       final userDoc = await firestore.userDocument();
 
-      await userDoc.albumCollection.doc(albumId.toString()).delete();
+      // delete the storage files of the album
+      final assetDocsToDelete = await userDoc.collection("albums/$albumId/assets").get();
+
+      final List<String> assetsUrlsToDelete = assetDocsToDelete.docs.map((doc) => doc.data()["url"] as String).toList();
+
+      for (final url in assetsUrlsToDelete) {
+        await storage.refFromURL(url).delete();
+      }
+
+      // delete the album itself
+      await userDoc.albumCollection.doc(albumId).delete();
 
       return right(unit);
     } on FirebaseException catch (e) {

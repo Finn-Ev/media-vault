@@ -27,45 +27,71 @@ import '../other/settings/settings_page.dart' as _i2;
 import '../other/splash/splash_page.dart' as _i1;
 
 class AppRouter extends _i11.RootStackRouter {
-  AppRouter([_i12.GlobalKey<_i12.NavigatorState>? navigatorKey]) : super(navigatorKey);
+  AppRouter([_i12.GlobalKey<_i12.NavigatorState>? navigatorKey])
+      : super(navigatorKey);
 
   @override
   final Map<String, _i11.PageFactory> pagesMap = {
     SplashPageRoute.name: (routeData) {
-      return _i11.MaterialPageX<dynamic>(routeData: routeData, child: const _i1.SplashPage());
+      return _i11.MaterialPageX<dynamic>(
+          routeData: routeData, child: const _i1.SplashPage());
     },
     SettingsPageRoute.name: (routeData) {
-      return _i11.MaterialPageX<dynamic>(routeData: routeData, child: const _i2.SettingsPage());
+      return _i11.MaterialPageX<dynamic>(
+          routeData: routeData, child: const _i2.SettingsPage());
     },
     LoginPageRoute.name: (routeData) {
-      return _i11.MaterialPageX<dynamic>(routeData: routeData, child: const _i3.LoginPage());
+      return _i11.MaterialPageX<dynamic>(
+          routeData: routeData, child: const _i3.LoginPage());
     },
     RegisterPageRoute.name: (routeData) {
-      return _i11.MaterialPageX<dynamic>(routeData: routeData, child: const _i4.RegisterPage());
+      return _i11.MaterialPageX<dynamic>(
+          routeData: routeData, child: const _i4.RegisterPage());
     },
     ForgotPasswordPageRoute.name: (routeData) {
-      return _i11.MaterialPageX<dynamic>(routeData: routeData, child: const _i5.ForgotPasswordPage());
+      return _i11.MaterialPageX<dynamic>(
+          routeData: routeData, child: const _i5.ForgotPasswordPage());
     },
     AlbumListPageRoute.name: (routeData) {
-      return _i11.MaterialPageX<dynamic>(routeData: routeData, child: const _i6.AlbumListPage(), maintainState: false);
+      return _i11.MaterialPageX<dynamic>(
+          routeData: routeData,
+          child: const _i6.AlbumListPage(),
+          maintainState: false);
     },
     AssetListPageRoute.name: (routeData) {
       final args = routeData.argsAs<AssetListPageRouteArgs>();
-      return _i11.MaterialPageX<dynamic>(routeData: routeData, child: _i7.AssetListPage(album: args.album, key: args.key), maintainState: false);
+      return _i11.MaterialPageX<dynamic>(
+          routeData: routeData,
+          child: _i7.AssetListPage(album: args.album, key: args.key),
+          maintainState: false);
     },
     AssetCarouselPageRoute.name: (routeData) {
       final args = routeData.argsAs<AssetCarouselPageRouteArgs>();
       return _i11.MaterialPageX<dynamic>(
-          routeData: routeData, child: _i8.AssetCarouselPage(albumId: args.albumId, initialAssetId: args.initialAssetId, key: args.key), fullscreenDialog: true);
+          routeData: routeData,
+          child: _i8.AssetCarouselPage(
+              albumId: args.albumId,
+              initialAssetId: args.initialAssetId,
+              key: args.key),
+          fullscreenDialog: true);
     },
     AssetVideoPlayerPageRoute.name: (routeData) {
       final args = routeData.argsAs<AssetVideoPlayerPageRouteArgs>();
-      return _i11.MaterialPageX<dynamic>(routeData: routeData, child: _i9.AssetVideoPlayerPage(url: args.url, key: args.key), fullscreenDialog: true);
+      return _i11.MaterialPageX<dynamic>(
+          routeData: routeData,
+          child: _i9.AssetVideoPlayerPage(url: args.url, key: args.key),
+          fullscreenDialog: true);
     },
     MoveAssetsPageRoute.name: (routeData) {
       final args = routeData.argsAs<MoveAssetsPageRouteArgs>();
       return _i11.MaterialPageX<dynamic>(
-          routeData: routeData, child: _i10.MoveAssetsPage(sourceAlbumId: args.sourceAlbumId, assets: args.assetsToMove, copy: args.copy, key: args.key), fullscreenDialog: true);
+          routeData: routeData,
+          child: _i10.MoveAssetsPage(
+              sourceAlbumId: args.sourceAlbumId,
+              assets: args.assets,
+              copy: args.copy,
+              key: args.key),
+          fullscreenDialog: true);
     }
   };
 
@@ -75,11 +101,14 @@ class AppRouter extends _i11.RootStackRouter {
         _i11.RouteConfig(SettingsPageRoute.name, path: '/settings-page'),
         _i11.RouteConfig(LoginPageRoute.name, path: '/login-page'),
         _i11.RouteConfig(RegisterPageRoute.name, path: '/register-page'),
-        _i11.RouteConfig(ForgotPasswordPageRoute.name, path: '/forgot-password-page'),
+        _i11.RouteConfig(ForgotPasswordPageRoute.name,
+            path: '/forgot-password-page'),
         _i11.RouteConfig(AlbumListPageRoute.name, path: '/album-list-page'),
         _i11.RouteConfig(AssetListPageRoute.name, path: '/asset-list-page'),
-        _i11.RouteConfig(AssetCarouselPageRoute.name, path: '/asset-carousel-page'),
-        _i11.RouteConfig(AssetVideoPlayerPageRoute.name, path: '/asset-video-player-page'),
+        _i11.RouteConfig(AssetCarouselPageRoute.name,
+            path: '/asset-carousel-page'),
+        _i11.RouteConfig(AssetVideoPlayerPageRoute.name,
+            path: '/asset-video-player-page'),
         _i11.RouteConfig(MoveAssetsPageRoute.name, path: '/move-assets-page')
       ];
 }
@@ -95,7 +124,8 @@ class SplashPageRoute extends _i11.PageRouteInfo<void> {
 /// generated route for
 /// [_i2.SettingsPage]
 class SettingsPageRoute extends _i11.PageRouteInfo<void> {
-  const SettingsPageRoute() : super(SettingsPageRoute.name, path: '/settings-page');
+  const SettingsPageRoute()
+      : super(SettingsPageRoute.name, path: '/settings-page');
 
   static const String name = 'SettingsPageRoute';
 }
@@ -111,7 +141,8 @@ class LoginPageRoute extends _i11.PageRouteInfo<void> {
 /// generated route for
 /// [_i4.RegisterPage]
 class RegisterPageRoute extends _i11.PageRouteInfo<void> {
-  const RegisterPageRoute() : super(RegisterPageRoute.name, path: '/register-page');
+  const RegisterPageRoute()
+      : super(RegisterPageRoute.name, path: '/register-page');
 
   static const String name = 'RegisterPageRoute';
 }
@@ -119,7 +150,8 @@ class RegisterPageRoute extends _i11.PageRouteInfo<void> {
 /// generated route for
 /// [_i5.ForgotPasswordPage]
 class ForgotPasswordPageRoute extends _i11.PageRouteInfo<void> {
-  const ForgotPasswordPageRoute() : super(ForgotPasswordPageRoute.name, path: '/forgot-password-page');
+  const ForgotPasswordPageRoute()
+      : super(ForgotPasswordPageRoute.name, path: '/forgot-password-page');
 
   static const String name = 'ForgotPasswordPageRoute';
 }
@@ -127,7 +159,8 @@ class ForgotPasswordPageRoute extends _i11.PageRouteInfo<void> {
 /// generated route for
 /// [_i6.AlbumListPage]
 class AlbumListPageRoute extends _i11.PageRouteInfo<void> {
-  const AlbumListPageRoute() : super(AlbumListPageRoute.name, path: '/album-list-page');
+  const AlbumListPageRoute()
+      : super(AlbumListPageRoute.name, path: '/album-list-page');
 
   static const String name = 'AlbumListPageRoute';
 }
@@ -135,7 +168,10 @@ class AlbumListPageRoute extends _i11.PageRouteInfo<void> {
 /// generated route for
 /// [_i7.AssetListPage]
 class AssetListPageRoute extends _i11.PageRouteInfo<AssetListPageRouteArgs> {
-  AssetListPageRoute({required _i13.Album album, _i12.Key? key}) : super(AssetListPageRoute.name, path: '/asset-list-page', args: AssetListPageRouteArgs(album: album, key: key));
+  AssetListPageRoute({required _i13.Album album, _i12.Key? key})
+      : super(AssetListPageRoute.name,
+            path: '/asset-list-page',
+            args: AssetListPageRouteArgs(album: album, key: key));
 
   static const String name = 'AssetListPageRoute';
 }
@@ -155,15 +191,21 @@ class AssetListPageRouteArgs {
 
 /// generated route for
 /// [_i8.AssetCarouselPage]
-class AssetCarouselPageRoute extends _i11.PageRouteInfo<AssetCarouselPageRouteArgs> {
-  AssetCarouselPageRoute({required String albumId, required String initialAssetId, _i12.Key? key})
-      : super(AssetCarouselPageRoute.name, path: '/asset-carousel-page', args: AssetCarouselPageRouteArgs(albumId: albumId, initialAssetId: initialAssetId, key: key));
+class AssetCarouselPageRoute
+    extends _i11.PageRouteInfo<AssetCarouselPageRouteArgs> {
+  AssetCarouselPageRoute(
+      {required String albumId, required String initialAssetId, _i12.Key? key})
+      : super(AssetCarouselPageRoute.name,
+            path: '/asset-carousel-page',
+            args: AssetCarouselPageRouteArgs(
+                albumId: albumId, initialAssetId: initialAssetId, key: key));
 
   static const String name = 'AssetCarouselPageRoute';
 }
 
 class AssetCarouselPageRouteArgs {
-  const AssetCarouselPageRouteArgs({required this.albumId, required this.initialAssetId, this.key});
+  const AssetCarouselPageRouteArgs(
+      {required this.albumId, required this.initialAssetId, this.key});
 
   final String albumId;
 
@@ -179,9 +221,12 @@ class AssetCarouselPageRouteArgs {
 
 /// generated route for
 /// [_i9.AssetVideoPlayerPage]
-class AssetVideoPlayerPageRoute extends _i11.PageRouteInfo<AssetVideoPlayerPageRouteArgs> {
+class AssetVideoPlayerPageRoute
+    extends _i11.PageRouteInfo<AssetVideoPlayerPageRouteArgs> {
   AssetVideoPlayerPageRoute({required String url, _i12.Key? key})
-      : super(AssetVideoPlayerPageRoute.name, path: '/asset-video-player-page', args: AssetVideoPlayerPageRouteArgs(url: url, key: key));
+      : super(AssetVideoPlayerPageRoute.name,
+            path: '/asset-video-player-page',
+            args: AssetVideoPlayerPageRouteArgs(url: url, key: key));
 
   static const String name = 'AssetVideoPlayerPageRoute';
 }
@@ -202,18 +247,32 @@ class AssetVideoPlayerPageRouteArgs {
 /// generated route for
 /// [_i10.MoveAssetsPage]
 class MoveAssetsPageRoute extends _i11.PageRouteInfo<MoveAssetsPageRouteArgs> {
-  MoveAssetsPageRoute({required String sourceAlbumId, required List<_i14.Asset> assetsToMove, required bool copy, _i12.Key? key})
-      : super(MoveAssetsPageRoute.name, path: '/move-assets-page', args: MoveAssetsPageRouteArgs(sourceAlbumId: sourceAlbumId, assetsToMove: assetsToMove, copy: copy, key: key));
+  MoveAssetsPageRoute(
+      {required String sourceAlbumId,
+      required List<_i14.Asset> assets,
+      required bool copy,
+      _i12.Key? key})
+      : super(MoveAssetsPageRoute.name,
+            path: '/move-assets-page',
+            args: MoveAssetsPageRouteArgs(
+                sourceAlbumId: sourceAlbumId,
+                assets: assets,
+                copy: copy,
+                key: key));
 
   static const String name = 'MoveAssetsPageRoute';
 }
 
 class MoveAssetsPageRouteArgs {
-  const MoveAssetsPageRouteArgs({required this.sourceAlbumId, required this.assetsToMove, required this.copy, this.key});
+  const MoveAssetsPageRouteArgs(
+      {required this.sourceAlbumId,
+      required this.assets,
+      required this.copy,
+      this.key});
 
   final String sourceAlbumId;
 
-  final List<_i14.Asset> assetsToMove;
+  final List<_i14.Asset> assets;
 
   final bool copy;
 
@@ -221,6 +280,6 @@ class MoveAssetsPageRouteArgs {
 
   @override
   String toString() {
-    return 'MoveAssetsPageRouteArgs{sourceAlbumId: $sourceAlbumId, assetsToMove: $assetsToMove, copy: $copy, key: $key}';
+    return 'MoveAssetsPageRouteArgs{sourceAlbumId: $sourceAlbumId, assets: $assets, copy: $copy, key: $key}';
   }
 }
