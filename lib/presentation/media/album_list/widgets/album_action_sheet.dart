@@ -14,45 +14,48 @@ class AlbumActionSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomModalBottomSheet(actions: [
-      CustomModalBottomSheetAction(
-        text: "Rename",
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (_) {
-              return CustomInputAlert(
-                title: 'Rename album',
-                hintText: 'Enter a new name for this album',
-                onConfirm: (String newTitle) {
-                  BlocProvider.of<AlbumControllerBloc>(context).add(UpdateAlbum(album: album.copyWith(title: newTitle)));
-                  Navigator.pop(context);
-                },
-              );
-            },
-          );
-        },
-      ),
-      CustomModalBottomSheetAction(
-        text: "Delete",
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (_) {
-              return CustomAlertDialog(
-                title: 'Delete',
-                content: 'Are you sure you want to delete this album?',
-                onConfirm: () {
-                  BlocProvider.of<AlbumControllerBloc>(context).add(DeleteAlbum(id: album.id));
-                  Navigator.pop(context);
-                },
-                confirmIsDestructive: true,
-                confirmButtonText: 'Delete',
-              );
-            },
-          );
-        },
-      ),
-    ]);
+    return CustomModalBottomSheet(
+      title: album.title,
+      actions: [
+        CustomModalBottomSheetAction(
+          text: 'Rename',
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (_) {
+                return CustomInputAlert(
+                  title: 'Rename album',
+                  hintText: 'Enter a new name for this album',
+                  onConfirm: (String newTitle) {
+                    BlocProvider.of<AlbumControllerBloc>(context).add(UpdateAlbum(album: album.copyWith(title: newTitle)));
+                    Navigator.pop(context);
+                  },
+                );
+              },
+            );
+          },
+        ),
+        CustomModalBottomSheetAction(
+          text: "Delete",
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (_) {
+                return CustomAlertDialog(
+                  title: 'Delete',
+                  content: 'Are you sure you want to delete this album?',
+                  onConfirm: () {
+                    BlocProvider.of<AlbumControllerBloc>(context).add(DeleteAlbum(id: album.id));
+                    Navigator.pop(context);
+                  },
+                  confirmIsDestructive: true,
+                  confirmButtonText: 'Delete',
+                );
+              },
+            );
+          },
+        ),
+      ],
+    );
   }
 }

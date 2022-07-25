@@ -15,12 +15,13 @@ class CustomModalBottomSheetAction {
 }
 
 class CustomModalBottomSheet extends StatelessWidget {
+  final String title;
   final List<CustomModalBottomSheetAction> actions;
-  const CustomModalBottomSheet({required this.actions, Key? key}) : super(key: key);
+  const CustomModalBottomSheet({required this.actions, this.title = "", Key? key}) : super(key: key);
 
-  static void open({required context, required List<CustomModalBottomSheetAction> actions}) {
+  static void open({required context, String title = "", required List<CustomModalBottomSheetAction> actions}) {
     if (Platform.isIOS) {
-      showCupertinoModalPopup(context: context, builder: (_) => _getIOSContent(context, actions));
+      showCupertinoModalPopup(context: context, builder: (_) => _getIOSContent(context, title, actions));
     } else {
       showModalBottomSheet(context: context, builder: (_) => _getMaterialContent(context, actions));
     }
@@ -52,8 +53,9 @@ class CustomModalBottomSheet extends StatelessWidget {
     );
   }
 
-  static _getIOSContent(BuildContext context, List<CustomModalBottomSheetAction> actions) {
+  static _getIOSContent(BuildContext context, String title, List<CustomModalBottomSheetAction> actions) {
     return CupertinoActionSheet(
+      title: title.isNotEmpty ? Text(title) : null,
       cancelButton: CupertinoActionSheetAction(
         child: const Text('Cancel', style: TextStyle(color: CupertinoColors.destructiveRed, fontWeight: FontWeight.normal)),
         onPressed: () {
@@ -83,7 +85,7 @@ class CustomModalBottomSheet extends StatelessWidget {
         return _getMaterialContent(context, actions);
       },
       cupertino: (_, __) {
-        return _getIOSContent(context, actions);
+        return _getIOSContent(context, title, actions);
       },
     );
   }
