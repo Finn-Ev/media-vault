@@ -124,6 +124,8 @@ class AssetRepositoryImpl extends AssetRepository {
               );
         },
       ).catchError((e) => print("upload-error: " + e.toString()));
+      
+      File(path).delete();
 
       return right(unit);
     } on FirebaseException catch (error) {
