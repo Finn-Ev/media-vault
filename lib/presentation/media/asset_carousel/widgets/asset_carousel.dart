@@ -65,7 +65,9 @@ class AssetCarousel extends StatelessWidget {
             carouselController: carouselController,
             items: state.assets.map((asset) {
               if (asset.isVideo) {
-                return AssetVideoPreview(url: asset.url);
+                return AssetVideoPreview(
+                  asset: asset,
+                );
               }
               return CachedNetworkImage(
                 imageUrl: asset.url,

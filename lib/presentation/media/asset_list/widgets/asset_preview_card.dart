@@ -18,7 +18,7 @@ class AssetPreviewCard extends StatelessWidget {
 
   Future<String> _previewImagePath(isVideo) async {
     if (isVideo) {
-      return getThumbnail(asset.url);
+      return getThumbnail(asset);
     } else {
       return asset.url;
     }

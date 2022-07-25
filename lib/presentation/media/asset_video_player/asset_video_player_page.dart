@@ -32,7 +32,7 @@ class _AssetVideoPlayerPageState extends State<AssetVideoPlayerPage> {
   void createChewieController() {
     chewieController = ChewieController(
       videoPlayerController: videoPlayerController,
-      looping: true,
+      // looping: true,
       zoomAndPan: true,
       allowMuting: false,
       autoPlay: true,

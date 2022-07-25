@@ -25,7 +25,7 @@ class AlbumPreviewCard extends StatelessWidget {
 
     Future<String> _previewImagePath(Asset asset) async {
       if (asset.isVideo) {
-        return getThumbnail(asset.url);
+        return getThumbnail(asset);
       } else {
         return asset.url;
       }
