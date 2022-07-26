@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:media_vault/presentation/_widgets/loading_indicator.dart';
 import 'package:video_player/video_player.dart';
 
@@ -22,7 +25,7 @@ class _AssetVideoPlayerPageState extends State<AssetVideoPlayerPage> {
   }
 
   Future<void> initializePlayer() async {
-    videoPlayerController = VideoPlayerController.network(widget.url);
+    videoPlayerController = await getVideoController();
 
     await Future.wait([videoPlayerController.initialize()]);
     createChewieController();
@@ -39,6 +42,23 @@ class _AssetVideoPlayerPageState extends State<AssetVideoPlayerPage> {
       hideControlsTimer: const Duration(seconds: 2),
       playbackSpeeds: const [0.5, 1.0, 1.25, 1.5, 2.0],
     );
+  }
+
+  Future<VideoPlayerController> getVideoController() async {
+    final cacheManager = DefaultCacheManager();
+    final fileInfo = await DefaultCacheManager().getFileFromCache(widget.url);
+
+    if (fileInfo == null) {
+      print('[VideoControllerService]: No video in cache');
+      //
+      print('[VideoControllerService]: Saving video to cache');
+      unawaited(cacheManager.downloadFile(widget.url));
+
+      return VideoPlayerController.network(widget.url);
+    } else {
+      print('[VideoControllerService]: Loading video from cache');
+      return VideoPlayerController.file(fileInfo.file);
+    }
   }
 
   @override

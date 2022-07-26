@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:media_vault/domain/entities/media/asset.dart';
 import 'package:media_vault/presentation/_routes/routes.gr.dart';
@@ -10,25 +11,23 @@ class AssetVideoPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Stack(
-        children: [
-          PhotoView(imageProvider: NetworkImage(asset.thumbnailUrl)),
-          Container(
-            constraints: const BoxConstraints.expand(),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: Colors.black.withOpacity(0.5),
-            ),
-            child: Center(
-              child: GestureDetector(
-                onTap: () => AutoRouter.of(context).push(AssetVideoPlayerPageRoute(url: asset.url)),
-                child: Icon(size: 100, Icons.play_arrow_rounded),
-              ),
+    return Stack(
+      children: [
+        PhotoView(imageProvider: CachedNetworkImageProvider(asset.thumbnailUrl)),
+        Container(
+          constraints: const BoxConstraints.expand(),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: Colors.black.withOpacity(0.5),
+          ),
+          child: Center(
+            child: GestureDetector(
+              onTap: () => AutoRouter.of(context).push(AssetVideoPlayerPageRoute(url: asset.url)),
+              child: Icon(size: 100, Icons.play_arrow_rounded),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
