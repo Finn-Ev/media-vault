@@ -188,7 +188,7 @@ class AssetRepositoryImpl extends AssetRepository {
 
       await Dio().download(assetToExport.url, path);
 
-      if (assetToExport is Asset) {
+      if (assetToExport.isVideo) {
         await GallerySaver.saveVideo(path);
       } else {
         await GallerySaver.saveImage(path);
