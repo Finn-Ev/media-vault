@@ -6,14 +6,19 @@ import 'package:path_provider/path_provider.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 
 Future<String> getThumbnail(Asset asset) async {
-  // todo: extract a unique value-key from url and use it as cache key
   final cachedThumbnail = await DefaultCacheManager().getFileFromCache(asset.id);
 
+  // check if cached thumbnail exists
   if (cachedThumbnail != null) {
-    // print('cachedThumbnail: ${cachedThumbnail.originalUrl}');
-    return cachedThumbnail.originalUrl;
+    if (cachedThumbnail.validTill.millisecondsSinceEpoch - DateTime.now().millisecondsSinceEpoch > 0) {
+      // check if the cached file is still valid
+      return cachedThumbnail.originalUrl;
+    } else {
+      // other wise remove it from cache
+      DefaultCacheManager().removeFile(asset.id);
+    }
   }
-
+  print("getting thumbnail");
   final thumbnail = await VideoThumbnail.thumbnailFile(
     video: asset.url,
     thumbnailPath: (await getTemporaryDirectory()).path,
