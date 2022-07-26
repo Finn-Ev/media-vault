@@ -26,12 +26,18 @@ class AssetRepositoryImpl extends AssetRepository {
       final userDoc = await firestore.userDocument();
 
       // final file = await asset.file; // always jpg
-      final file = await asset.originFile; // original file ending
+      File? file = await asset.originFile; // original file ending
 
-      Asset customAssetEntity;
+      if (file == null) {
+        print('[AssetRepositoryImpl]: Origin-File is null');
+        file = await asset.file;
+      }
+
+      Asset newAsset;
 
       if (asset.duration > 0) {
-        customAssetEntity = Asset(
+        print('[AssetRepositoryImpl]: Generating thumbnail');
+        newAsset = Asset(
           id: const Uuid().v4(),
           url: "",
           thumbnailUrl: "",
@@ -41,7 +47,7 @@ class AssetRepositoryImpl extends AssetRepository {
           uploadedAt: DateTime.now(),
         );
       } else {
-        customAssetEntity = Asset(
+        newAsset = Asset(
           id: const Uuid().v4(),
           url: "",
           thumbnailUrl: "",
@@ -52,7 +58,7 @@ class AssetRepositoryImpl extends AssetRepository {
         );
       }
 
-      if (customAssetEntity.isVideo) {
+      if (newAsset.isVideo) {
         // if asset is a video, generate a thumbnail and save it to firebase storage
         final thumbnail = await VideoThumbnail.thumbnailFile(
           video: file!.path,
@@ -63,7 +69,7 @@ class AssetRepositoryImpl extends AssetRepository {
         await storage.ref(userDoc.id).child(const Uuid().v4()).putFile(File(thumbnail!)).then(
           (taskSnapshot) async {
             final thumbnailUrl = await taskSnapshot.ref.getDownloadURL();
-            customAssetEntity = customAssetEntity.copyWith(thumbnailUrl: thumbnailUrl);
+            newAsset = newAsset.copyWith(thumbnailUrl: thumbnailUrl);
           },
         ).catchError((e) => print("thumbnail upload-error: $e"));
       }
@@ -72,7 +78,7 @@ class AssetRepositoryImpl extends AssetRepository {
       await storage.ref(userDoc.id).child(const Uuid().v4()).putFile(file!).then(
         (taskSnapshot) async {
           final downloadUrl = await taskSnapshot.ref.getDownloadURL();
-          final assetModel = AssetModel.fromEntity(customAssetEntity.copyWith(url: downloadUrl));
+          final assetModel = AssetModel.fromEntity(newAsset.copyWith(url: downloadUrl));
           await userDoc.collection('albums/$albumId/assets').doc(assetModel.id).set(assetModel.toMap());
         },
       ).catchError((e) => print("upload-error: $e"));
