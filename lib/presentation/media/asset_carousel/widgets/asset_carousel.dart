@@ -68,18 +68,16 @@ class AssetCarousel extends StatelessWidget {
                 return AssetVideoPreview(
                   asset: asset,
                 );
+              } else {
+                return CachedNetworkImage(
+                  imageUrl: asset.url,
+                  imageBuilder: (context, imageProvider) => PhotoView(
+                    gestureDetectorBehavior: HitTestBehavior.opaque,
+                    imageProvider: imageProvider,
+                  ),
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                );
               }
-              return CachedNetworkImage(
-                imageUrl: asset.url,
-
-                imageBuilder: (context, imageProvider) => PhotoView(
-                  gestureDetectorBehavior: HitTestBehavior.opaque,
-                  // minScale: 0.2,
-                  imageProvider: imageProvider,
-                ),
-                // placeholder: (context, url) => const LoadingIndicator(),
-                errorWidget: (context, url, error) => const Icon(Icons.error),
-              );
             }).toList(),
             options: CarouselOptions(
               initialPage: initialIndex,

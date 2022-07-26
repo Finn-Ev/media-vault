@@ -4,10 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:media_vault/application/assets/asset_list/asset_list_bloc.dart';
-import 'package:media_vault/core/util/video_thumbnail.dart';
 import 'package:media_vault/domain/entities/media/asset.dart';
 import 'package:media_vault/presentation/_routes/routes.gr.dart';
-import 'package:media_vault/presentation/_widgets/loading_indicator.dart';
 
 class AssetPreviewCard extends StatelessWidget {
   final Asset asset;
@@ -15,14 +13,6 @@ class AssetPreviewCard extends StatelessWidget {
   final bool isSelected;
 
   const AssetPreviewCard({required this.asset, required this.albumId, required this.isSelected, Key? key}) : super(key: key);
-
-  Future<String> _previewImagePath(isVideo) async {
-    if (isVideo) {
-      return getThumbnail(asset);
-    } else {
-      return asset.url;
-    }
-  }
 
   String _durationString(int secDuration) {
     final duration = Duration(seconds: secDuration);
@@ -51,33 +41,14 @@ class AssetPreviewCard extends StatelessWidget {
           },
           child: Stack(
             children: [
-              FutureBuilder<String>(
-                future: _previewImagePath(asset.isVideo),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData && asset.isVideo) {
-                    return AspectRatio(
-                      aspectRatio: 1,
-                      child: Image.asset(
-                        snapshot.data!,
-                        fit: BoxFit.cover,
-                      ),
-                    );
-                  } else if (snapshot.hasData && !asset.isVideo) {
-                    return AspectRatio(
-                      aspectRatio: 1,
-                      child: CachedNetworkImage(
-                        imageUrl: asset.url,
-                        fit: BoxFit.cover,
-                        // placeholder: (context, url) => Container(),
-                        errorWidget: (context, url, error) => const Icon(Icons.error),
-                      ),
-                    );
-                  } else if (snapshot.hasError) {
-                    return const Center(child: Icon(Icons.videocam_off));
-                  } else {
-                    return const Center(child: LoadingIndicator());
-                  }
-                },
+              AspectRatio(
+                aspectRatio: 1,
+                child: CachedNetworkImage(
+                  imageUrl: asset.isVideo ? asset.thumbnailUrl : asset.url,
+                  fit: BoxFit.cover,
+                  // placeholder: (context, url) => Container(),
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                ),
               ),
               if (asset.isVideo) const Positioned(top: 0, left: 0, child: Icon(CupertinoIcons.video_camera_solid)),
               // if (asset.isVideo) Text(asset.duration.toString()),

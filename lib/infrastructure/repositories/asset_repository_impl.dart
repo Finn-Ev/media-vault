@@ -12,6 +12,7 @@ import 'package:media_vault/infrastructure/extensions/firebase_extensions.dart';
 import 'package:media_vault/infrastructure/models/asset_model.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
+import 'package:video_thumbnail/video_thumbnail.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart' as asset_picker;
 
 class AssetRepositoryImpl extends AssetRepository {
@@ -24,30 +25,61 @@ class AssetRepositoryImpl extends AssetRepository {
     try {
       final userDoc = await firestore.userDocument();
 
-      final customAssetEntity = Asset(
-        id: const Uuid().v4(),
-        url: "",
-        isVideo: asset.duration > 0,
-        duration: asset.duration,
-        createdAt: asset.createDateTime,
-        uploadedAt: DateTime.now(),
-      );
-
       // final file = await asset.file; // always jpg
       final file = await asset.originFile; // original file ending
 
+      Asset customAssetEntity;
+
+      if (asset.duration > 0) {
+        customAssetEntity = Asset(
+          id: const Uuid().v4(),
+          url: "",
+          thumbnailUrl: "",
+          isVideo: true,
+          duration: asset.duration,
+          createdAt: asset.createDateTime,
+          uploadedAt: DateTime.now(),
+        );
+      } else {
+        customAssetEntity = Asset(
+          id: const Uuid().v4(),
+          url: "",
+          thumbnailUrl: "",
+          isVideo: false,
+          duration: 0,
+          createdAt: asset.createDateTime,
+          uploadedAt: DateTime.now(),
+        );
+      }
+
+      if (customAssetEntity.isVideo) {
+        // if asset is a video, generate a thumbnail and save it to firebase storage
+        final thumbnail = await VideoThumbnail.thumbnailFile(
+          video: file!.path,
+          thumbnailPath: (await getTemporaryDirectory()).path,
+          imageFormat: ImageFormat.PNG,
+        );
+
+        await storage.ref(userDoc.id).child(const Uuid().v4()).putFile(File(thumbnail!)).then(
+          (taskSnapshot) async {
+            final thumbnailUrl = await taskSnapshot.ref.getDownloadURL();
+            customAssetEntity = customAssetEntity.copyWith(thumbnailUrl: thumbnailUrl);
+          },
+        ).catchError((e) => print("thumbnail upload-error: $e"));
+      }
+
+      // then we upload the video itself to firebase storage
       await storage.ref(userDoc.id).child(const Uuid().v4()).putFile(file!).then(
         (taskSnapshot) async {
           final downloadUrl = await taskSnapshot.ref.getDownloadURL();
           final assetModel = AssetModel.fromEntity(customAssetEntity.copyWith(url: downloadUrl));
           await userDoc.collection('albums/$albumId/assets').doc(assetModel.id).set(assetModel.toMap());
         },
-      ).catchError((e) => print("upload-error: " + e.toString()));
-      // .whenComplete(() => file.delete());
+      ).catchError((e) => print("upload-error: $e"));
 
       return right(unit);
     } on FirebaseException catch (error) {
-      print("upload-error: " + error.toString());
+      print("upload-error: $error");
       if (error.code == 'permission-denied' || error.code == 'PERMISSION_DENIED') {
         return left(InsufficientPermissions());
       }
@@ -66,7 +98,7 @@ class AssetRepositoryImpl extends AssetRepository {
 
       return right(unit);
     } on FirebaseException catch (error) {
-      print("delete-error: " + error.toString());
+      print("delete-error: $error");
       if (error.code == 'permission-denied' || error.code == 'PERMISSION_DENIED') {
         return left(InsufficientPermissions());
       }
@@ -89,7 +121,7 @@ class AssetRepositoryImpl extends AssetRepository {
 
       return right(unit);
     } on FirebaseException catch (error) {
-      print("delete-error: " + error.toString());
+      print("delete-error: $error");
       if (error.code == 'permission-denied' || error.code == 'PERMISSION_DENIED') {
         return left(InsufficientPermissions());
       }
@@ -123,13 +155,13 @@ class AssetRepositoryImpl extends AssetRepository {
                 assetModel.toMap(),
               );
         },
-      ).catchError((e) => print("upload-error: " + e.toString()));
-      
+      ).catchError((e) => print("upload-error: $e"));
+
       File(path).delete();
 
       return right(unit);
     } on FirebaseException catch (error) {
-      print("delete-error: " + error.toString());
+      print("delete-error: $error");
       if (error.code == 'permission-denied' || error.code == 'PERMISSION_DENIED') {
         return left(InsufficientPermissions());
       }
@@ -150,7 +182,7 @@ class AssetRepositoryImpl extends AssetRepository {
 
       await Dio().download(assetToExport.url, path);
 
-      if (assetToExport.isVideo) {
+      if (assetToExport is Asset) {
         await GallerySaver.saveVideo(path);
       } else {
         await GallerySaver.saveImage(path);
@@ -159,7 +191,7 @@ class AssetRepositoryImpl extends AssetRepository {
       File(path).delete();
       return right(unit);
     } catch (error) {
-      print("export-error: " + error.toString());
+      print("export-error: $error");
       return left(UnexpectedFailure());
     }
   }
@@ -174,7 +206,7 @@ class AssetRepositoryImpl extends AssetRepository {
         .map((snapshot) => right<MediaFailure, List<Asset>>(snapshot.docs.map((doc) => AssetModel.fromFirestore(doc).toEntity()).toList()))
         .handleError(
       (error) {
-        print("observer-error: " + error.toString());
+        print("observer-error: $error");
         if (error is FirebaseException) {
           if (error.code.contains('permission-denied') || error.code.contains("PERMISSION_DENIED")) {
             return left(InsufficientPermissions());

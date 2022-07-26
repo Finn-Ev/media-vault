@@ -5,9 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:media_vault/application/assets/observer/asset_observer_bloc.dart';
-import 'package:media_vault/core/util/video_thumbnail.dart';
 import 'package:media_vault/domain/entities/media/album.dart';
-import 'package:media_vault/domain/entities/media/asset.dart';
 import 'package:media_vault/presentation/_routes/routes.gr.dart';
 import 'package:media_vault/presentation/_widgets/loading_indicator.dart';
 import 'package:media_vault/presentation/media/album_list/widgets/album_action_sheet.dart';
@@ -22,14 +20,6 @@ class AlbumPreviewCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final assetObserverBloc = sl<AssetObserverBloc>()..add(ObserveAlbumAssets(albumId: album.id));
-
-    Future<String> _previewImagePath(Asset asset) async {
-      if (asset.isVideo) {
-        return getThumbnail(asset);
-      } else {
-        return asset.url;
-      }
-    }
 
     return BlocProvider(
       create: (context) => assetObserverBloc,
@@ -56,33 +46,15 @@ class AlbumPreviewCard extends StatelessWidget {
                             placeholder: (context, url) => const LoadingIndicator(),
                             errorWidget: (context, url, error) => const Icon(Icons.image),
                           )
-                        : FutureBuilder<String>(
-                            future: _previewImagePath(state.assets.first),
-                            builder: (context, snapshot) {
-                              if (snapshot.hasData && state.assets.first.isVideo) {
-                                return AspectRatio(
-                                  aspectRatio: 1,
-                                  child: Image.asset(
-                                    snapshot.data!,
-                                    fit: BoxFit.cover,
-                                  ),
-                                );
-                              } else if (snapshot.hasData && !state.assets.first.isVideo) {
-                                return AspectRatio(
-                                  aspectRatio: 1,
-                                  child: CachedNetworkImage(
-                                    imageUrl: snapshot.data!,
-                                    fit: BoxFit.cover,
-                                    // placeholder: (context, url) => const LoadingIndicator(),
-                                    errorWidget: (context, url, error) => const Icon(Icons.error),
-                                  ),
-                                );
-                              } else if (snapshot.hasError) {
-                                return const Center(child: Center(child: Icon(Icons.image)));
-                              } else {
-                                return const Center(child: LoadingIndicator());
-                              }
-                            }),
+                        : AspectRatio(
+                            aspectRatio: 1,
+                            child: CachedNetworkImage(
+                              imageUrl: state.assets.first.isVideo ? state.assets.first.thumbnailUrl : state.assets.first.url,
+                              fit: BoxFit.cover,
+                              // placeholder: (context, url) => const LoadingIndicator(),
+                              errorWidget: (context, url, error) => const Icon(Icons.error),
+                            ),
+                          ),
                   ),
                   const SizedBox(height: 4.0),
                   Row(
