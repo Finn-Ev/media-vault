@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/widgets.dart';
 import 'package:media_vault/core/failures/media_failures.dart';
 import 'package:media_vault/domain/entities/media/asset.dart';
 import 'package:media_vault/domain/repositories/asset_repository.dart';
@@ -15,15 +16,20 @@ class AssetControllerBloc extends Bloc<AssetControllerEvent, AssetControllerStat
     on<UploadAssets>((event, emit) async {
       emit(AssetControllerLoading());
 
+      var uploadedAssetIds = [];
+
       for (int i = 0; i < event.assets.length; i++) {
         final failureOrSuccess = await assetRepository.upload(event.assets[i], event.albumId);
         failureOrSuccess.fold(
           (failure) => emit(AssetControllerFailure(failure)),
-          (success) => emit(AssetControllerLoading(message: 'Uploading assets: ${i + 1}/${event.assets.length}')),
+          (success) {
+            uploadedAssetIds.add(event.assets[i].id);
+            emit(AssetControllerLoading(message: 'Uploading assets: ${i + 1}/${event.assets.length}'));
+          },
         );
       }
 
-      emit(AssetControllerLoaded());
+      emit(AssetControllerLoaded(action: AssetControllerLoadedActions.upload, payload: uploadedAssetIds));
     });
 
     on<DeleteAssets>((event, emit) async {
@@ -34,9 +40,11 @@ class AssetControllerBloc extends Bloc<AssetControllerEvent, AssetControllerStat
 
         failureOrSuccess.fold(
           (failure) => emit(AssetControllerFailure(failure)),
-          (success) => emit(AssetControllerLoaded()),
+          (success) => emit(AssetControllerLoading()),
         );
       }
+
+      emit(AssetControllerLoaded(action: AssetControllerLoadedActions.delete));
     });
 
     on<ExportAssets>((event, emit) async {
@@ -46,11 +54,11 @@ class AssetControllerBloc extends Bloc<AssetControllerEvent, AssetControllerStat
         final failureOrSuccess = await assetRepository.export(event.assetsToExport[i]);
         failureOrSuccess.fold(
           (failure) => emit(AssetControllerFailure(failure)),
-          (success) => emit(AssetControllerLoading()),
+          (success) {},
         );
       }
 
-      emit(AssetControllerLoaded());
+      emit(AssetControllerLoaded(action: AssetControllerLoadedActions.export));
     });
 
     on<MoveAssets>((event, emit) async {
@@ -64,7 +72,7 @@ class AssetControllerBloc extends Bloc<AssetControllerEvent, AssetControllerStat
         );
       }
 
-      emit(AssetControllerLoaded());
+      emit(AssetControllerLoaded(action: AssetControllerLoadedActions.move));
     });
 
     on<CopyAssets>((event, emit) async {
@@ -80,7 +88,9 @@ class AssetControllerBloc extends Bloc<AssetControllerEvent, AssetControllerStat
         );
       }
 
-      emit(AssetControllerLoaded());
+      emit(AssetControllerLoaded(action: AssetControllerLoadedActions.copy));
     });
+
+    on<ResetAssetController>((event, emit) => emit(AssetControllerInitial()));
   }
 }

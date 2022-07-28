@@ -41,3 +41,5 @@ class CopyAssets extends AssetControllerEvent {
 
   CopyAssets({required this.assetsToCopy, required this.destinationAlbumId});
 }
+
+class ResetAssetController extends AssetControllerEvent {}

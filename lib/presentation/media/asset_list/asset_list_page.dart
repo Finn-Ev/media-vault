@@ -1,16 +1,20 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:media_vault/application/assets/asset_list/asset_list_bloc.dart';
 import 'package:media_vault/application/assets/controller/asset_controller_bloc.dart';
 import 'package:media_vault/application/assets/observer/asset_observer_bloc.dart';
 import 'package:media_vault/application/auth/auth_core/auth_core_bloc.dart';
 import 'package:media_vault/domain/entities/media/album.dart';
 import 'package:media_vault/presentation/_routes/routes.gr.dart';
+import 'package:media_vault/presentation/_widgets/custom_alert_dialog.dart';
 import 'package:media_vault/presentation/_widgets/loading_indicator.dart';
-import 'package:media_vault/presentation/media/asset_list/widgets/add_assets_floating_button.dart';
 import 'package:media_vault/presentation/media/asset_list/widgets/asset_list.dart';
 import 'package:media_vault/presentation/media/asset_list/widgets/asset_list_app_bar_actions.dart';
+import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 import '../../../injection.dart';
 
@@ -41,6 +45,53 @@ class AssetListPage extends StatelessWidget {
         ],
         child: BlocBuilder<AssetControllerBloc, AssetControllerState>(
           builder: (context, state) {
+            if (state is AssetControllerLoaded) {
+              if (state.action == AssetControllerLoadedActions.export) {
+                SchedulerBinding.instance.addPostFrameCallback((_) {
+                  showPlatformDialog(
+                    context: context,
+                    builder: (_) {
+                      return CustomAlertDialog(
+                        title: 'Export successful',
+                        content: 'Do you want to delete the exported assets from Media-Vault?',
+                        onConfirm: () {
+                          BlocProvider.of<AssetControllerBloc>(context).add(
+                            DeleteAssets(
+                              albumId: album.id,
+                              assetsToDelete: BlocProvider.of<AssetListBloc>(context).state.selectedAssets,
+                            ),
+                          );
+                          BlocProvider.of<AssetListBloc>(context).add(DisableSelectMode());
+                          BlocProvider.of<AssetControllerBloc>(context).add(ResetAssetController());
+                          Navigator.pop(context);
+                        },
+                      );
+                    },
+                  );
+                });
+              }
+              if (state.action == AssetControllerLoadedActions.upload) {
+                final assetIds = List<String>.from(state.payload);
+
+                SchedulerBinding.instance.addPostFrameCallback((_) {
+                  showPlatformDialog(
+                    context: context,
+                    builder: (_) {
+                      return CustomAlertDialog(
+                        title: 'Delete uploaded assets?',
+                        content: 'Continue if you want to delete the uploaded assets from your device.',
+                        confirmButtonText: 'Continue',
+                        onConfirm: () {
+                          PhotoManager.editor.deleteWithIds(assetIds);
+                          BlocProvider.of<AssetControllerBloc>(context).add(ResetAssetController());
+                          Navigator.pop(context);
+                        },
+                      );
+                    },
+                  );
+                });
+              }
+            }
             final showUI = state is AssetControllerInitial || state is AssetControllerLoaded;
             return Scaffold(
               appBar: AppBar(
@@ -52,7 +103,6 @@ class AssetListPage extends StatelessWidget {
                     )
                 ],
               ),
-              floatingActionButton: showUI ? AddAssetsFloatingButton(albumId: album.id) : Container(),
               body: (state is AssetControllerLoading
                   ? Center(
                       child: Column(
@@ -64,7 +114,7 @@ class AssetListPage extends StatelessWidget {
                         Text(state.message),
                       ],
                     ))
-                  : AssetList(albumId: album.id.toString())),
+                  : AssetList(album: album)),
             );
           },
         ),
