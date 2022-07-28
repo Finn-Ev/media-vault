@@ -41,10 +41,9 @@ class AlbumPreviewCard extends StatelessWidget {
                   AspectRatio(
                     aspectRatio: 1,
                     child: state.assets.isEmpty
-                        ? CachedNetworkImage(
-                            imageUrl: "https://songline-marketing.de/wp-content/uploads/2021/08/image-placeholder.jpg",
-                            placeholder: (context, url) => const LoadingIndicator(),
-                            errorWidget: (context, url, error) => const Icon(Icons.image),
+                        ? Container(
+                            color: Colors.grey[850],
+                            child: const Center(child: Icon(size: 50, CupertinoIcons.photo)),
                           )
                         : AspectRatio(
                             aspectRatio: 1,
