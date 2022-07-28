@@ -21,7 +21,7 @@ class AssetControllerBloc extends Bloc<AssetControllerEvent, AssetControllerStat
       for (int i = 0; i < event.assets.length; i++) {
         final failureOrSuccess = await assetRepository.upload(event.assets[i], event.albumId);
         failureOrSuccess.fold(
-          (failure) => emit(AssetControllerFailure(failure)),
+          (failure) => emit(AssetControllerLoading(message: 'Error Uploading asset: ${i + 1}/${event.assets.length}')),
           (success) {
             uploadedAssetIds.add(event.assets[i].id);
             emit(AssetControllerLoading(message: 'Uploading assets: ${i + 1}/${event.assets.length}'));

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:media_vault/application/assets/asset_list/asset_list_bloc.dart';
+import 'package:media_vault/application/assets/controller/asset_controller_bloc.dart';
 import 'package:media_vault/application/assets/observer/asset_observer_bloc.dart';
 import 'package:media_vault/domain/entities/media/album.dart';
 import 'package:media_vault/presentation/_widgets/loading_indicator.dart';
@@ -18,6 +19,7 @@ class AssetList extends StatelessWidget {
     return WillPopScope(
       onWillPop: () async {
         BlocProvider.of<AssetListBloc>(context).add(DisableSelectMode());
+        BlocProvider.of<AssetControllerBloc>(context).add(ResetAssetController());
         return true;
       },
       child: BlocBuilder<AssetObserverBloc, AssetObserverState>(
@@ -48,10 +50,7 @@ class AssetList extends StatelessWidget {
                           }).toList(),
                         ),
                       ),
-                      AssetListBottomMenu(
-                        album: album,
-                        albumIsEmpty: false,
-                      )
+                      AssetListBottomMenu(album: album, albumIsEmpty: false)
                     ],
                   ),
                 );
@@ -79,7 +78,7 @@ class AssetList extends StatelessWidget {
                       ),
                     ),
                   ),
-                  AssetListBottomMenu(album: album, albumIsEmpty: assetObserverState.assets.isEmpty) // center content vertically
+                  AssetListBottomMenu(album: album, albumIsEmpty: true)
                 ],
               ),
             );

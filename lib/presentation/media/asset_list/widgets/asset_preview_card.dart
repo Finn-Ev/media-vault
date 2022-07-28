@@ -43,6 +43,11 @@ class AssetPreviewCard extends StatelessWidget {
             children: [
               AspectRatio(
                 aspectRatio: 1,
+                // child: ExtendedImage.network(
+                //   asset.url,
+                //   fit: BoxFit.cover,
+                //   cache: true,
+                // ),
                 child: CachedNetworkImage(
                   imageUrl: asset.isVideo ? asset.thumbnailUrl : asset.url,
                   fit: BoxFit.cover,

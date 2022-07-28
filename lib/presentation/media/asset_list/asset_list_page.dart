@@ -62,7 +62,6 @@ class AssetListPage extends StatelessWidget {
                             ),
                           );
                           BlocProvider.of<AssetListBloc>(context).add(DisableSelectMode());
-                          BlocProvider.of<AssetControllerBloc>(context).add(ResetAssetController());
                           Navigator.pop(context);
                         },
                       );
@@ -83,7 +82,6 @@ class AssetListPage extends StatelessWidget {
                         confirmButtonText: 'Continue',
                         onConfirm: () {
                           PhotoManager.editor.deleteWithIds(assetIds);
-                          BlocProvider.of<AssetControllerBloc>(context).add(ResetAssetController());
                           Navigator.pop(context);
                         },
                       );
