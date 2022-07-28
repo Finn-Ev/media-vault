@@ -34,7 +34,7 @@ class AssetListAppBarActions extends StatelessWidget {
                   ),
                 );
               } else {
-                return InkResponse(
+                return GestureDetector(
                   onTap: () {
                     assetListBloc.add(EnableSelectMode());
                   },
