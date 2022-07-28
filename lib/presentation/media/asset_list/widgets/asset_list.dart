@@ -48,27 +48,38 @@ class AssetList extends StatelessWidget {
                           }).toList(),
                         ),
                       ),
-                      AssetListBottomMenu(album: album)
+                      AssetListBottomMenu(
+                        album: album,
+                        albumIsEmpty: false,
+                      )
                     ],
                   ),
                 );
               },
             );
           } else if (assetObserverState is AssetObserverLoaded && assetObserverState.assets.isEmpty) {
-            return Center(
+            return SafeArea(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Icon(
-                    CupertinoIcons.photo,
-                    size: 50,
+                children: [
+                  Expanded(
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Icon(
+                            CupertinoIcons.photo,
+                            size: 50,
+                          ),
+                          SizedBox(height: 8),
+                          Text(
+                            'This album is empty',
+                            style: TextStyle(fontSize: 18),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                  SizedBox(height: 8),
-                  Text(
-                    'This album is empty',
-                    style: TextStyle(fontSize: 18),
-                  ),
-                  SizedBox(height: 75), // center content vertically
+                  AssetListBottomMenu(album: album, albumIsEmpty: assetObserverState.assets.isEmpty) // center content vertically
                 ],
               ),
             );

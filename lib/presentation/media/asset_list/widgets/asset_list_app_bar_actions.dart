@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:media_vault/application/assets/asset_list/asset_list_bloc.dart';
@@ -29,7 +28,10 @@ class AssetListAppBarActions extends StatelessWidget {
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [
-                      Text("Cancel"),
+                      Padding(
+                        padding: EdgeInsets.only(right: 12.0),
+                        child: Text("Cancel"),
+                      ),
                     ],
                   ),
                 );

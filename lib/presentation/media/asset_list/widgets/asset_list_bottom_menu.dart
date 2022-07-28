@@ -15,8 +15,9 @@ import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 class AssetListBottomMenu extends StatelessWidget {
   final Album album;
+  final bool albumIsEmpty;
 
-  const AssetListBottomMenu({required this.album, Key? key}) : super(key: key);
+  const AssetListBottomMenu({required this.album, Key? key, required this.albumIsEmpty}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +51,7 @@ class AssetListBottomMenu extends StatelessWidget {
     void _openModalSheetMenu({required selectedAssets}) {
       CustomModalBottomSheet.open(context: context, actions: [
         CustomModalBottomSheetAction(
-            text: 'Export assets to gallery',
+            text: 'Export to gallery',
             onPressed: () {
               Navigator.pop(context);
               BlocProvider.of<AssetControllerBloc>(context).add(ExportAssets(assetsToExport: selectedAssets));
@@ -96,53 +97,63 @@ class AssetListBottomMenu extends StatelessWidget {
 
     return BlocBuilder<AssetListBloc, AssetListState>(
       builder: (context, state) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
-          child: state.isSelectModeEnabled
-              ? Row(
-                  mainAxisAlignment: state.selectedAssets.isNotEmpty ? MainAxisAlignment.spaceBetween : MainAxisAlignment.center,
-                  children: [
-                    if (state.selectedAssets.isNotEmpty)
-                      GestureDetector(
+        return SizedBox(
+          height: 35,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
+            child: state.isSelectModeEnabled
+                ? Row(
+                    mainAxisAlignment: state.selectedAssets.isNotEmpty ? MainAxisAlignment.spaceBetween : MainAxisAlignment.center,
+                    children: [
+                      if (state.selectedAssets.isNotEmpty)
+                        GestureDetector(
                           onTap: () {
                             _openDeleteDialog(state.selectedAssets);
                           },
-                          child: const Icon(CupertinoIcons.delete)),
-                    Text("${state.selectedAssets.length.toString()} selected"),
-                    if (state.selectedAssets.isNotEmpty) GestureDetector(onTap: () => _openModalSheetMenu(selectedAssets: state.selectedAssets), child: Icon(CupertinoIcons.share)),
-                  ],
-                )
-              : Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        BlocProvider.of<AlbumControllerBloc>(context).add(UpdateAlbum(album: album.copyWith(sortDirection: album.sortDirection == "asc" ? "desc" : "asc")));
-                      },
-                      child: Row(
-                        children: const [
-                          Icon(Icons.sort),
-                          Text("Sort"),
-                        ],
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: _pickAssets,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.black,
-                          borderRadius: BorderRadius.circular(50),
+                          child: const Icon(CupertinoIcons.delete),
                         ),
-                        child: Row(
-                          children: [
-                            const Text("Import assets"),
-                            Icon(Icons.add),
-                          ],
+                      Text("${state.selectedAssets.length} selected"),
+                      if (state.selectedAssets.isNotEmpty)
+                        GestureDetector(onTap: () => _openModalSheetMenu(selectedAssets: state.selectedAssets), child: Icon(CupertinoIcons.share)),
+                    ],
+                  )
+                : Row(
+                    mainAxisAlignment: albumIsEmpty ? MainAxisAlignment.center : MainAxisAlignment.spaceBetween,
+                    children: [
+                      !albumIsEmpty
+                          ? GestureDetector(
+                              onTap: () {
+                                BlocProvider.of<AlbumControllerBloc>(context).add(UpdateAlbum(album: album.copyWith(sortDirection: album.sortDirection == "asc" ? "desc" : "asc")));
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Icon(CupertinoIcons.sort_down),
+                                  const SizedBox(width: 8),
+                                  Text(album.sortDirection == "asc" ? "Ascending" : "Descending"),
+                                ],
+                              ),
+                            )
+                          : Container(),
+                      GestureDetector(
+                        onTap: _pickAssets,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.black,
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [
+                              Text("Import assets"),
+                              Icon(Icons.add),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
+          ),
         );
       },
     );

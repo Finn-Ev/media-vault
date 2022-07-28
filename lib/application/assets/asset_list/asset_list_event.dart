@@ -16,3 +16,9 @@ class ToggleAsset extends AssetListEvent {
 
   ToggleAsset({required this.asset});
 }
+
+class AddAllAssets extends AssetListEvent {
+  final List<Asset> assets;
+
+  AddAllAssets({required this.assets});
+}

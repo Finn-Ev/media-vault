@@ -25,5 +25,9 @@ class AssetListBloc extends Bloc<AssetListEvent, AssetListState> {
         emit(state.copyWith(selectedAssets: state.selectedAssets + [event.asset]));
       }
     });
+
+    on<AddAllAssets>((event, emit) {
+      emit(state.copyWith(selectedAssets: event.assets));
+    });
   }
 }

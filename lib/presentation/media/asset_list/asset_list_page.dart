@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,6 +13,7 @@ import 'package:media_vault/presentation/_widgets/custom_alert_dialog.dart';
 import 'package:media_vault/presentation/_widgets/loading_indicator.dart';
 import 'package:media_vault/presentation/media/asset_list/widgets/asset_list.dart';
 import 'package:media_vault/presentation/media/asset_list/widgets/asset_list_app_bar_actions.dart';
+import 'package:media_vault/presentation/media/asset_list/widgets/asset_list_leading_action.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 import '../../../injection.dart';
@@ -44,9 +44,9 @@ class AssetListPage extends StatelessWidget {
           ),
         ],
         child: BlocBuilder<AssetControllerBloc, AssetControllerState>(
-          builder: (context, state) {
-            if (state is AssetControllerLoaded) {
-              if (state.action == AssetControllerLoadedActions.export) {
+          builder: (context, assetControllerState) {
+            if (assetControllerState is AssetControllerLoaded) {
+              if (assetControllerState.action == AssetControllerLoadedActions.export) {
                 SchedulerBinding.instance.addPostFrameCallback((_) {
                   showPlatformDialog(
                     context: context,
@@ -70,8 +70,8 @@ class AssetListPage extends StatelessWidget {
                   );
                 });
               }
-              if (state.action == AssetControllerLoadedActions.upload) {
-                final assetIds = List<String>.from(state.payload);
+              if (assetControllerState.action == AssetControllerLoadedActions.upload) {
+                final assetIds = List<String>.from(assetControllerState.payload);
 
                 SchedulerBinding.instance.addPostFrameCallback((_) {
                   showPlatformDialog(
@@ -92,29 +92,37 @@ class AssetListPage extends StatelessWidget {
                 });
               }
             }
-            final showUI = state is AssetControllerInitial || state is AssetControllerLoaded;
-            return Scaffold(
-              appBar: AppBar(
-                title: Text(album.title),
-                actions: [
-                  if (showUI)
-                    AssetListAppBarActions(
-                      albumId: album.id,
-                    )
-                ],
-              ),
-              body: (state is AssetControllerLoading
-                  ? Center(
-                      child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const LoadingIndicator(),
-                        const SizedBox(height: 10),
-                        Text(state.message),
-                      ],
-                    ))
-                  : AssetList(album: album)),
+
+            final showUI = assetControllerState is AssetControllerInitial || assetControllerState is AssetControllerLoaded;
+
+            return BlocBuilder<AssetListBloc, AssetListState>(
+              builder: (context, assetListState) {
+                return Scaffold(
+                  appBar: AppBar(
+                    title: Text(album.title),
+                    leadingWidth: assetListState.isSelectModeEnabled ? 90 : 56,
+                    leading: showUI && assetListState.isSelectModeEnabled ? AssetListLeadingAction(albumId: album.id) : null,
+                    actions: [
+                      if (showUI)
+                        AssetListAppBarActions(
+                          albumId: album.id,
+                        )
+                    ],
+                  ),
+                  body: (assetControllerState is AssetControllerLoading
+                      ? Center(
+                          child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const LoadingIndicator(),
+                            const SizedBox(height: 10),
+                            Text(assetControllerState.message),
+                          ],
+                        ))
+                      : AssetList(album: album)),
+                );
+              },
             );
           },
         ),
