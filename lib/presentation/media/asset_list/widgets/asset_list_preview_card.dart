@@ -7,13 +7,18 @@ import 'package:media_vault/application/assets/asset_list/asset_list_bloc.dart';
 import 'package:media_vault/domain/entities/media/asset.dart';
 import 'package:media_vault/presentation/_routes/routes.gr.dart';
 
-class AssetPreviewCard extends StatelessWidget {
+class AssetListPreviewCard extends StatefulWidget {
   final Asset asset;
   final String albumId;
   final bool isSelected;
 
-  const AssetPreviewCard({required this.asset, required this.albumId, required this.isSelected, Key? key}) : super(key: key);
+  const AssetListPreviewCard({required this.asset, required this.albumId, required this.isSelected, Key? key}) : super(key: key);
 
+  @override
+  State<AssetListPreviewCard> createState() => _AssetListPreviewCardState();
+}
+
+class _AssetListPreviewCardState extends State<AssetListPreviewCard> with AutomaticKeepAliveClientMixin {
   String _durationString(int secDuration) {
     final duration = Duration(seconds: secDuration);
     String minutes = (duration.inMinutes % 60).toString().padLeft(2, '0');
@@ -23,49 +28,51 @@ class AssetPreviewCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
+    precacheImage(
+      CachedNetworkImageProvider(widget.asset.isVideo ? widget.asset.thumbnailUrl : widget.asset.url),
+      context,
+    );
+
     return BlocBuilder<AssetListBloc, AssetListState>(
       builder: (context, state) {
         return GestureDetector(
           onTap: () {
             if (state.isSelectModeEnabled) {
-              BlocProvider.of<AssetListBloc>(context).add(ToggleAsset(asset: asset));
+              BlocProvider.of<AssetListBloc>(context).add(ToggleAsset(asset: widget.asset));
             } else {
-              AutoRouter.of(context).push(AssetCarouselPageRoute(albumId: albumId, initialAssetId: asset.id));
+              AutoRouter.of(context).push(AssetCarouselPageRoute(albumId: widget.albumId, initialAssetId: widget.asset.id));
             }
           },
           onLongPress: () {
             // activate select mode and set this asset as selected
             if (!state.isSelectModeEnabled) {
-              BlocProvider.of<AssetListBloc>(context).add(EnableSelectMode(initialSelectedAsset: asset));
+              BlocProvider.of<AssetListBloc>(context).add(EnableSelectMode(initialSelectedAsset: widget.asset));
             }
           },
           child: Stack(
             children: [
               AspectRatio(
                 aspectRatio: 1,
-                // child: ExtendedImage.network(
-                //   asset.url,
-                //   fit: BoxFit.cover,
-                //   cache: true,
-                // ),
                 child: CachedNetworkImage(
-                  imageUrl: asset.isVideo ? asset.thumbnailUrl : asset.url,
+                  imageUrl: widget.asset.isVideo ? widget.asset.thumbnailUrl : widget.asset.url,
                   fit: BoxFit.cover,
-                  // placeholder: (context, url) => Container(),
-                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                  // placeholder: (context, url) => LoadingIndicator(),
+                  // errorWidget: (context, url, error) => Icon(Icons.error),
                 ),
               ),
-              if (asset.isVideo) const Positioned(top: 0, left: 0, child: Icon(CupertinoIcons.video_camera_solid)),
+              if (widget.asset.isVideo) const Positioned(top: 0, left: 0, child: Icon(CupertinoIcons.video_camera_solid)),
               // if (asset.isVideo) Text(asset.duration.toString()),
-              if (asset.isVideo)
+              if (widget.asset.isVideo)
                 Positioned(
                   bottom: 0,
                   right: 0,
                   child: Text(
-                    _durationString(asset.duration),
+                    _durationString(widget.asset.duration),
                   ),
                 ),
-              if (isSelected)
+              if (widget.isSelected)
                 Container(
                   constraints: const BoxConstraints.expand(),
                   color: Colors.black.withOpacity(0.5),
@@ -77,4 +84,8 @@ class AssetPreviewCard extends StatelessWidget {
       },
     );
   }
+
+  // prevent reloading the cached image each time the widget comes back into view
+  @override
+  bool get wantKeepAlive => true;
 }
