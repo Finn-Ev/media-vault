@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -7,8 +6,8 @@ import 'package:media_vault/application/assets/asset_carousel/asset_carousel_blo
 import 'package:media_vault/application/assets/observer/asset_observer_bloc.dart';
 import 'package:media_vault/domain/entities/media/asset.dart';
 import 'package:media_vault/presentation/_widgets/loading_indicator.dart';
+import 'package:media_vault/presentation/media/asset_carousel/widgets/asset_carousel_image_view.dart';
 import 'package:media_vault/presentation/media/asset_carousel/widgets/asset_video_preview.dart';
-import 'package:photo_view/photo_view.dart';
 
 class AssetCarousel extends StatelessWidget {
   final String albumId;
@@ -69,25 +68,16 @@ class AssetCarousel extends StatelessWidget {
                   asset: asset,
                 );
               } else {
-                return CachedNetworkImage(
-                  imageUrl: asset.url,
-                  imageBuilder: (context, imageProvider) => PhotoView(
-                    gestureDetectorBehavior: HitTestBehavior.opaque,
-                    imageProvider: imageProvider,
-                  ),
-                  errorWidget: (context, url, error) => const Icon(Icons.error),
-                );
+                return AssetCarouselImageView(asset);
               }
             }).toList(),
             options: CarouselOptions(
-              initialPage: initialIndex,
-              height: MediaQuery.of(context).size.height,
-
-              onPageChanged: (index, __) {
-                assetCarouselBloc.add(CarouselIndexChanged(newIndex: index));
-              },
-              viewportFraction: 1.0, // to make the carousel full-width
-            ),
+                initialPage: initialIndex,
+                height: MediaQuery.of(context).size.height,
+                onPageChanged: (index, __) {
+                  assetCarouselBloc.add(CarouselIndexChanged(newIndex: index));
+                },
+                viewportFraction: 1.0),
           );
         } else {
           return const Center(child: LoadingIndicator());
