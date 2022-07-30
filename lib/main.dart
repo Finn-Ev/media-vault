@@ -18,7 +18,12 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await di.init();
+  // try {
   runApp(MyApp());
+  // }
+  // on NotAuthenticatedError {
+  //   router.AppRouter().replace(const router.LoginPageRoute());
+  // }
 }
 
 class MyApp extends StatelessWidget {
@@ -26,7 +31,6 @@ class MyApp extends StatelessWidget {
 
   MyApp({Key? key}) : super(key: key);
 
-  @override
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
