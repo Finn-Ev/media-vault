@@ -7,6 +7,8 @@ class CustomAlertDialog extends StatelessWidget {
   final Function onConfirm;
   final String confirmButtonText;
   final bool confirmIsDestructive;
+  final String cancelButtonText;
+  final Function? onCancel;
 
   const CustomAlertDialog({
     required this.title,
@@ -14,6 +16,8 @@ class CustomAlertDialog extends StatelessWidget {
     required this.onConfirm,
     this.confirmButtonText = "Confirm",
     this.confirmIsDestructive = false,
+    this.cancelButtonText = "Cancel",
+    this.onCancel,
     Key? key,
   }) : super(key: key);
 
@@ -26,7 +30,11 @@ class CustomAlertDialog extends StatelessWidget {
         PlatformDialogAction(
           child: const Text('Cancel'),
           onPressed: () {
-            Navigator.pop(context);
+            if (onCancel != null) {
+              onCancel!();
+            } else {
+              Navigator.pop(context);
+            }
           },
         ),
         PlatformDialogAction(

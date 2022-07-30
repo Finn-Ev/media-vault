@@ -7,7 +7,7 @@ import 'package:media_vault/injection.dart';
 
 extension FirebaseUserMapper on User {
   CustomUser toCustomUser() {
-    return CustomUser(id: uid);
+    return CustomUser(id: uid, email: email!);
   }
 }
 

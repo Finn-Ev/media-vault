@@ -7,4 +7,8 @@ class AuthCoreInitial extends AuthCoreState {}
 
 class AuthCoreUnauthenticated extends AuthCoreState {}
 
-class AuthStateAuthenticated extends AuthCoreState {}
+class AuthCoreAuthenticated extends AuthCoreState {
+  final CustomUser user;
+
+  AuthCoreAuthenticated({required this.user});
+}
