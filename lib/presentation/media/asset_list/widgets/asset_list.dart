@@ -7,7 +7,7 @@ import 'package:media_vault/application/assets/observer/asset_observer_bloc.dart
 import 'package:media_vault/domain/entities/media/album.dart';
 import 'package:media_vault/presentation/_widgets/loading_indicator.dart';
 import 'package:media_vault/presentation/media/asset_list/widgets/asset_list_bottom_menu.dart';
-import 'package:media_vault/presentation/media/asset_list/widgets/asset_preview_card.dart';
+import 'package:media_vault/presentation/media/asset_list/widgets/asset_list_preview_card.dart';
 
 class AssetList extends StatelessWidget {
   final Album album;
@@ -33,16 +33,22 @@ class AssetList extends StatelessWidget {
           } else if (assetObserverState is AssetObserverLoaded && assetObserverState.assets.isNotEmpty) {
             return BlocBuilder<AssetListBloc, AssetListState>(
               builder: (context, assetListState) {
+                if (assetListState.sortByOldestFirst) {
+                  assetObserverState.assets.sort((a, b) => a.uploadedAt.compareTo(b.uploadedAt));
+                } else {
+                  assetObserverState.assets.sort((a, b) => b.uploadedAt.compareTo(a.uploadedAt));
+                }
                 return SafeArea(
                   child: Column(
                     children: [
                       Expanded(
                         child: GridView.count(
+                          addAutomaticKeepAlives: true,
                           crossAxisSpacing: 6,
                           mainAxisSpacing: 6,
                           crossAxisCount: 3,
                           children: assetObserverState.assets.map((asset) {
-                            return AssetPreviewCard(
+                            return AssetListPreviewCard(
                               asset: asset,
                               albumId: album.id,
                               isSelected: assetListState.selectedAssets.contains(asset),

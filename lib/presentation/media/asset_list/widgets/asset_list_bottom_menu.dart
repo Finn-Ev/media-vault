@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'package:media_vault/application/albums/controller/album_controller_bloc.dart';
 import 'package:media_vault/application/assets/asset_list/asset_list_bloc.dart';
 import 'package:media_vault/application/assets/controller/asset_controller_bloc.dart';
 import 'package:media_vault/domain/entities/media/album.dart';
@@ -114,7 +113,7 @@ class AssetListBottomMenu extends StatelessWidget {
                         ),
                       Text("${state.selectedAssets.length} selected"),
                       if (state.selectedAssets.isNotEmpty)
-                        GestureDetector(onTap: () => _openModalSheetMenu(selectedAssets: state.selectedAssets), child: Icon(CupertinoIcons.share)),
+                        GestureDetector(onTap: () => _openModalSheetMenu(selectedAssets: state.selectedAssets), child: const Icon(CupertinoIcons.share)),
                     ],
                   )
                 : Row(
@@ -123,14 +122,18 @@ class AssetListBottomMenu extends StatelessWidget {
                       !albumIsEmpty
                           ? GestureDetector(
                               onTap: () {
-                                BlocProvider.of<AlbumControllerBloc>(context).add(UpdateAlbum(album: album.copyWith(sortDirection: album.sortDirection == "asc" ? "desc" : "asc")));
+                                BlocProvider.of<AssetListBloc>(context).add(ToggleSortDirection());
                               },
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  const Icon(CupertinoIcons.sort_down),
+                                  // Icon(state.sortByOldestFirst ? CupertinoIcons.sort_up_circle_fill : CupertinoIcons.sort_down_circle_fill),
+                                  const Icon(CupertinoIcons.sort_down_circle_fill),
                                   const SizedBox(width: 8),
-                                  Text(album.sortDirection == "asc" ? "Ascending" : "Descending"),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 3.0),
+                                    child: Text(state.sortByOldestFirst ? "Oldest first" : "Newest first"),
+                                  ),
                                 ],
                               ),
                             )
@@ -145,7 +148,10 @@ class AssetListBottomMenu extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: const [
-                              Text("Import assets"),
+                              Padding(
+                                padding: EdgeInsets.only(top: 3.0),
+                                child: Text("Import assets"),
+                              ),
                               Icon(Icons.add),
                             ],
                           ),

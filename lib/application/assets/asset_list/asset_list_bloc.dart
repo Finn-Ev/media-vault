@@ -26,6 +26,10 @@ class AssetListBloc extends Bloc<AssetListEvent, AssetListState> {
       }
     });
 
+    on<ToggleSortDirection>((event, emit) {
+      emit(state.copyWith(sortByOldestFirst: !state.sortByOldestFirst));
+    });
+
     on<AddAllAssets>((event, emit) {
       emit(state.copyWith(selectedAssets: event.assets));
     });

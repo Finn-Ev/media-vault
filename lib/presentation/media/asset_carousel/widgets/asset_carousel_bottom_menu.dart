@@ -52,7 +52,6 @@ class AssetCarouselBottomMenu extends StatelessWidget {
           CustomModalBottomSheetAction(
               text: "Export asset",
               onPressed: () {
-                print('export asset');
                 Navigator.pop(context);
                 showDialog(
                     context: context,
