@@ -83,30 +83,28 @@ class _AssetListState extends State<AssetList> {
             },
           );
         } else if (assetObserverState is AssetObserverLoaded && assetObserverState.assets.isEmpty) {
-          return SafeArea(
-            child: Column(
-              children: [
-                Expanded(
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(
-                          CupertinoIcons.photo,
-                          size: 50,
-                        ),
-                        SizedBox(height: 8),
-                        Text(
-                          'This album is empty',
-                          style: TextStyle(fontSize: 18),
-                        ),
-                      ],
-                    ),
+          return Column(
+            children: [
+              Expanded(
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Icon(
+                        CupertinoIcons.photo,
+                        size: 50,
+                      ),
+                      SizedBox(height: 8),
+                      Text(
+                        'This album is empty',
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ],
                   ),
                 ),
-                AssetListBottomMenu(album: widget.album, albumIsEmpty: true)
-              ],
-            ),
+              ),
+              AssetListBottomMenu(album: widget.album, albumIsEmpty: true)
+            ],
           );
         } else {
           return Container();

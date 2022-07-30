@@ -14,6 +14,7 @@ import 'package:media_vault/presentation/_widgets/loading_indicator.dart';
 import 'package:media_vault/presentation/media/asset_list/widgets/asset_list.dart';
 import 'package:media_vault/presentation/media/asset_list/widgets/asset_list_app_bar_actions.dart';
 import 'package:media_vault/presentation/media/asset_list/widgets/asset_list_leading_action.dart';
+import 'package:media_vault/presentation/media/asset_list/widgets/upload_assets_floating_button.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 import '../../../injection.dart';
@@ -122,6 +123,11 @@ class AssetListPage extends StatelessWidget {
                           )
                       ],
                     ),
+                    floatingActionButton: assetControllerState is! AssetControllerLoading
+                        ? UploadAssetsFloatingButton(
+                            albumId: album.id,
+                          )
+                        : null,
                     body: (assetControllerState is AssetControllerLoading
                         ? Center(
                             child: Column(
