@@ -37,6 +37,7 @@ class AssetCarouselBottomMenu extends StatelessWidget {
               if (lastAlbumAssetIsViewedInCarousel) {
                 BlocProvider.of<AssetCarouselBloc>(context).add(CarouselIndexChanged(newIndex: -1));
               }
+              Navigator.of(context).pop();
             },
             confirmIsDestructive: true,
             confirmButtonText: 'Delete',

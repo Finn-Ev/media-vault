@@ -15,6 +15,7 @@ class AlbumListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    BlocProvider.of<AuthCoreBloc>(context).add(AuthCheckRequested());
     final albumObserverBloc = sl<AlbumObserverBloc>()..add(AlbumsObserveAll());
 
     return MultiBlocProvider(
@@ -36,8 +37,8 @@ class AlbumListPage extends StatelessWidget {
             leading: IconButton(
               icon: const Icon(Icons.settings),
               onPressed: () {
-                BlocProvider.of<AuthCoreBloc>(context).add(SignOutButtonPressed());
-                // AutoRouter.of(context).push(const SettingsPageRoute());
+                // BlocProvider.of<AuthCoreBloc>(context).add(SignOutButtonPressed());
+                AutoRouter.of(context).push(const SettingsPageRoute());
               },
             ),
             title: const Text('My Albums'),

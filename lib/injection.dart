@@ -48,5 +48,4 @@ Future<void> init() async {
   sl.registerFactory(() => AssetCarouselBloc());
   // repositories
   sl.registerLazySingleton<AssetRepository>(() => AssetRepositoryImpl(firestore: sl(), storage: sl()));
-  // external
 }

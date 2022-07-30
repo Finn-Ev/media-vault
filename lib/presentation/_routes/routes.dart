@@ -27,8 +27,11 @@ import 'package:media_vault/presentation/other/splash/splash_page.dart';
     maintainState: false, // to close the streams when navigating away from the page
   ),
   AutoRoute(page: AssetListPage, maintainState: false),
-  AutoRoute(page: AssetCarouselPage, fullscreenDialog: true),
+  AutoRoute(page: AssetCarouselPage, fullscreenDialog: false),
   AutoRoute(page: AssetVideoPlayerPage, fullscreenDialog: true),
-  AutoRoute(page: MoveAssetsPage, fullscreenDialog: true),
+  AutoRoute(
+    page: MoveAssetsPage,
+    fullscreenDialog: true,
+  ),
 ])
 class $AppRouter {}

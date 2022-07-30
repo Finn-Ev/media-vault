@@ -17,14 +17,10 @@ class ToggleAsset extends AssetListEvent {
   ToggleAsset({required this.asset});
 }
 
-class ToggleSortDirection extends AssetListEvent {}
-
 class AddAllAssets extends AssetListEvent {
   final List<Asset> assets;
 
   AddAllAssets({required this.assets});
 }
-
-class StartedLoadingCachedImages extends AssetListEvent {}
 
 class ResetAssetList extends AssetListEvent {}

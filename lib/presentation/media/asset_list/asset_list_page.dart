@@ -27,102 +27,118 @@ class AssetListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final assetObserverBloc = sl<AssetObserverBloc>()..add(ObserveAlbumAssets(albumId: album.id));
 
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<AssetObserverBloc>(
-          create: (context) => assetObserverBloc,
-        ),
-      ],
-      child: MultiBlocListener(
-        listeners: [
-          BlocListener<AuthCoreBloc, AuthCoreState>(
-            listener: (context, state) {
-              if (state is AuthCoreUnauthenticated) {
-                AutoRouter.of(context).replace(const LoginPageRoute());
-              }
-            },
+    resetAssetListPage() {
+      BlocProvider.of<AssetListBloc>(context).add(ResetAssetList());
+      BlocProvider.of<AssetControllerBloc>(context).add(ResetAssetController());
+    }
+
+    return WillPopScope(
+      onWillPop: () async {
+        resetAssetListPage();
+        return true;
+      },
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider<AssetObserverBloc>(
+            create: (context) => assetObserverBloc,
           ),
         ],
-        child: BlocBuilder<AssetControllerBloc, AssetControllerState>(
-          builder: (context, assetControllerState) {
-            if (assetControllerState is AssetControllerLoaded) {
-              if (assetControllerState.action == AssetControllerLoadedActions.export) {
-                SchedulerBinding.instance.addPostFrameCallback((_) {
-                  showPlatformDialog(
-                    context: context,
-                    builder: (_) {
-                      return CustomAlertDialog(
-                        title: 'Export successful',
-                        content: 'Do you want to delete the exported assets from Media-Vault?',
-                        onConfirm: () {
-                          BlocProvider.of<AssetControllerBloc>(context).add(
-                            DeleteAssets(
-                              albumId: album.id,
-                              assetsToDelete: BlocProvider.of<AssetListBloc>(context).state.selectedAssets,
-                            ),
-                          );
-                          BlocProvider.of<AssetListBloc>(context).add(DisableSelectMode());
-                          Navigator.pop(context);
-                        },
-                      );
-                    },
-                  );
-                });
-              }
-              if (assetControllerState.action == AssetControllerLoadedActions.upload) {
-                final assetIds = List<String>.from(assetControllerState.payload);
-
-                SchedulerBinding.instance.addPostFrameCallback((_) {
-                  showPlatformDialog(
-                    context: context,
-                    builder: (_) {
-                      return CustomAlertDialog(
-                        title: 'Delete uploaded assets?',
-                        content: 'Continue if you want to delete the uploaded assets from your device.',
-                        confirmButtonText: 'Continue',
-                        onConfirm: () {
-                          PhotoManager.editor.deleteWithIds(assetIds);
-                          Navigator.pop(context);
-                        },
-                      );
-                    },
-                  );
-                });
-              }
-            }
-
-            final showUI = assetControllerState is AssetControllerInitial || assetControllerState is AssetControllerLoaded;
-
-            return BlocBuilder<AssetListBloc, AssetListState>(
-              builder: (context, assetListState) {
-                return Scaffold(
-                  appBar: AppBar(
-                    title: Text(album.title),
-                    leadingWidth: assetListState.isSelectModeEnabled ? 90 : 56,
-                    leading: showUI && assetListState.isSelectModeEnabled ? AssetListLeadingAction(albumId: album.id) : null,
-                    actions: [
-                      if (showUI)
-                        AssetListAppBarActions(
-                          albumId: album.id,
-                        )
-                    ],
-                  ),
-                  body: (assetControllerState is AssetControllerLoading
-                      ? Center(
-                          child: Column(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const LoadingIndicator(),
-                            const SizedBox(height: 10),
-                            Text(assetControllerState.message),
-                          ],
-                        ))
-                      : AssetList(album: album)),
-                );
+        child: MultiBlocListener(
+          listeners: [
+            BlocListener<AuthCoreBloc, AuthCoreState>(
+              listener: (context, state) {
+                if (state is AuthCoreUnauthenticated) {
+                  AutoRouter.of(context).replace(const LoginPageRoute());
+                }
               },
-            );
-          },
+            ),
+          ],
+          child: BlocBuilder<AssetControllerBloc, AssetControllerState>(
+            builder: (context, assetControllerState) {
+              if (assetControllerState is AssetControllerLoaded) {
+                if (assetControllerState.action == AssetControllerLoadedActions.export) {
+                  SchedulerBinding.instance.addPostFrameCallback((_) {
+                    showPlatformDialog(
+                      context: context,
+                      builder: (_) {
+                        return CustomAlertDialog(
+                          title: 'Export successful',
+                          content: 'Do you want to delete the exported assets from Media-Vault?',
+                          onConfirm: () {
+                            BlocProvider.of<AssetControllerBloc>(context).add(
+                              DeleteAssets(
+                                albumId: album.id,
+                                assetsToDelete: BlocProvider.of<AssetListBloc>(context).state.selectedAssets,
+                              ),
+                            );
+                            BlocProvider.of<AssetListBloc>(context).add(DisableSelectMode());
+                            Navigator.pop(context);
+                          },
+                        );
+                      },
+                    );
+                  });
+                }
+                if (assetControllerState.action == AssetControllerLoadedActions.upload) {
+                  final assetIds = List<String>.from(assetControllerState.payload);
+
+                  SchedulerBinding.instance.addPostFrameCallback((_) {
+                    showPlatformDialog(
+                      context: context,
+                      builder: (_) {
+                        return CustomAlertDialog(
+                          title: 'Delete uploaded assets?',
+                          content: 'Continue if you want to delete the uploaded assets from your device.',
+                          confirmButtonText: 'Continue',
+                          onConfirm: () {
+                            PhotoManager.editor.deleteWithIds(assetIds);
+                            Navigator.pop(context);
+                            resetAssetListPage();
+                          },
+                          onCancel: () {
+                            Navigator.pop(context);
+                            resetAssetListPage();
+                          },
+                        );
+                      },
+                    );
+                  });
+                }
+              }
+
+              // final showUI = assetControllerState is AssetControllerInitial || assetControllerState is AssetControllerLoaded;
+
+              return BlocBuilder<AssetListBloc, AssetListState>(
+                builder: (context, assetListState) {
+                  return Scaffold(
+                    appBar: AppBar(
+                      title: Text(album.title),
+                      leadingWidth: assetListState.isSelectModeEnabled ? 90 : 56,
+                      leading: assetControllerState is! AssetControllerLoading && assetListState.isSelectModeEnabled ? AssetListLeadingAction(albumId: album.id) : null,
+                      actions: [
+                        if (assetControllerState is! AssetControllerLoading)
+                          AssetListAppBarActions(
+                            albumId: album.id,
+                          )
+                      ],
+                    ),
+                    body: (assetControllerState is AssetControllerLoading
+                        ? Center(
+                            child: Column(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const LoadingIndicator(),
+                              const SizedBox(height: 10),
+                              Text(assetControllerState.message),
+                            ],
+                          ))
+                        : AssetList(album: album)),
+                  );
+                },
+              );
+            },
+          ),
         ),
       ),
     );

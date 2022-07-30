@@ -72,8 +72,7 @@ class AppRouter extends _i11.RootStackRouter {
           child: _i8.AssetCarouselPage(
               albumId: args.albumId,
               initialAssetId: args.initialAssetId,
-              key: args.key),
-          fullscreenDialog: true);
+              key: args.key));
     },
     AssetVideoPlayerPageRoute.name: (routeData) {
       final args = routeData.argsAs<AssetVideoPlayerPageRouteArgs>();

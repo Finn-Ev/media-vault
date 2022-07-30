@@ -117,27 +117,8 @@ class AssetListBottomMenu extends StatelessWidget {
                     ],
                   )
                 : Row(
-                    mainAxisAlignment: albumIsEmpty ? MainAxisAlignment.center : MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      !albumIsEmpty
-                          ? GestureDetector(
-                              onTap: () {
-                                BlocProvider.of<AssetListBloc>(context).add(ToggleSortDirection());
-                              },
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  // Icon(state.sortByOldestFirst ? CupertinoIcons.sort_up_circle_fill : CupertinoIcons.sort_down_circle_fill),
-                                  const Icon(CupertinoIcons.sort_down_circle_fill),
-                                  const SizedBox(width: 8),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 3.0),
-                                    child: Text(state.sortByOldestFirst ? "Oldest first" : "Newest first"),
-                                  ),
-                                ],
-                              ),
-                            )
-                          : Container(),
                       GestureDetector(
                         onTap: _pickAssets,
                         child: Container(
@@ -150,9 +131,12 @@ class AssetListBottomMenu extends StatelessWidget {
                             children: const [
                               Padding(
                                 padding: EdgeInsets.only(top: 3.0),
-                                child: Text("Import assets"),
+                                child: Text("Upload assets"),
                               ),
-                              Icon(Icons.add),
+                              Icon(
+                                Icons.add,
+                                size: 24,
+                              ),
                             ],
                           ),
                         ),
