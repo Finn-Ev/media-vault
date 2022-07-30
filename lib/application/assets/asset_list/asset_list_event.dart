@@ -24,3 +24,7 @@ class AddAllAssets extends AssetListEvent {
 
   AddAllAssets({required this.assets});
 }
+
+class StartedLoadingCachedImages extends AssetListEvent {}
+
+class ResetAssetList extends AssetListEvent {}

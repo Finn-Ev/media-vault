@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,16 +11,34 @@ import 'package:media_vault/presentation/_widgets/loading_indicator.dart';
 import 'package:media_vault/presentation/media/asset_list/widgets/asset_list_bottom_menu.dart';
 import 'package:media_vault/presentation/media/asset_list/widgets/asset_list_preview_card.dart';
 
-class AssetList extends StatelessWidget {
+class AssetList extends StatefulWidget {
   final Album album;
 
   const AssetList({required this.album, Key? key}) : super(key: key);
 
   @override
+  State<AssetList> createState() => _AssetListState();
+}
+
+class _AssetListState extends State<AssetList> {
+  bool cachedImagesHaveBeenLoaded = false;
+
+  // it takes around 1 second to load the cached images
+  void startLoadingCachedImages() {
+    Timer(const Duration(milliseconds: 1000), () {
+      setState(() {
+        cachedImagesHaveBeenLoaded = true;
+      });
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final themeData = Theme.of(context);
     return WillPopScope(
       onWillPop: () async {
-        BlocProvider.of<AssetListBloc>(context).add(DisableSelectMode());
+        BlocProvider.of<AssetListBloc>(context).add(ResetAssetList());
+
         BlocProvider.of<AssetControllerBloc>(context).add(ResetAssetController());
         return true;
       },
@@ -33,30 +53,44 @@ class AssetList extends StatelessWidget {
           } else if (assetObserverState is AssetObserverLoaded && assetObserverState.assets.isNotEmpty) {
             return BlocBuilder<AssetListBloc, AssetListState>(
               builder: (context, assetListState) {
+                if (!cachedImagesHaveBeenLoaded) startLoadingCachedImages();
+                // BlocProvider.of<AssetListBloc>(context).add(StartedLoadingCachedImages());
                 if (assetListState.sortByOldestFirst) {
                   assetObserverState.assets.sort((a, b) => a.uploadedAt.compareTo(b.uploadedAt));
                 } else {
                   assetObserverState.assets.sort((a, b) => b.uploadedAt.compareTo(a.uploadedAt));
                 }
                 return SafeArea(
-                  child: Column(
+                  child: Stack(
                     children: [
-                      Expanded(
-                        child: GridView.count(
-                          addAutomaticKeepAlives: true,
-                          crossAxisSpacing: 6,
-                          mainAxisSpacing: 6,
-                          crossAxisCount: 3,
-                          children: assetObserverState.assets.map((asset) {
-                            return AssetListPreviewCard(
-                              asset: asset,
-                              albumId: album.id,
-                              isSelected: assetListState.selectedAssets.contains(asset),
-                            );
-                          }).toList(),
-                        ),
+                      Column(
+                        children: [
+                          Expanded(
+                            child: GridView.count(
+                              addAutomaticKeepAlives: true,
+                              crossAxisSpacing: 6,
+                              mainAxisSpacing: 6,
+                              crossAxisCount: 3,
+                              children: assetObserverState.assets.map((asset) {
+                                return AssetListPreviewCard(
+                                  asset: asset,
+                                  albumId: widget.album.id,
+                                  isSelected: assetListState.selectedAssets.contains(asset),
+                                );
+                              }).toList(),
+                            ),
+                          ),
+                          AssetListBottomMenu(album: widget.album, albumIsEmpty: false)
+                        ],
                       ),
-                      AssetListBottomMenu(album: album, albumIsEmpty: false)
+                      if (!cachedImagesHaveBeenLoaded)
+                        Container(
+                          color: themeData.scaffoldBackgroundColor,
+                          constraints: const BoxConstraints.expand(),
+                          child: const Center(
+                            child: LoadingIndicator(),
+                          ),
+                        )
                     ],
                   ),
                 );
@@ -84,7 +118,7 @@ class AssetList extends StatelessWidget {
                       ),
                     ),
                   ),
-                  AssetListBottomMenu(album: album, albumIsEmpty: true)
+                  AssetListBottomMenu(album: widget.album, albumIsEmpty: true)
                 ],
               ),
             );

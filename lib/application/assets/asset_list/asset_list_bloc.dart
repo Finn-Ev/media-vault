@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:media_vault/domain/entities/media/asset.dart';
 import 'package:meta/meta.dart';
@@ -6,7 +8,7 @@ part 'asset_list_event.dart';
 part 'asset_list_state.dart';
 
 class AssetListBloc extends Bloc<AssetListEvent, AssetListState> {
-  AssetListBloc() : super(const AssetListState(isSelectModeEnabled: false, selectedAssets: [])) {
+  AssetListBloc() : super(const AssetListState()) {
     on<EnableSelectMode>((event, emit) {
       emit(state.copyWith(
         isSelectModeEnabled: true,
@@ -32,6 +34,19 @@ class AssetListBloc extends Bloc<AssetListEvent, AssetListState> {
 
     on<AddAllAssets>((event, emit) {
       emit(state.copyWith(selectedAssets: event.assets));
+    });
+
+    on<StartedLoadingCachedImages>((event, emit) async {
+      if (!state.cachedImagesHaveBeenLoaded) {
+        print('Loading cached images...');
+        await Future.delayed(const Duration(milliseconds: 1000), () {
+          emit(state.copyWith(cachedImagesHaveBeenLoaded: true));
+        });
+      }
+    });
+
+    on<ResetAssetList>((event, emit) {
+      emit(const AssetListState());
     });
   }
 }
