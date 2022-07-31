@@ -1,22 +1,21 @@
 import 'dart:async';
 
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:media_vault/application/assets/asset_carousel/asset_carousel_bloc.dart';
-import 'package:media_vault/application/assets/observer/asset_observer_bloc.dart';
 import 'package:media_vault/domain/entities/media/asset.dart';
-import 'package:media_vault/presentation/_widgets/loading_indicator.dart';
 import 'package:media_vault/presentation/_widgets/loading_overlay.dart';
 import 'package:media_vault/presentation/media/asset_carousel/widgets/asset_carousel_image_view.dart';
 import 'package:media_vault/presentation/media/asset_carousel/widgets/asset_video_preview.dart';
+import 'package:photo_view/photo_view.dart';
+import 'package:photo_view/photo_view_gallery.dart';
 
 class AssetCarousel extends StatefulWidget {
   final String albumId;
-  final String initialAssetId;
+  final List<Asset> assets;
+  final int initialIndex;
 
-  const AssetCarousel({required this.albumId, required this.initialAssetId, Key? key}) : super(key: key);
+  const AssetCarousel({required this.albumId, required this.initialIndex, required this.assets, Key? key}) : super(key: key);
 
   @override
   State<AssetCarousel> createState() => _AssetCarouselState();
@@ -27,11 +26,13 @@ class _AssetCarouselState extends State<AssetCarousel> {
   // screen at once for a short amount of time, thus the cached-images get loaded.
   // When combining this with the keepAliveMixin of each carousel image, all the cached-images
   // will stay loaded and don't fade in every time the user through the carousel
-  double viewportFraction = 0.01;
+  // double viewportFraction = 0.01;
+  double viewportFraction = 1;
 
   @override
   void initState() {
     super.initState();
+    BlocProvider.of<AssetCarouselBloc>(context).add(InitCarouselIndex(initialCarouselIndex: widget.initialIndex, carouselItemCount: widget.assets.length));
     Timer(const Duration(milliseconds: 1000), () {
       setState(() {
         viewportFraction = 1;
@@ -43,77 +44,35 @@ class _AssetCarouselState extends State<AssetCarousel> {
   Widget build(BuildContext context) {
     final assetCarouselBloc = BlocProvider.of<AssetCarouselBloc>(context);
 
-    final carouselController = CarouselController();
-    int initialIndex;
+    final PageController carouselController = PageController(
+      initialPage: widget.initialIndex,
+      viewportFraction: viewportFraction,
+    );
 
-    return BlocConsumer<AssetObserverBloc, AssetObserverState>(
-      listenWhen: (previous, current) {
-        // detect it when an asset of the album is deleted while the carousel is open
-        if (previous is AssetObserverLoaded && current is AssetObserverLoaded) {
-          return previous.assets.length != current.assets.length;
-        }
-        return false;
-      },
-      listener: (context, state) {
-        if (state is AssetObserverLoaded) {
-          // update the carouselItemCount, when an asset of the album is deleted while the carousel is open
-          assetCarouselBloc.add(CarouselItemCountChanged(newCount: state.assets.length));
-        }
-      },
-      builder: (context, state) {
-        if (state is AssetObserverLoaded) {
-          // firstWhereOrNull is necessary, because the initial asset might not be in the list of assets anymore
-          // e.g. when the user deletes the initial asset while the carousel is open
-          final Asset? initialAsset = state.assets.firstWhereOrNull((asset) => asset.id == widget.initialAssetId);
-
-          if (initialAsset != null) {
-            initialIndex = state.assets.indexOf(initialAsset);
-
-            carouselController.onReady.then(
-              (_) => {
-                assetCarouselBloc.add(
-                  InitCarouselIndex(
-                    initialCarouselIndex: initialIndex,
-                    carouselItemCount: state.assets.length,
-                  ),
-                ),
-                carouselController.jumpToPage(initialIndex)
-              },
+    return Stack(
+      children: [
+        PhotoViewGallery.builder(
+          itemCount: widget.assets.length,
+          builder: (context, index) {
+            final asset = widget.assets[index];
+            return PhotoViewGalleryPageOptions.customChild(
+              // gestureDetectorBehavior: HitTestBehavior.deferToChild,
+              child: asset.isVideo ? AssetVideoPreview(asset: asset) : AssetCarouselImageView(asset),
+              initialScale: PhotoViewComputedScale.contained,
+              minScale: PhotoViewComputedScale.contained * 0.8,
+              maxScale: PhotoViewComputedScale.contained * 4,
+              heroAttributes: PhotoViewHeroAttributes(tag: asset.id),
             );
-          } else {
-            initialIndex = 0;
-          }
-
-          return Stack(
-            children: [
-              CarouselSlider(
-                carouselController: carouselController,
-                items: state.assets.map((asset) {
-                  if (asset.isVideo) {
-                    return AssetVideoPreview(
-                      asset: asset,
-                    );
-                  } else {
-                    return AssetCarouselImageView(asset);
-                  }
-                }).toList(),
-                options: CarouselOptions(
-                  initialPage: initialIndex,
-                  height: MediaQuery.of(context).size.height,
-                  onPageChanged: (index, __) {
-                    assetCarouselBloc.add(CarouselIndexChanged(newIndex: index));
-                  },
-                  // viewportFraction: 1,
-                  viewportFraction: viewportFraction,
-                ),
-              ),
-              if (viewportFraction != 1) const LoadingOverlay(),
-            ],
-          );
-        } else {
-          return const Center(child: LoadingIndicator());
-        }
-      },
+          },
+          onPageChanged: (index) {
+            assetCarouselBloc.add(CarouselIndexChanged(newIndex: index));
+          },
+          loadingBuilder: (context, event) => Container(),
+          wantKeepAlive: true,
+          pageController: carouselController,
+        ),
+        if (viewportFraction != 1) const LoadingOverlay(),
+      ],
     );
   }
 }

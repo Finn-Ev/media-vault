@@ -12,9 +12,8 @@ import 'package:media_vault/presentation/_widgets/custom_modal_bottom_sheet.dart
 
 class AssetListBottomMenu extends StatelessWidget {
   final Album album;
-  final bool albumIsEmpty;
 
-  const AssetListBottomMenu({required this.album, Key? key, required this.albumIsEmpty}) : super(key: key);
+  const AssetListBottomMenu({required this.album, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -14,9 +14,9 @@ import '../../../injection.dart';
 
 class AssetCarouselPage extends StatelessWidget {
   final String albumId;
-  final String initialAssetId;
+  final int initialIndex;
 
-  const AssetCarouselPage({required this.albumId, required this.initialAssetId, Key? key}) : super(key: key);
+  const AssetCarouselPage({required this.albumId, required this.initialIndex, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +34,8 @@ class AssetCarouselPage extends StatelessWidget {
             if (state.assets.isEmpty) {
               AutoRouter.of(context).pop();
             }
+            // update the carouselItemCount, when an asset of the album is deleted while the carousel is open
+            BlocProvider.of<AssetCarouselBloc>(context).add(CarouselItemCountChanged(newCount: state.assets.length));
           }
         },
         builder: (context, assetObserverState) {
@@ -48,7 +50,7 @@ class AssetCarouselPage extends StatelessWidget {
               return GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTap: () {
-                  BlocProvider.of<AssetCarouselBloc>(context).add(ToggleUI());
+                  // BlocProvider.of<AssetCarouselBloc>(context).add(ToggleUI());
                 },
                 child: Scaffold(
                   body: BlocBuilder<AssetCarouselBloc, AssetCarouselState>(
@@ -58,17 +60,23 @@ class AssetCarouselPage extends StatelessWidget {
                       }
                       // if the carousel-index exceeds the number of assets (e.g. when an asset has been moved or deleted),
                       // it will be set to last element of the array.
-                      final Asset currentAsset = state.carouselIndex >= assetObserverState.assets.length
-                          ? assetObserverState.assets[assetObserverState.assets.length - 1]
-                          : assetObserverState.assets[state.carouselIndex];
+                      Asset currentAsset;
+
+                      if (assetObserverState.assets.isNotEmpty) {
+                        currentAsset = state.carouselIndex >= assetObserverState.assets.length ? assetObserverState.assets.last : assetObserverState.assets[state.carouselIndex];
+                      } else {
+                        return Container();
+                      }
 
                       final bool isLastAsset = state.carouselIndex == assetObserverState.assets.length - 1;
+
                       return SafeArea(
                         child: Stack(
                           children: [
                             AssetCarousel(
+                              assets: assetObserverState.assets,
                               albumId: albumId,
-                              initialAssetId: initialAssetId,
+                              initialIndex: initialIndex,
                             ),
                             state.showMenuUI ? const AssetCarouselTopMenu() : Container(),
                             state.showMenuUI ? AssetCarouselBottomMenu(albumId: albumId, currentAsset: currentAsset, lastAlbumAssetIsViewedInCarousel: isLastAsset) : Container(),

@@ -29,8 +29,8 @@ class AssetRepositoryImpl extends AssetRepository {
       File? file = await asset.originFile; // original file ending
 
       if (file == null) {
-        print('[AssetRepositoryImpl]: Origin-File is null');
-        file = await asset.file;
+        print('[AssetRepositoryImpl]: File is null');
+        return Left(UnexpectedFailure());
       }
 
       Asset newAsset;
@@ -61,7 +61,7 @@ class AssetRepositoryImpl extends AssetRepository {
       if (newAsset.isVideo) {
         // if asset is a video, generate a thumbnail and save it to firebase storage
         final thumbnail = await VideoThumbnail.thumbnailFile(
-          video: file!.path,
+          video: file.path,
           thumbnailPath: (await getTemporaryDirectory()).path,
           imageFormat: ImageFormat.PNG,
         );
@@ -75,7 +75,7 @@ class AssetRepositoryImpl extends AssetRepository {
       }
 
       // then we upload the video itself to firebase storage
-      await storage.ref(userDoc.id).child(const Uuid().v4()).putFile(file!).then(
+      await storage.ref(userDoc.id).child(const Uuid().v4()).putFile(file).then(
         (taskSnapshot) async {
           final downloadUrl = await taskSnapshot.ref.getDownloadURL();
           final assetModel = AssetModel.fromEntity(newAsset.copyWith(url: downloadUrl));

@@ -9,10 +9,17 @@ import 'package:media_vault/presentation/_routes/routes.gr.dart';
 
 class AssetListPreviewCard extends StatefulWidget {
   final Asset asset;
+  final int index;
   final String albumId;
   final bool isSelected;
 
-  const AssetListPreviewCard({required this.asset, required this.albumId, required this.isSelected, Key? key}) : super(key: key);
+  const AssetListPreviewCard({
+    required this.asset,
+    required this.index,
+    required this.albumId,
+    required this.isSelected,
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<AssetListPreviewCard> createState() => _AssetListPreviewCardState();
@@ -42,7 +49,7 @@ class _AssetListPreviewCardState extends State<AssetListPreviewCard> with Automa
             if (state.isSelectModeEnabled) {
               BlocProvider.of<AssetListBloc>(context).add(ToggleAsset(asset: widget.asset));
             } else {
-              AutoRouter.of(context).push(AssetCarouselPageRoute(albumId: widget.albumId, initialAssetId: widget.asset.id));
+              AutoRouter.of(context).push(AssetCarouselPageRoute(albumId: widget.albumId, initialIndex: widget.index));
             }
           },
           onLongPress: () {

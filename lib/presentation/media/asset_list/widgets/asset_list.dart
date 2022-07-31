@@ -60,13 +60,14 @@ class _AssetListState extends State<AssetList> {
                             children: assetObserverState.assets.map((asset) {
                               return AssetListPreviewCard(
                                 asset: asset,
+                                index: assetObserverState.assets.indexOf(asset),
                                 albumId: widget.album.id,
                                 isSelected: assetListState.selectedAssets.contains(asset),
                               );
                             }).toList(),
                           ),
                         ),
-                        AssetListBottomMenu(album: widget.album, albumIsEmpty: false)
+                        AssetListBottomMenu(album: widget.album),
                       ],
                     ),
                     if (!cachedImagesHaveBeenLoaded)
@@ -83,28 +84,21 @@ class _AssetListState extends State<AssetList> {
             },
           );
         } else if (assetObserverState is AssetObserverLoaded && assetObserverState.assets.isEmpty) {
-          return Column(
-            children: [
-              Expanded(
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Icon(
-                        CupertinoIcons.photo,
-                        size: 50,
-                      ),
-                      SizedBox(height: 8),
-                      Text(
-                        'This album is empty',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                    ],
-                  ),
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                Icon(
+                  CupertinoIcons.photo,
+                  size: 50,
                 ),
-              ),
-              AssetListBottomMenu(album: widget.album, albumIsEmpty: true)
-            ],
+                SizedBox(height: 8),
+                Text(
+                  'This album is empty',
+                  style: TextStyle(fontSize: 18),
+                ),
+              ],
+            ),
           );
         } else {
           return Container();

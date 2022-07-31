@@ -71,7 +71,7 @@ class AppRouter extends _i11.RootStackRouter {
           routeData: routeData,
           child: _i8.AssetCarouselPage(
               albumId: args.albumId,
-              initialAssetId: args.initialAssetId,
+              initialIndex: args.initialIndex,
               key: args.key));
     },
     AssetVideoPlayerPageRoute.name: (routeData) {
@@ -193,28 +193,28 @@ class AssetListPageRouteArgs {
 class AssetCarouselPageRoute
     extends _i11.PageRouteInfo<AssetCarouselPageRouteArgs> {
   AssetCarouselPageRoute(
-      {required String albumId, required String initialAssetId, _i12.Key? key})
+      {required String albumId, required int initialIndex, _i12.Key? key})
       : super(AssetCarouselPageRoute.name,
             path: '/asset-carousel-page',
             args: AssetCarouselPageRouteArgs(
-                albumId: albumId, initialAssetId: initialAssetId, key: key));
+                albumId: albumId, initialIndex: initialIndex, key: key));
 
   static const String name = 'AssetCarouselPageRoute';
 }
 
 class AssetCarouselPageRouteArgs {
   const AssetCarouselPageRouteArgs(
-      {required this.albumId, required this.initialAssetId, this.key});
+      {required this.albumId, required this.initialIndex, this.key});
 
   final String albumId;
 
-  final String initialAssetId;
+  final int initialIndex;
 
   final _i12.Key? key;
 
   @override
   String toString() {
-    return 'AssetCarouselPageRouteArgs{albumId: $albumId, initialAssetId: $initialAssetId, key: $key}';
+    return 'AssetCarouselPageRouteArgs{albumId: $albumId, initialIndex: $initialIndex, key: $key}';
   }
 }
 
