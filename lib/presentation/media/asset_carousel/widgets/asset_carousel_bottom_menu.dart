@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:media_vault/application/albums/observer/album_observer_bloc.dart';
 import 'package:media_vault/application/assets/asset_carousel/asset_carousel_bloc.dart';
 import 'package:media_vault/application/assets/asset_list/asset_list_bloc.dart';
 import 'package:media_vault/application/assets/controller/asset_controller_bloc.dart';
@@ -47,6 +48,11 @@ class AssetCarouselBottomMenu extends StatelessWidget {
     }
 
     void openAssetMenu() {
+      bool showMoveCopyActions = false;
+      if (BlocProvider.of<AlbumObserverBloc>(context).state is AlbumObserverLoaded &&
+          (BlocProvider.of<AlbumObserverBloc>(context).state as AlbumObserverLoaded).albums.length > 1) {
+        showMoveCopyActions = true;
+      }
       return CustomModalBottomSheet.open(
         context: context,
         actions: [
@@ -71,18 +77,20 @@ class AssetCarouselBottomMenu extends StatelessWidget {
                       );
                     });
               }),
-          CustomModalBottomSheetAction(
-              text: "Copy asset",
-              onPressed: () {
-                AutoRouter.of(context).push(MoveAssetsPageRoute(assets: [currentAsset], sourceAlbumId: albumId, copy: true));
-                BlocProvider.of<AssetListBloc>(context).add(DisableSelectMode());
-              }),
-          CustomModalBottomSheetAction(
-              text: "Move asset",
-              onPressed: () {
-                AutoRouter.of(context).push(MoveAssetsPageRoute(assets: [currentAsset], sourceAlbumId: albumId, copy: false));
-                BlocProvider.of<AssetListBloc>(context).add(DisableSelectMode());
-              }),
+          if (showMoveCopyActions)
+            CustomModalBottomSheetAction(
+                text: "Copy asset",
+                onPressed: () {
+                  AutoRouter.of(context).push(MoveAssetsPageRoute(assets: [currentAsset], sourceAlbumId: albumId, copy: true));
+                  BlocProvider.of<AssetListBloc>(context).add(DisableSelectMode());
+                }),
+          if (showMoveCopyActions)
+            CustomModalBottomSheetAction(
+                text: "Move asset",
+                onPressed: () {
+                  AutoRouter.of(context).push(MoveAssetsPageRoute(assets: [currentAsset], sourceAlbumId: albumId, copy: false));
+                  BlocProvider.of<AssetListBloc>(context).add(DisableSelectMode());
+                }),
         ],
       );
     }

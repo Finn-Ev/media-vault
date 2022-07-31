@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:media_vault/application/assets/asset_list/asset_list_bloc.dart';
@@ -45,20 +46,23 @@ class UploadAssetsFloatingButton extends StatelessWidget {
           return GestureDetector(
             onTap: _pickAssets,
             child: Container(
-              height: 50,
-              width: 50,
+              height: 65,
+              width: 65,
               decoration: BoxDecoration(
                 border: Border.all(
                   color: themeData.colorScheme.onPrimary,
-                  width: 1,
+                  width: 2,
                 ),
                 color: themeData.scaffoldBackgroundColor,
                 borderRadius: BorderRadius.circular(50),
               ),
               child: const Center(
-                child: Icon(
-                  Icons.add,
-                  size: 40,
+                child: Padding(
+                  padding: EdgeInsets.all(10.0),
+                  child: Icon(
+                    Icons.add_a_photo_outlined,
+                    size: 40,
+                  ),
                 ),
               ),
             ),

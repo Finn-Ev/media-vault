@@ -1,8 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:media_vault/application/albums/observer/album_observer_bloc.dart';
 import 'package:media_vault/application/assets/asset_carousel/asset_carousel_bloc.dart';
-import 'package:media_vault/application/assets/controller/asset_controller_bloc.dart';
 import 'package:media_vault/application/assets/observer/asset_observer_bloc.dart';
 import 'package:media_vault/domain/entities/media/asset.dart';
 import 'package:media_vault/presentation/_widgets/loading_indicator.dart';
@@ -21,12 +21,13 @@ class AssetCarouselPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final assetObserverBloc = sl<AssetObserverBloc>()..add(ObserveAlbumAssets(albumId: albumId));
+    final albumObserverBloc = sl<AlbumObserverBloc>()..add(AlbumsObserveAll());
 
     return MultiBlocProvider(
       providers: [
         BlocProvider<AssetObserverBloc>(create: (context) => assetObserverBloc),
-        BlocProvider<AssetControllerBloc>(create: (context) => sl<AssetControllerBloc>()),
-        BlocProvider<AssetCarouselBloc>(create: (context) => sl<AssetCarouselBloc>())
+        BlocProvider<AlbumObserverBloc>(create: (context) => albumObserverBloc),
+        BlocProvider<AssetCarouselBloc>(create: (context) => sl<AssetCarouselBloc>()),
       ],
       child: BlocConsumer<AssetObserverBloc, AssetObserverState>(
         listener: (context, state) {
