@@ -2,23 +2,26 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
-class CustomInputAlert extends StatelessWidget {
+class CustomInputAlertDialog extends StatelessWidget {
   final String title;
   final String hintText;
   final String initialInputValue;
   final String confirmText;
   final Function(String) onConfirm;
+  // sometimes it is necessary to run a extra pop() out of this widget's context to close all popups and dialogs correctly
+  final bool popContextOnAction;
 
-  final TextEditingController _controller = TextEditingController();
-
-  CustomInputAlert({
+  CustomInputAlertDialog({
     required this.title,
     required this.hintText,
     required this.onConfirm,
     this.initialInputValue = '',
     this.confirmText = 'Confirm',
+    this.popContextOnAction = false,
     Key? key,
   }) : super(key: key);
+
+  final TextEditingController _controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +50,11 @@ class CustomInputAlert extends StatelessWidget {
             isDestructiveAction: true,
             child: const Text('Cancel'),
           ),
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () {
+            Navigator.of(context).pop();
+
+            if (popContextOnAction) Navigator.of(context).pop();
+          },
         ),
         PlatformDialogAction(
           child: const Text('Create'),
@@ -58,7 +65,7 @@ class CustomInputAlert extends StatelessWidget {
           onPressed: () {
             if (_controller.text.isNotEmpty) {
               onConfirm(_controller.text);
-              Navigator.of(context).pop();
+              if (popContextOnAction) Navigator.of(context).pop();
             }
           },
         ),

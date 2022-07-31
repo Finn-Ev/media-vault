@@ -9,6 +9,8 @@ class CustomAlertDialog extends StatelessWidget {
   final bool confirmIsDestructive;
   final String cancelButtonText;
   final Function? onCancel;
+  // sometimes it is necessary to run a extra pop() out of this widget's context to close all popups and dialogs correctly
+  final bool popContextOnAction;
 
   const CustomAlertDialog({
     required this.title,
@@ -18,6 +20,7 @@ class CustomAlertDialog extends StatelessWidget {
     this.confirmIsDestructive = false,
     this.cancelButtonText = "Cancel",
     this.onCancel,
+    this.popContextOnAction = false,
     Key? key,
   }) : super(key: key);
 
@@ -33,8 +36,9 @@ class CustomAlertDialog extends StatelessWidget {
             if (onCancel != null) {
               onCancel!();
             } else {
-              Navigator.pop(context);
+              Navigator.of(context).pop();
             }
+            if (popContextOnAction) Navigator.of(context).pop();
           },
         ),
         PlatformDialogAction(
@@ -46,6 +50,7 @@ class CustomAlertDialog extends StatelessWidget {
           ),
           onPressed: () {
             onConfirm();
+            if (popContextOnAction) Navigator.of(context).pop();
           },
         ),
       ],
