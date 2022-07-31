@@ -4,14 +4,12 @@ import 'package:media_vault/domain/entities/media/album.dart';
 class AlbumModel {
   final String id;
   final String title;
-  final String sortDirection;
   final dynamic createdAt;
   final dynamic updatedAt;
 
   AlbumModel({
     required this.id,
     required this.title,
-    required this.sortDirection,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -20,7 +18,6 @@ class AlbumModel {
     return {
       'id': id,
       'title': title,
-      'sortDirection': sortDirection,
       'createdAt': createdAt,
       'updatedAt': updatedAt,
     };
@@ -30,7 +27,6 @@ class AlbumModel {
     return AlbumModel(
       id: "",
       title: map['title'] as String,
-      sortDirection: map['sortDirection'] as String,
       createdAt: map['createdAt'],
       updatedAt: map['updatedAt'],
     );
@@ -39,14 +35,12 @@ class AlbumModel {
   AlbumModel copyWith({
     String? id,
     String? title,
-    String? sortDirection,
     dynamic createdAt,
     dynamic updatedAt,
   }) {
     return AlbumModel(
       id: id ?? this.id,
       title: title ?? this.title,
-      sortDirection: this.sortDirection,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );
@@ -60,7 +54,6 @@ class AlbumModel {
     return Album(
       id: id,
       title: title,
-      sortDirection: sortDirection,
       createdAt: createdAt,
       updatedAt: updatedAt,
     );
@@ -70,7 +63,6 @@ class AlbumModel {
     return AlbumModel(
       id: album.id.toString(),
       title: album.title,
-      sortDirection: album.sortDirection,
       createdAt: album.createdAt,
       updatedAt: album.updatedAt,
     );
