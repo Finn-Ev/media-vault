@@ -22,18 +22,12 @@ class AssetCarousel extends StatefulWidget {
 }
 
 class _AssetCarouselState extends State<AssetCarousel> {
-  // by setting the viewport fraction to a low value, all the assets appear on the
-  // screen at once for a short amount of time, thus the cached-images get loaded.
-  // When combining this with the keepAliveMixin of each carousel image, all the cached-images
-  // will stay loaded and don't fade in every time the user through the carousel
-  // double viewportFraction = 0.01;
-  // double viewportFraction = 1;
-
   late PageController carouselController;
   bool loadingOverlayVisible = true;
 
   @override
   void initState() {
+    BlocProvider.of<AssetCarouselBloc>(context).add(ToggleUI());
     BlocProvider.of<AssetCarouselBloc>(context).add(InitCarouselIndex(initialCarouselIndex: widget.initialIndex, carouselItemCount: widget.assets.length));
     carouselController = PageController(
       initialPage: widget.initialIndex,
@@ -42,9 +36,11 @@ class _AssetCarouselState extends State<AssetCarousel> {
 
     super.initState();
 
-    // display each asset for short time, so that teh cached-images get loaded.
+    // display each asset for a short moment, so that the images get pre-cached / pre-loaded.
+    // When combining this with the keepAliveMixin of each carousel image, all the cached-images
+    // will stay loaded and don't fade in when the user navigates through the carousel
     int i = 0;
-    Timer.periodic(const Duration(milliseconds: 25), (timer) {
+    Timer.periodic(const Duration(milliseconds: 50), (timer) {
       carouselController.jumpToPage(i);
 
       if (i == widget.assets.length) {
@@ -53,6 +49,7 @@ class _AssetCarouselState extends State<AssetCarousel> {
         setState(() {
           loadingOverlayVisible = false;
         });
+        BlocProvider.of<AssetCarouselBloc>(context).add(ToggleUI());
       }
       i++;
     });
@@ -69,7 +66,7 @@ class _AssetCarouselState extends State<AssetCarousel> {
           builder: (context, index) {
             final asset = widget.assets[index];
             return PhotoViewGalleryPageOptions.customChild(
-              // gestureDetectorBehavior: HitTestBehavior.deferToChild,
+              // gestureDetectorBehavior: HitTestBehavior.opaque,
               child: asset.isVideo ? AssetVideoPreview(asset: asset) : AssetCarouselImageView(asset),
               initialScale: PhotoViewComputedScale.contained,
               minScale: PhotoViewComputedScale.contained * 0.8,
@@ -80,8 +77,8 @@ class _AssetCarouselState extends State<AssetCarousel> {
           onPageChanged: (index) {
             assetCarouselBloc.add(CarouselIndexChanged(newIndex: index));
           },
+          // wantKeepAlive: true,
           loadingBuilder: (context, event) => Container(),
-          wantKeepAlive: true,
           pageController: carouselController,
         ),
         if (loadingOverlayVisible) const LoadingOverlay(),
