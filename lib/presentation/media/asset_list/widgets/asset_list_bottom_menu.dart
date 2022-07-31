@@ -3,8 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:media_vault/application/albums/observer/album_observer_bloc.dart';
 import 'package:media_vault/application/assets/asset_list/asset_list_bloc.dart';
 import 'package:media_vault/application/assets/controller/asset_controller_bloc.dart';
+import 'package:media_vault/application/assets/observer/asset_observer_bloc.dart';
 import 'package:media_vault/domain/entities/media/album.dart';
 import 'package:media_vault/presentation/_routes/routes.gr.dart';
 import 'package:media_vault/presentation/_widgets/custom_alert_dialog.dart';
@@ -18,6 +20,12 @@ class AssetListBottomMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     void _openModalSheetMenu({required selectedAssets}) {
+      bool showMoveCopyActions = false;
+      if (BlocProvider.of<AssetObserverBloc>(context).state is AssetObserverLoaded &&
+          (BlocProvider.of<AlbumObserverBloc>(context).state as AlbumObserverLoaded).albums.length > 1) {
+        showMoveCopyActions = true;
+      }
+
       CustomModalBottomSheet.open(context: context, actions: [
         CustomModalBottomSheetAction(
             text: 'Export to gallery',
@@ -25,20 +33,22 @@ class AssetListBottomMenu extends StatelessWidget {
               Navigator.pop(context);
               BlocProvider.of<AssetControllerBloc>(context).add(ExportAssets(assetsToExport: selectedAssets));
             }),
-        CustomModalBottomSheetAction(
-            text: 'Copy to another album',
-            onPressed: () {
-              Navigator.of(context).pop();
-              AutoRouter.of(context).push(MoveAssetsPageRoute(assets: selectedAssets, sourceAlbumId: album.id, copy: true));
-              BlocProvider.of<AssetListBloc>(context).add(DisableSelectMode());
-            }),
-        CustomModalBottomSheetAction(
-            text: 'Move to another album',
-            onPressed: () {
-              Navigator.of(context).pop();
-              AutoRouter.of(context).push(MoveAssetsPageRoute(assets: selectedAssets, sourceAlbumId: album.id, copy: false));
-              BlocProvider.of<AssetListBloc>(context).add(DisableSelectMode());
-            })
+        if (showMoveCopyActions)
+          CustomModalBottomSheetAction(
+              text: 'Copy to another album',
+              onPressed: () {
+                Navigator.of(context).pop();
+                AutoRouter.of(context).push(MoveAssetsPageRoute(assets: selectedAssets, sourceAlbumId: album.id, copy: true));
+                BlocProvider.of<AssetListBloc>(context).add(DisableSelectMode());
+              }),
+        if (showMoveCopyActions)
+          CustomModalBottomSheetAction(
+              text: 'Move to another album',
+              onPressed: () {
+                Navigator.of(context).pop();
+                AutoRouter.of(context).push(MoveAssetsPageRoute(assets: selectedAssets, sourceAlbumId: album.id, copy: false));
+                BlocProvider.of<AssetListBloc>(context).add(DisableSelectMode());
+              })
       ]);
     }
 
@@ -81,7 +91,9 @@ class AssetListBottomMenu extends StatelessWidget {
                       ),
                     Text("${state.selectedAssets.length} selected"),
                     if (state.selectedAssets.isNotEmpty)
-                      GestureDetector(onTap: () => _openModalSheetMenu(selectedAssets: state.selectedAssets), child: const Icon(CupertinoIcons.share)),
+                      GestureDetector(
+                          onTap: () => _openModalSheetMenu(selectedAssets: state.selectedAssets),
+                          child: const Icon(CupertinoIcons.share)),
                   ],
                 ))
             : Container();

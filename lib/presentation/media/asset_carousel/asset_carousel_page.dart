@@ -46,44 +46,43 @@ class AssetCarouselPage extends StatelessWidget {
             if (assetObserverState.assets.isEmpty) {
               return const Scaffold();
             } else {
-              return GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onTap: () {
-                  // BlocProvider.of<AssetCarouselBloc>(context).add(ToggleUI());
-                },
-                child: Scaffold(
-                  body: BlocBuilder<AssetCarouselBloc, AssetCarouselState>(
-                    builder: (context, state) {
-                      if (assetObserverState.assets.isEmpty) {
-                        return Container();
-                      }
-                      // if the carousel-index exceeds the number of assets (e.g. when an asset has been moved or deleted),
-                      // it will be set to last element of the array.
-                      Asset currentAsset;
+              return Scaffold(
+                body: BlocBuilder<AssetCarouselBloc, AssetCarouselState>(
+                  builder: (context, state) {
+                    if (assetObserverState.assets.isEmpty) {
+                      return Container();
+                    }
+                    // if the carousel-index exceeds the number of assets (e.g. when an asset has been moved or deleted),
+                    // it will be set to last element of the array.
+                    Asset currentAsset;
 
-                      if (state.carouselIndex != -1) {
-                        currentAsset = state.carouselIndex >= assetObserverState.assets.length ? assetObserverState.assets.last : assetObserverState.assets[state.carouselIndex];
-                      } else {
-                        return Container();
-                      }
+                    if (state.carouselIndex != -1) {
+                      currentAsset = state.carouselIndex >= assetObserverState.assets.length
+                          ? assetObserverState.assets.last
+                          : assetObserverState.assets[state.carouselIndex];
+                    } else {
+                      return Container();
+                    }
 
-                      final bool isLastAsset = state.carouselIndex == assetObserverState.assets.length - 1;
+                    final bool isLastAsset = state.carouselIndex == assetObserverState.assets.length - 1;
 
-                      return SafeArea(
-                        child: Stack(
-                          children: [
-                            AssetCarousel(
-                              assets: assetObserverState.assets,
-                              albumId: albumId,
-                              initialIndex: initialIndex,
-                            ),
-                            state.showMenuUI ? const AssetCarouselTopMenu() : Container(),
-                            state.showMenuUI ? AssetCarouselBottomMenu(albumId: albumId, currentAsset: currentAsset, lastAlbumAssetIsViewedInCarousel: isLastAsset) : Container(),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
+                    return SafeArea(
+                      child: Stack(
+                        children: [
+                          AssetCarousel(
+                            assets: assetObserverState.assets,
+                            albumId: albumId,
+                            initialIndex: initialIndex,
+                          ),
+                          state.showMenuUI ? const AssetCarouselTopMenu() : Container(),
+                          state.showMenuUI
+                              ? AssetCarouselBottomMenu(
+                                  albumId: albumId, currentAsset: currentAsset, lastAlbumAssetIsViewedInCarousel: isLastAsset)
+                              : Container(),
+                        ],
+                      ),
+                    );
+                  },
                 ),
               );
             }

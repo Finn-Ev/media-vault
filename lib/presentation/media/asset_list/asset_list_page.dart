@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:media_vault/application/albums/observer/album_observer_bloc.dart';
 import 'package:media_vault/application/assets/asset_list/asset_list_bloc.dart';
 import 'package:media_vault/application/assets/controller/asset_controller_bloc.dart';
 import 'package:media_vault/application/assets/observer/asset_observer_bloc.dart';
@@ -27,6 +28,7 @@ class AssetListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final assetObserverBloc = sl<AssetObserverBloc>()..add(ObserveAlbumAssets(albumId: album.id));
+    final albumObserverBloc = sl<AlbumObserverBloc>()..add(AlbumsObserveAll());
 
     resetAssetListPage() {
       BlocProvider.of<AssetListBloc>(context).add(ResetAssetList());
@@ -42,6 +44,9 @@ class AssetListPage extends StatelessWidget {
         providers: [
           BlocProvider<AssetObserverBloc>(
             create: (context) => assetObserverBloc,
+          ),
+          BlocProvider<AlbumObserverBloc>(
+            create: (context) => albumObserverBloc,
           ),
         ],
         child: MultiBlocListener(
@@ -115,7 +120,9 @@ class AssetListPage extends StatelessWidget {
                     appBar: AppBar(
                       title: Text(album.title),
                       leadingWidth: assetListState.isSelectModeEnabled ? 90 : 56,
-                      leading: assetControllerState is! AssetControllerLoading && assetListState.isSelectModeEnabled ? AssetListLeadingAction(albumId: album.id) : null,
+                      leading: assetControllerState is! AssetControllerLoading && assetListState.isSelectModeEnabled
+                          ? AssetListLeadingAction(albumId: album.id)
+                          : null,
                       actions: [
                         if (assetControllerState is! AssetControllerLoading)
                           AssetListAppBarActions(
