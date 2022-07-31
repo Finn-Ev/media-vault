@@ -35,23 +35,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<AuthCoreBloc>(
-          create: (context) => sl<AuthCoreBloc>()..add(AuthCheckRequested()),
-        ),
-        BlocProvider<AlbumControllerBloc>(
-          create: (context) => sl<AlbumControllerBloc>(),
-        ),
-        BlocProvider<AssetControllerBloc>(
-          create: (context) => sl<AssetControllerBloc>(),
-        ),
-        BlocProvider<AssetListBloc>(
-          create: (context) => sl<AssetListBloc>(),
-        ),
+        BlocProvider<AuthCoreBloc>(create: (context) => sl<AuthCoreBloc>()..add(AuthCheckRequested())),
+        BlocProvider<AlbumControllerBloc>(create: (context) => sl<AlbumControllerBloc>()),
+        BlocProvider<AssetControllerBloc>(create: (context) => sl<AssetControllerBloc>()),
+        BlocProvider<AssetListBloc>(create: (context) => sl<AssetListBloc>()),
       ],
       child: MaterialApp.router(
         routeInformationParser: _appRouter.defaultRouteParser(),
         routerDelegate: _appRouter.delegate(),
-        title: 'Flutter Demo',
+        title: 'Media-Vault',
         debugShowCheckedModeBanner: false,
         theme: AppTheme.lightTheme,
         darkTheme: AppTheme.darkTheme,

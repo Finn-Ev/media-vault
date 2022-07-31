@@ -5,7 +5,7 @@ import 'package:media_vault/application/albums/controller/album_controller_bloc.
 import 'package:media_vault/application/albums/observer/album_observer_bloc.dart';
 import 'package:media_vault/application/auth/auth_core/auth_core_bloc.dart';
 import 'package:media_vault/presentation/_routes/routes.gr.dart';
-import 'package:media_vault/presentation/_widgets/custom_input_alert.dart';
+import 'package:media_vault/presentation/_widgets/custom_input_alert_dialog.dart';
 import 'package:media_vault/presentation/media/album_list/widgets/album_list.dart';
 
 import '../../../injection.dart';
@@ -49,7 +49,7 @@ class AlbumListPage extends StatelessWidget {
                   showDialog(
                     context: context,
                     builder: (_) {
-                      return CustomInputAlert(
+                      return CustomInputAlertDialog(
                         title: 'Create Album',
                         hintText: 'Enter the name of the album',
                         confirmText: 'Create',
