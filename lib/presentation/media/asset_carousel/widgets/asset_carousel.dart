@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:media_vault/application/assets/asset_carousel/asset_carousel_bloc.dart';
 import 'package:media_vault/domain/entities/media/asset.dart';
+import 'package:media_vault/presentation/_widgets/loading_overlay.dart';
 import 'package:media_vault/presentation/media/asset_carousel/widgets/asset_carousel_image_view.dart';
 import 'package:media_vault/presentation/media/asset_carousel/widgets/asset_video_preview.dart';
 import 'package:photo_view/photo_view.dart';
@@ -29,34 +30,37 @@ class _AssetCarouselState extends State<AssetCarousel> {
   // double viewportFraction = 1;
 
   late PageController carouselController;
+  bool loadingOverlayVisible = true;
 
   @override
   void initState() {
     BlocProvider.of<AssetCarouselBloc>(context).add(InitCarouselIndex(initialCarouselIndex: widget.initialIndex, carouselItemCount: widget.assets.length));
     carouselController = PageController(
       initialPage: widget.initialIndex,
-      viewportFraction: 0.01,
+      viewportFraction: 1,
     );
+
     super.initState();
+
+    // display each asset for short time, so that teh cached-images get loaded.
+    int i = 0;
+    Timer.periodic(const Duration(milliseconds: 25), (timer) {
+      carouselController.jumpToPage(i);
+
+      if (i == widget.assets.length) {
+        timer.cancel();
+        carouselController.jumpToPage(widget.initialIndex);
+        setState(() {
+          loadingOverlayVisible = false;
+        });
+      }
+      i++;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     final assetCarouselBloc = BlocProvider.of<AssetCarouselBloc>(context);
-
-    if (carouselController.viewportFraction == 0.01) {
-      carouselController.dispose();
-      Timer(const Duration(milliseconds: 1000), () {
-        setState(() {
-          carouselController = PageController(
-            initialPage: widget.initialIndex,
-            viewportFraction: 1,
-          );
-        });
-      });
-    }
-
-    print('AssetCarousel build');
 
     return Stack(
       children: [
@@ -80,7 +84,7 @@ class _AssetCarouselState extends State<AssetCarousel> {
           wantKeepAlive: true,
           pageController: carouselController,
         ),
-        // if (viewportFraction != 1) const LoadingOverlay(),
+        if (loadingOverlayVisible) const LoadingOverlay(),
       ],
     );
   }
