@@ -44,7 +44,6 @@ class AssetCarouselPage extends StatelessWidget {
           }
           if (assetObserverState is AssetObserverLoaded) {
             if (assetObserverState.assets.isEmpty) {
-              print('AssetCarouselPage: assets is empty');
               return const Scaffold();
             } else {
               return GestureDetector(
@@ -62,7 +61,7 @@ class AssetCarouselPage extends StatelessWidget {
                       // it will be set to last element of the array.
                       Asset currentAsset;
 
-                      if (assetObserverState.assets.isNotEmpty) {
+                      if (state.carouselIndex != -1) {
                         currentAsset = state.carouselIndex >= assetObserverState.assets.length ? assetObserverState.assets.last : assetObserverState.assets[state.carouselIndex];
                       } else {
                         return Container();
