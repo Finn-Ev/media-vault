@@ -56,7 +56,9 @@ class RegisterForm extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeData = Theme.of(context);
     return BlocConsumer<AuthFormBloc, AuthFormState>(
-      listenWhen: (previous, current) => previous.authFailureOrSuccessOption != current.authFailureOrSuccessOption && previous.isSubmitting != current.isSubmitting,
+      listenWhen: (previous, current) =>
+          previous.authFailureOrSuccessOption != current.authFailureOrSuccessOption &&
+          previous.isSubmitting != current.isSubmitting,
       listener: (context, state) {
         state.authFailureOrSuccessOption.fold(
             () => {}, // Option is none, do nothing
@@ -82,7 +84,7 @@ class RegisterForm extends StatelessWidget {
                             actions: [
                               PlatformDialogAction(
                                 child: Text("OK"),
-                                onPressed: () => AutoRouter.of(context).replace(const LoginPageRoute()),
+                                onPressed: () => AutoRouter.of(context).replace(const LoginRoute()),
                               )
                             ],
                           );

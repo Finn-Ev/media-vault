@@ -49,7 +49,9 @@ class LoginForm extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeData = Theme.of(context);
     return BlocConsumer<AuthFormBloc, AuthFormState>(
-      listenWhen: (previous, current) => previous.authFailureOrSuccessOption != current.authFailureOrSuccessOption && previous.isSubmitting != current.isSubmitting,
+      listenWhen: (previous, current) =>
+          previous.authFailureOrSuccessOption != current.authFailureOrSuccessOption &&
+          previous.isSubmitting != current.isSubmitting,
       listener: (context, state) {
         state.authFailureOrSuccessOption.fold(
             () => {}, // Option is none, do nothing
@@ -80,7 +82,7 @@ class LoginForm extends StatelessWidget {
                       );
                     }
                   },
-                  (success) => AutoRouter.of(context).replace(const AlbumListPageRoute()),
+                  (success) => AutoRouter.of(context).replace(const AlbumListRoute()),
                 ));
       },
       builder: (context, state) {

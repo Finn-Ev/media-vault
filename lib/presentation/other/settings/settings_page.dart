@@ -28,7 +28,7 @@ class SettingsPage extends StatelessWidget {
     return BlocListener<AuthCoreBloc, AuthCoreState>(
       listener: (context, state) {
         if (state is AuthCoreUnauthenticated) {
-          AutoRouter.of(context).replace(const LoginPageRoute());
+          AutoRouter.of(context).replace(const LoginRoute());
         }
       },
       child: Scaffold(

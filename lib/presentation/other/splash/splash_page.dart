@@ -13,9 +13,9 @@ class SplashPage extends StatelessWidget {
     return BlocListener<AuthCoreBloc, AuthCoreState>(
       listener: (context, state) {
         if (state is AuthCoreUnauthenticated) {
-          AutoRouter.of(context).replace(const LoginPageRoute());
+          AutoRouter.of(context).replace(const LoginRoute());
         } else if (state is AuthCoreAuthenticated) {
-          AutoRouter.of(context).replace(const AlbumListPageRoute());
+          AutoRouter.of(context).replace(const AlbumListRoute());
         }
       },
       child: const Scaffold(

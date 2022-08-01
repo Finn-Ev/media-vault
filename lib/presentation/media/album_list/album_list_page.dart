@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:media_vault/application/albums/controller/album_controller_bloc.dart';
@@ -7,6 +8,7 @@ import 'package:media_vault/application/auth/auth_core/auth_core_bloc.dart';
 import 'package:media_vault/presentation/_routes/routes.gr.dart';
 import 'package:media_vault/presentation/_widgets/custom_input_alert_dialog.dart';
 import 'package:media_vault/presentation/media/album_list/widgets/album_list.dart';
+import 'package:media_vault/presentation/media/album_list/widgets/trash_appbar_icon.dart';
 
 import '../../../injection.dart';
 
@@ -28,17 +30,18 @@ class AlbumListPage extends StatelessWidget {
         listeners: [
           BlocListener<AuthCoreBloc, AuthCoreState>(listener: (context, state) {
             if (state is AuthCoreUnauthenticated) {
-              AutoRouter.of(context).replace(const LoginPageRoute());
+              AutoRouter.of(context).replace(const LoginRoute());
             }
           }),
         ],
         child: Scaffold(
           appBar: AppBar(
+            centerTitle: true,
             leading: IconButton(
               icon: const Icon(Icons.settings),
               onPressed: () {
                 // BlocProvider.of<AuthCoreBloc>(context).add(SignOutButtonPressed());
-                AutoRouter.of(context).push(const SettingsPageRoute());
+                AutoRouter.of(context).push(const SettingsRoute());
               },
             ),
             title: const Text('My Albums'),
@@ -61,6 +64,7 @@ class AlbumListPage extends StatelessWidget {
                   );
                 },
               ),
+              TrashAppBarIcon()
             ],
           ),
           body: const AlbumList(),

@@ -35,7 +35,9 @@ class ForgotPasswordForm extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeData = Theme.of(context);
     return BlocConsumer<AuthFormBloc, AuthFormState>(
-      listenWhen: (previous, current) => previous.authFailureOrSuccessOption != current.authFailureOrSuccessOption && previous.isSubmitting != current.isSubmitting,
+      listenWhen: (previous, current) =>
+          previous.authFailureOrSuccessOption != current.authFailureOrSuccessOption &&
+          previous.isSubmitting != current.isSubmitting,
       listener: (context, state) {
         state.authFailureOrSuccessOption.fold(
           () => {}, // Option is none, do nothing
@@ -45,11 +47,12 @@ class ForgotPasswordForm extends StatelessWidget {
               context: context,
               builder: (_) => PlatformAlertDialog(
                 title: const Text("Info"),
-                content: const Text("If the email belongs to an account, you will receive an email with a link to reset your password."),
+                content: const Text(
+                    "If the email belongs to an account, you will receive an email with a link to reset your password."),
                 actions: [
                   PlatformDialogAction(
                     child: PlatformText("OK"),
-                    onPressed: () => AutoRouter.of(context).replace(const LoginPageRoute()),
+                    onPressed: () => AutoRouter.of(context).replace(const LoginRoute()),
                   ),
                 ],
               ),

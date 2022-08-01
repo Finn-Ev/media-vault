@@ -49,7 +49,7 @@ class _AssetListPreviewCardState extends State<AssetListPreviewCard> with Automa
             if (state.isSelectModeEnabled) {
               BlocProvider.of<AssetListBloc>(context).add(ToggleAsset(asset: widget.asset));
             } else {
-              AutoRouter.of(context).push(AssetCarouselPageRoute(albumId: widget.albumId, initialIndex: widget.index));
+              AutoRouter.of(context).push(AssetCarouselRoute(albumId: widget.albumId, initialIndex: widget.index));
             }
           },
           onLongPress: () {

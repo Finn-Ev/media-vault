@@ -66,7 +66,7 @@ class SocialSignInButton extends StatelessWidget {
                 }
               },
               (_) {
-                AutoRouter.of(context).replace(const AlbumListPageRoute());
+                AutoRouter.of(context).replace(const AlbumListRoute());
               },
             ),
           );

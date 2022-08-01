@@ -81,14 +81,14 @@ class AssetCarouselBottomMenu extends StatelessWidget {
             CustomModalBottomSheetAction(
                 text: "Copy asset",
                 onPressed: () {
-                  AutoRouter.of(context).push(MoveAssetsPageRoute(assets: [currentAsset], sourceAlbumId: albumId, copy: true));
+                  AutoRouter.of(context).push(MoveAssetsRoute(assets: [currentAsset], sourceAlbumId: albumId, copy: true));
                   BlocProvider.of<AssetListBloc>(context).add(DisableSelectMode());
                 }),
           if (showMoveCopyActions)
             CustomModalBottomSheetAction(
                 text: "Move asset",
                 onPressed: () {
-                  AutoRouter.of(context).push(MoveAssetsPageRoute(assets: [currentAsset], sourceAlbumId: albumId, copy: false));
+                  AutoRouter.of(context).push(MoveAssetsRoute(assets: [currentAsset], sourceAlbumId: albumId, copy: false));
                   BlocProvider.of<AssetListBloc>(context).add(DisableSelectMode());
                 }),
         ],

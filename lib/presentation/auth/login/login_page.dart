@@ -47,7 +47,7 @@ class LoginPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     InkResponse(
-                      onTap: () => AutoRouter.of(context).push(const RegisterPageRoute()),
+                      onTap: () => AutoRouter.of(context).push(const RegisterRoute()),
                       child: const Text("Don't have an account?", textAlign: TextAlign.center),
                     ),
                   ],
@@ -57,7 +57,7 @@ class LoginPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     InkResponse(
-                      onTap: () => AutoRouter.of(context).push(const ForgotPasswordPageRoute()),
+                      onTap: () => AutoRouter.of(context).push(const ForgotPasswordRoute()),
                       child: const Text("Forgot password?", textAlign: TextAlign.center),
                     ),
                   ],

@@ -54,7 +54,7 @@ class AssetListPage extends StatelessWidget {
             BlocListener<AuthCoreBloc, AuthCoreState>(
               listener: (context, state) {
                 if (state is AuthCoreUnauthenticated) {
-                  AutoRouter.of(context).replace(const LoginPageRoute());
+                  AutoRouter.of(context).replace(const LoginRoute());
                 }
               },
             ),

@@ -35,7 +35,7 @@ class _AssetVideoPreviewState extends State<AssetVideoPreview> with AutomaticKee
             ),
             child: Center(
               child: GestureDetector(
-                onTap: () => AutoRouter.of(context).push(AssetVideoPlayerPageRoute(url: widget.asset.url)),
+                onTap: () => AutoRouter.of(context).push(AssetVideoPlayerRoute(url: widget.asset.url)),
                 child: Icon(size: 100, Icons.play_arrow_rounded),
               ),
             ),

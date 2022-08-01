@@ -7,31 +7,32 @@ import 'package:media_vault/presentation/media/asset_carousel/asset_carousel_pag
 import 'package:media_vault/presentation/media/asset_list/asset_list_page.dart';
 import 'package:media_vault/presentation/media/asset_video_player/asset_video_player_page.dart';
 import 'package:media_vault/presentation/media/move_assets/move_assets_page.dart';
+import 'package:media_vault/presentation/media/trash/trash_page.dart';
 import 'package:media_vault/presentation/other/settings/settings_page.dart';
 import 'package:media_vault/presentation/other/splash/splash_page.dart';
 
 // ❯❯ flutter packages pub run build_runner build
-@MaterialAutoRouter(routes: <AutoRoute>[
-  // General
-  AutoRoute(page: SplashPage, initial: true),
-  AutoRoute(page: SettingsPage),
+@MaterialAutoRouter(
+  replaceInRouteName: 'Page,Route',
+  routes: <AutoRoute>[
+    // General
+    AutoRoute(page: SplashPage, initial: true),
+    AutoRoute(page: SettingsPage),
 
-  // Auth
-  AutoRoute(page: LoginPage),
-  AutoRoute(page: RegisterPage),
-  AutoRoute(page: ForgotPasswordPage),
+    // Auth
+    AutoRoute(page: LoginPage),
+    AutoRoute(page: RegisterPage),
+    AutoRoute(page: ForgotPasswordPage),
 
-  // Media
-  AutoRoute(
-    page: AlbumListPage,
-    maintainState: false, // to close the streams when navigating away from the page
-  ),
-  AutoRoute(page: AssetListPage, maintainState: false),
-  AutoRoute(page: AssetCarouselPage, fullscreenDialog: false),
-  AutoRoute(page: AssetVideoPlayerPage, fullscreenDialog: true),
-  AutoRoute(
-    page: MoveAssetsPage,
-    fullscreenDialog: true,
-  ),
-])
+    // Media
+    AutoRoute(
+        page: AlbumListPage,
+        maintainState: false), // "maintainState: false" to close the streams when navigating away from the page
+    AutoRoute(page: AssetListPage, maintainState: false),
+    AutoRoute(page: AssetCarouselPage, fullscreenDialog: false),
+    AutoRoute(page: AssetVideoPlayerPage, fullscreenDialog: true),
+    AutoRoute(page: MoveAssetsPage, fullscreenDialog: true),
+    AutoRoute(page: TrashPage)
+  ],
+)
 class $AppRouter {}

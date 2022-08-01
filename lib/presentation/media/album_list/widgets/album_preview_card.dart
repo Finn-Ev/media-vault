@@ -28,7 +28,7 @@ class AlbumPreviewCard extends StatelessWidget {
           if (state is AssetObserverLoaded) {
             return InkResponse(
               onTap: () {
-                AutoRouter.of(context).push(AssetListPageRoute(album: album));
+                AutoRouter.of(context).push(AssetListRoute(album: album));
               },
               onLongPress: () {
                 showPlatformModalSheet(

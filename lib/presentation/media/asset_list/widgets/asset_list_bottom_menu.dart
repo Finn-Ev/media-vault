@@ -38,7 +38,7 @@ class AssetListBottomMenu extends StatelessWidget {
               text: 'Copy to another album',
               onPressed: () {
                 Navigator.of(context).pop();
-                AutoRouter.of(context).push(MoveAssetsPageRoute(assets: selectedAssets, sourceAlbumId: album.id, copy: true));
+                AutoRouter.of(context).push(MoveAssetsRoute(assets: selectedAssets, sourceAlbumId: album.id, copy: true));
                 BlocProvider.of<AssetListBloc>(context).add(DisableSelectMode());
               }),
         if (showMoveCopyActions)
@@ -46,7 +46,7 @@ class AssetListBottomMenu extends StatelessWidget {
               text: 'Move to another album',
               onPressed: () {
                 Navigator.of(context).pop();
-                AutoRouter.of(context).push(MoveAssetsPageRoute(assets: selectedAssets, sourceAlbumId: album.id, copy: false));
+                AutoRouter.of(context).push(MoveAssetsRoute(assets: selectedAssets, sourceAlbumId: album.id, copy: false));
                 BlocProvider.of<AssetListBloc>(context).add(DisableSelectMode());
               })
       ]);

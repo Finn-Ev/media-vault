@@ -59,8 +59,8 @@ class MoveAssetsPage extends StatelessWidget {
                           ),
                         );
                       }
-                      AutoRouter.of(context).replace(const AlbumListPageRoute());
-                      AutoRouter.of(context).push(AssetListPageRoute(album: album));
+                      AutoRouter.of(context).replace(const AlbumListRoute());
+                      AutoRouter.of(context).push(AssetListRoute(album: album));
                     },
                   );
                 },
