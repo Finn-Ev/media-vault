@@ -25,14 +25,14 @@ import 'package:media_vault/presentation/other/splash/splash_page.dart';
     AutoRoute(page: ForgotPasswordPage),
 
     // Media
-    AutoRoute(
-        page: AlbumListPage,
-        maintainState: false), // "maintainState: false" to close the streams when navigating away from the page
+    AutoRoute(page: AlbumListPage, maintainState: false),
     AutoRoute(page: AssetListPage, maintainState: false),
     AutoRoute(page: AssetCarouselPage, fullscreenDialog: false),
     AutoRoute(page: AssetVideoPlayerPage, fullscreenDialog: true),
     AutoRoute(page: MoveAssetsPage, fullscreenDialog: true),
-    AutoRoute(page: TrashPage)
+    AutoRoute(page: TrashPage, maintainState: false),
+
+    // setting "maintainState: false" to close the streams when navigating away from the page
   ],
 )
 class $AppRouter {}

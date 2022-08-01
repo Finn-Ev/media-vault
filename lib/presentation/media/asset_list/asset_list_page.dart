@@ -72,9 +72,9 @@ class AssetListPage extends StatelessWidget {
                           content: 'Do you want to delete the exported assets from Media-Vault?',
                           onConfirm: () {
                             BlocProvider.of<AssetControllerBloc>(context).add(
-                              DeleteAssets(
-                                albumId: album.id,
-                                assetsToDelete: BlocProvider.of<AssetListBloc>(context).state.selectedAssets,
+                              MoveAssetsToTrash(
+                                sourceAlbumId: album.id,
+                                assetsToMove: BlocProvider.of<AssetListBloc>(context).state.selectedAssets,
                               ),
                             );
                             BlocProvider.of<AssetListBloc>(context).add(DisableSelectMode());

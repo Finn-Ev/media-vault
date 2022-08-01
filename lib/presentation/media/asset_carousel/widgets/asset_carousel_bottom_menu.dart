@@ -32,9 +32,12 @@ class AssetCarouselBottomMenu extends StatelessWidget {
         builder: (_) {
           return CustomAlertDialog(
             title: 'Delete',
-            content: 'Are you sure you want to delete this asset?',
+            content: 'Are you sure you want to move this asset to the trash-bin?',
             onConfirm: () {
-              BlocProvider.of<AssetControllerBloc>(context).add(DeleteAssets(albumId: albumId, assetsToDelete: [currentAsset]));
+              BlocProvider.of<AssetControllerBloc>(context).add(MoveAssetsToTrash(
+                sourceAlbumId: albumId,
+                assetsToMove: [currentAsset],
+              ));
               if (lastAlbumAssetIsViewedInCarousel) {
                 BlocProvider.of<AssetCarouselBloc>(context).add(CarouselIndexChanged(newIndex: -1));
               }
@@ -49,8 +52,7 @@ class AssetCarouselBottomMenu extends StatelessWidget {
 
     void openAssetMenu() {
       bool showMoveCopyActions = false;
-      if (BlocProvider.of<AlbumObserverBloc>(context).state is AlbumObserverLoaded &&
-          (BlocProvider.of<AlbumObserverBloc>(context).state as AlbumObserverLoaded).albums.length > 1) {
+      if ((BlocProvider.of<AlbumObserverBloc>(context).state as AlbumObserverLoaded).albums.length > 1) {
         showMoveCopyActions = true;
       }
       return CustomModalBottomSheet.open(

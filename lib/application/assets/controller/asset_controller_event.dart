@@ -10,17 +10,28 @@ class UploadAssets extends AssetControllerEvent {
   UploadAssets({required this.assets, required this.albumId});
 }
 
-class DeleteAssets extends AssetControllerEvent {
+class DeleteAssetsPermanently extends AssetControllerEvent {
   final List<Asset> assetsToDelete;
-  final String albumId;
 
-  DeleteAssets({required this.assetsToDelete, required this.albumId});
+  DeleteAssetsPermanently({required this.assetsToDelete});
 }
 
-class ExportAssets extends AssetControllerEvent {
-  final List<Asset> assetsToExport;
+class MoveAssetsToTrash extends AssetControllerEvent {
+  final List<Asset> assetsToMove;
+  final String sourceAlbumId;
 
-  ExportAssets({required this.assetsToExport});
+  MoveAssetsToTrash({
+    required this.assetsToMove,
+    required this.sourceAlbumId,
+  });
+}
+
+class RemoveAssetsFromTrash extends AssetControllerEvent {
+  final List<Asset> assets;
+
+  RemoveAssetsFromTrash({
+    required this.assets,
+  });
 }
 
 class MoveAssets extends AssetControllerEvent {
@@ -40,6 +51,12 @@ class CopyAssets extends AssetControllerEvent {
   final String destinationAlbumId;
 
   CopyAssets({required this.assetsToCopy, required this.destinationAlbumId});
+}
+
+class ExportAssets extends AssetControllerEvent {
+  final List<Asset> assetsToExport;
+
+  ExportAssets({required this.assetsToExport});
 }
 
 class ResetAssetController extends AssetControllerEvent {}

@@ -16,7 +16,7 @@ class AlbumList extends StatelessWidget {
         } else if (state is AlbumObserverLoading) {
           return const Center(child: LoadingIndicator());
         } else if (state is AlbumObserverFailure) {
-          return const Center(child: Text('Failed to load todos'));
+          return const Center(child: Text('Failed to load albums'));
         } else if (state is AlbumObserverLoaded) {
           return Padding(
             padding: const EdgeInsets.all(8.0),

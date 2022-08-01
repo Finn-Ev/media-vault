@@ -3,6 +3,7 @@ import 'package:media_vault/domain/entities/media/asset.dart';
 
 class AssetModel {
   final String id;
+  final String albumId;
   final String url;
   final String thumbnailUrl;
   final int duration;
@@ -11,6 +12,7 @@ class AssetModel {
 
   AssetModel({
     required this.id,
+    required this.albumId,
     required this.url,
     required this.thumbnailUrl,
     required this.createdAt,
@@ -21,6 +23,7 @@ class AssetModel {
   Map<String, dynamic> toMap() {
     return {
       'id': id,
+      'albumId': albumId,
       'url': url,
       'thumbnailUrl': thumbnailUrl,
       'duration': duration,
@@ -32,6 +35,7 @@ class AssetModel {
   factory AssetModel.fromMap(Map<String, dynamic> map) {
     return AssetModel(
       id: "",
+      albumId: map['albumId'] as String,
       url: map['url'] as String,
       thumbnailUrl: map['thumbnailUrl'] as String,
       duration: map['duration'] as int,
@@ -42,6 +46,7 @@ class AssetModel {
 
   AssetModel copyWith({
     String? id,
+    String? albumId,
     String? url,
     String? thumbnailUrl,
     int? duration,
@@ -50,6 +55,7 @@ class AssetModel {
   }) {
     return AssetModel(
       id: id ?? this.id,
+      albumId: albumId ?? this.albumId,
       url: url ?? this.url,
       thumbnailUrl: thumbnailUrl ?? this.thumbnailUrl,
       duration: duration ?? this.duration,
@@ -65,6 +71,7 @@ class AssetModel {
   Asset toEntity() {
     return Asset(
       id: id,
+      albumId: albumId,
       url: url,
       thumbnailUrl: thumbnailUrl,
       isVideo: duration > 0,
@@ -77,6 +84,7 @@ class AssetModel {
   factory AssetModel.fromEntity(Asset asset) {
     return AssetModel(
       id: asset.id,
+      albumId: asset.albumId,
       url: asset.url,
       thumbnailUrl: asset.thumbnailUrl,
       duration: asset.duration,

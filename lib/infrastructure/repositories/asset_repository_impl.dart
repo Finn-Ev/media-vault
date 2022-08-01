@@ -15,6 +15,8 @@ import 'package:uuid/uuid.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart' as asset_picker;
 
+const trashAlbumId = "___trash";
+
 class AssetRepositoryImpl extends AssetRepository {
   final FirebaseFirestore firestore;
   final FirebaseStorage storage;
@@ -39,6 +41,7 @@ class AssetRepositoryImpl extends AssetRepository {
         print('[AssetRepositoryImpl]: Generating thumbnail');
         newAsset = Asset(
           id: const Uuid().v4(),
+          albumId: albumId,
           url: "",
           thumbnailUrl: "",
           isVideo: true,
@@ -49,6 +52,7 @@ class AssetRepositoryImpl extends AssetRepository {
       } else {
         newAsset = Asset(
           id: const Uuid().v4(),
+          albumId: albumId,
           url: "",
           thumbnailUrl: "",
           isVideo: false,
@@ -94,11 +98,11 @@ class AssetRepositoryImpl extends AssetRepository {
   }
 
   @override
-  Future<Either<MediaFailure, Unit>> delete(Asset assetToDelete, String albumId) async {
+  Future<Either<MediaFailure, Unit>> deletePermanently(Asset assetToDelete) async {
     try {
       final userDoc = await firestore.userDocument();
 
-      await userDoc.collection('albums/$albumId/assets').doc(assetToDelete.id.toString()).delete();
+      await userDoc.collection('albums/$trashAlbumId/assets').doc(assetToDelete.id.toString()).delete();
 
       await storage.refFromURL(assetToDelete.url).delete();
 
@@ -122,6 +126,30 @@ class AssetRepositoryImpl extends AssetRepository {
       await userDoc.collection('albums/$sourceAlbumId/assets').doc(assetToMove.id).delete();
 
       await userDoc.collection('albums/$destinationAlbumId/assets').doc(assetToMove.id).set(
+            AssetModel.fromEntity(assetToMove).copyWith(albumId: destinationAlbumId).toMap(),
+          );
+
+      return right(unit);
+    } on FirebaseException catch (error) {
+      print("delete-error: $error");
+      if (error.code == 'permission-denied' || error.code == 'PERMISSION_DENIED') {
+        return left(InsufficientPermissions());
+      }
+      return left(UnexpectedFailure());
+    }
+  }
+
+  @override
+  Future<Either<MediaFailure, Unit>> moveToTrash(Asset assetToMove, String sourceAlbumId) async {
+    try {
+      final userDoc = await firestore.userDocument();
+
+      // just delete the asset from the source album and add it to the destination album
+      // the storage-file stays untouched
+      await userDoc.collection('albums/$sourceAlbumId/assets').doc(assetToMove.id).delete();
+
+      await userDoc.collection('albums/$trashAlbumId/assets').doc(assetToMove.id).set(
+            // don't update albumId, otherwise we can't move it back to the original album
             AssetModel.fromEntity(assetToMove).toMap(),
           );
 
@@ -209,7 +237,8 @@ class AssetRepositoryImpl extends AssetRepository {
     yield* userDoc
         .collection("albums/$albumId/assets")
         .snapshots()
-        .map((snapshot) => right<MediaFailure, List<Asset>>(snapshot.docs.map((doc) => AssetModel.fromFirestore(doc).toEntity()).toList()))
+        .map((snapshot) =>
+            right<MediaFailure, List<Asset>>(snapshot.docs.map((doc) => AssetModel.fromFirestore(doc).toEntity()).toList()))
         .handleError(
       (error) {
         print("observer-error: $error");

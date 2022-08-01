@@ -2,6 +2,7 @@ import 'package:uuid/uuid.dart';
 
 class Asset {
   final String id;
+  final String albumId;
   final String url;
   final bool isVideo;
   final String thumbnailUrl;
@@ -11,6 +12,7 @@ class Asset {
 
   Asset({
     required this.id,
+    required this.albumId,
     required this.url,
     required this.isVideo,
     required this.thumbnailUrl,
@@ -22,6 +24,7 @@ class Asset {
   factory Asset.empty() {
     return Asset(
       id: const Uuid().v4(),
+      albumId: "",
       url: "",
       isVideo: false,
       thumbnailUrl: "",
@@ -33,6 +36,7 @@ class Asset {
 
   Asset copyWith({
     String? id,
+    String? albumId,
     String? url,
     bool? isVideo,
     String? thumbnailUrl,
@@ -42,6 +46,7 @@ class Asset {
   }) {
     return Asset(
       id: id ?? this.id,
+      albumId: albumId ?? this.albumId,
       url: url ?? this.url,
       thumbnailUrl: thumbnailUrl ?? this.thumbnailUrl,
       duration: duration ?? this.duration,

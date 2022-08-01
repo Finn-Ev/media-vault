@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:media_vault/application/assets/asset_list/asset_list_bloc.dart';
 import 'package:media_vault/domain/entities/media/asset.dart';
+import 'package:media_vault/infrastructure/repositories/asset_repository_impl.dart';
 import 'package:media_vault/presentation/_routes/routes.gr.dart';
 
 class AssetListPreviewCard extends StatefulWidget {
@@ -46,10 +47,18 @@ class _AssetListPreviewCardState extends State<AssetListPreviewCard> with Automa
       builder: (context, state) {
         return GestureDetector(
           onTap: () {
-            if (state.isSelectModeEnabled) {
-              BlocProvider.of<AssetListBloc>(context).add(ToggleAsset(asset: widget.asset));
+            if (widget.albumId == trashAlbumId) {
+              if (!state.isSelectModeEnabled) {
+                BlocProvider.of<AssetListBloc>(context).add(EnableSelectMode(initialSelectedAsset: widget.asset));
+              } else {
+                BlocProvider.of<AssetListBloc>(context).add(ToggleAsset(asset: widget.asset));
+              }
             } else {
-              AutoRouter.of(context).push(AssetCarouselRoute(albumId: widget.albumId, initialIndex: widget.index));
+              if (state.isSelectModeEnabled) {
+                BlocProvider.of<AssetListBloc>(context).add(ToggleAsset(asset: widget.asset));
+              } else {
+                AutoRouter.of(context).push(AssetCarouselRoute(albumId: widget.albumId, initialIndex: widget.index));
+              }
             }
           },
           onLongPress: () {
@@ -65,8 +74,6 @@ class _AssetListPreviewCardState extends State<AssetListPreviewCard> with Automa
                 child: CachedNetworkImage(
                   imageUrl: widget.asset.isVideo ? widget.asset.thumbnailUrl : widget.asset.url,
                   fit: BoxFit.cover,
-                  // placeholder: (context, url) => LoadingIndicator(),
-                  // errorWidget: (context, url, error) => Icon(Icons.error),
                 ),
               ),
               if (widget.asset.isVideo) const Positioned(top: 0, left: 0, child: Icon(CupertinoIcons.video_camera_solid)),

@@ -47,7 +47,11 @@ class AlbumListPage extends StatelessWidget {
             title: const Text('My Albums'),
             actions: [
               IconButton(
-                icon: const Icon(Icons.add),
+                icon: const Icon(
+                  // Icons.add,
+                  CupertinoIcons.add,
+                  size: 30,
+                ),
                 onPressed: () {
                   showDialog(
                     context: context,
@@ -64,7 +68,7 @@ class AlbumListPage extends StatelessWidget {
                   );
                 },
               ),
-              TrashAppBarIcon()
+              const TrashAppBarIcon()
             ],
           ),
           body: const AlbumList(),
