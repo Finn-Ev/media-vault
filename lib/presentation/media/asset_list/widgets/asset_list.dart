@@ -5,15 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:media_vault/application/assets/asset_list/asset_list_bloc.dart';
 import 'package:media_vault/application/assets/observer/asset_observer_bloc.dart';
-import 'package:media_vault/domain/entities/media/album.dart';
+import 'package:media_vault/infrastructure/repositories/asset_repository_impl.dart';
 import 'package:media_vault/presentation/_widgets/loading_indicator.dart';
+import 'package:media_vault/presentation/media/asset_list/trash/widgets/trash_asset_list_bottom_menu.dart';
 import 'package:media_vault/presentation/media/asset_list/widgets/asset_list_bottom_menu.dart';
 import 'package:media_vault/presentation/media/asset_list/widgets/asset_list_preview_card.dart';
 
 class AssetList extends StatefulWidget {
-  final Album album;
+  final String albumId;
 
-  const AssetList({required this.album, Key? key}) : super(key: key);
+  const AssetList({required this.albumId, Key? key}) : super(key: key);
 
   @override
   State<AssetList> createState() => _AssetListState();
@@ -61,13 +62,16 @@ class _AssetListState extends State<AssetList> {
                               return AssetListPreviewCard(
                                 asset: asset,
                                 index: assetObserverState.assets.indexOf(asset),
-                                albumId: widget.album.id,
+                                albumId: widget.albumId,
                                 isSelected: assetListState.selectedAssets.contains(asset),
                               );
                             }).toList(),
                           ),
                         ),
-                        AssetListBottomMenu(album: widget.album),
+                        if (widget.albumId == trashAlbumId)
+                          const TrashAssetListBottomMenu()
+                        else
+                          AssetListBottomMenu(albumId: widget.albumId),
                       ],
                     ),
                     if (!cachedImagesHaveBeenLoaded)
@@ -94,7 +98,7 @@ class _AssetListState extends State<AssetList> {
                 ),
                 SizedBox(height: 8),
                 Text(
-                  'This album is empty',
+                  'Nothing to find here',
                   style: TextStyle(fontSize: 18),
                 ),
               ],

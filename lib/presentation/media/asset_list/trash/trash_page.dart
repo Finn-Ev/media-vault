@@ -6,11 +6,11 @@ import 'package:media_vault/application/assets/controller/asset_controller_bloc.
 import 'package:media_vault/application/assets/observer/asset_observer_bloc.dart';
 import 'package:media_vault/infrastructure/repositories/asset_repository_impl.dart';
 import 'package:media_vault/presentation/_widgets/loading_indicator.dart';
+import 'package:media_vault/presentation/media/asset_list/widgets/asset_list.dart';
 import 'package:media_vault/presentation/media/asset_list/widgets/asset_list_app_bar_actions.dart';
 import 'package:media_vault/presentation/media/asset_list/widgets/asset_list_leading_action.dart';
-import 'package:media_vault/presentation/media/trash/widgets/trash_asset_list.dart';
 
-import '../../../injection.dart';
+import '../../../../injection.dart';
 
 class TrashPage extends StatelessWidget {
   const TrashPage({Key? key}) : super(key: key);
@@ -68,7 +68,7 @@ class TrashPage extends StatelessWidget {
                             Text(assetControllerState.message),
                           ],
                         ))
-                      : const TrashAssetList()),
+                      : const AssetList(albumId: trashAlbumId)),
                 );
               },
             );

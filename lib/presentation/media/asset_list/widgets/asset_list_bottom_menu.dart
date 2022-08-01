@@ -7,15 +7,14 @@ import 'package:media_vault/application/albums/observer/album_observer_bloc.dart
 import 'package:media_vault/application/assets/asset_list/asset_list_bloc.dart';
 import 'package:media_vault/application/assets/controller/asset_controller_bloc.dart';
 import 'package:media_vault/application/assets/observer/asset_observer_bloc.dart';
-import 'package:media_vault/domain/entities/media/album.dart';
 import 'package:media_vault/presentation/_routes/routes.gr.dart';
 import 'package:media_vault/presentation/_widgets/custom_alert_dialog.dart';
 import 'package:media_vault/presentation/_widgets/custom_modal_bottom_sheet.dart';
 
 class AssetListBottomMenu extends StatelessWidget {
-  final Album album;
+  final String albumId;
 
-  const AssetListBottomMenu({required this.album, Key? key}) : super(key: key);
+  const AssetListBottomMenu({required this.albumId, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +37,7 @@ class AssetListBottomMenu extends StatelessWidget {
               text: 'Copy to another album',
               onPressed: () {
                 Navigator.of(context).pop();
-                AutoRouter.of(context).push(MoveAssetsRoute(assets: selectedAssets, sourceAlbumId: album.id, copy: true));
+                AutoRouter.of(context).push(MoveAssetsRoute(assets: selectedAssets, sourceAlbumId: albumId, copy: true));
                 BlocProvider.of<AssetListBloc>(context).add(DisableSelectMode());
               }),
         if (showMoveCopyActions)
@@ -46,7 +45,7 @@ class AssetListBottomMenu extends StatelessWidget {
               text: 'Move to another album',
               onPressed: () {
                 Navigator.of(context).pop();
-                AutoRouter.of(context).push(MoveAssetsRoute(assets: selectedAssets, sourceAlbumId: album.id, copy: false));
+                AutoRouter.of(context).push(MoveAssetsRoute(assets: selectedAssets, sourceAlbumId: albumId, copy: false));
                 BlocProvider.of<AssetListBloc>(context).add(DisableSelectMode());
               })
       ]);
@@ -64,7 +63,7 @@ class AssetListBottomMenu extends StatelessWidget {
             BlocProvider.of<AssetControllerBloc>(context).add(
               MoveAssetsToTrash(
                 assetsToMove: selectedAssets,
-                sourceAlbumId: album.id,
+                sourceAlbumId: albumId,
               ),
             );
             BlocProvider.of<AssetListBloc>(context).add(DisableSelectMode());

@@ -28,6 +28,7 @@ class AlbumActionSheet extends StatelessWidget {
                   hintText: 'Enter a new name for this album',
                   onConfirm: (String newTitle) {
                     BlocProvider.of<AlbumControllerBloc>(context).add(UpdateAlbum(album: album.copyWith(title: newTitle)));
+                    Navigator.of(context).pop();
                   },
                   popContextOnAction: true,
                 );

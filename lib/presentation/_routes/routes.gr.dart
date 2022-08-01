@@ -21,9 +21,9 @@ import '../auth/register/register_page.dart' as _i4;
 import '../media/album_list/album_list_page.dart' as _i6;
 import '../media/asset_carousel/asset_carousel_page.dart' as _i8;
 import '../media/asset_list/asset_list_page.dart' as _i7;
+import '../media/asset_list/trash/trash_page.dart' as _i11;
 import '../media/asset_video_player/asset_video_player_page.dart' as _i9;
 import '../media/move_assets/move_assets_page.dart' as _i10;
-import '../media/trash/trash_page.dart' as _i11;
 import '../other/settings/settings_page.dart' as _i2;
 import '../other/splash/splash_page.dart' as _i1;
 
@@ -95,7 +95,9 @@ class AppRouter extends _i12.RootStackRouter {
     },
     TrashRoute.name: (routeData) {
       return _i12.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i11.TrashPage());
+          routeData: routeData,
+          child: const _i11.TrashPage(),
+          maintainState: false);
     }
   };
 

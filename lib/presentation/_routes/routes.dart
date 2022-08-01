@@ -5,9 +5,9 @@ import 'package:media_vault/presentation/auth/register/register_page.dart';
 import 'package:media_vault/presentation/media/album_list/album_list_page.dart';
 import 'package:media_vault/presentation/media/asset_carousel/asset_carousel_page.dart';
 import 'package:media_vault/presentation/media/asset_list/asset_list_page.dart';
+import 'package:media_vault/presentation/media/asset_list/trash/trash_page.dart';
 import 'package:media_vault/presentation/media/asset_video_player/asset_video_player_page.dart';
 import 'package:media_vault/presentation/media/move_assets/move_assets_page.dart';
-import 'package:media_vault/presentation/media/trash/trash_page.dart';
 import 'package:media_vault/presentation/other/settings/settings_page.dart';
 import 'package:media_vault/presentation/other/splash/splash_page.dart';
 

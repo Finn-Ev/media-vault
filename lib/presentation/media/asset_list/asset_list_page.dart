@@ -146,7 +146,7 @@ class AssetListPage extends StatelessWidget {
                               Text(assetControllerState.message),
                             ],
                           ))
-                        : AssetList(album: album)),
+                        : AssetList(albumId: album.id)),
                   );
                 },
               );
