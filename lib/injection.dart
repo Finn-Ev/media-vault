@@ -30,7 +30,7 @@ Future<void> init() async {
   sl.registerFactory(() => AuthFormBloc(authRepository: sl()));
   sl.registerFactory(() => AuthCoreBloc(authRepository: sl()));
   // repositories
-  sl.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(firebaseAuth: sl()));
+  sl.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(firebaseAuth: sl(), albumRepository: sl()));
 
   // Albums
   // state management
@@ -38,7 +38,7 @@ Future<void> init() async {
   sl.registerFactory(() => AlbumControllerBloc(albumRepository: sl()));
 
   // repositories
-  sl.registerLazySingleton<AlbumRepository>(() => AlbumRepositoryImpl(firestore: sl(), storage: sl()));
+  sl.registerLazySingleton<AlbumRepository>(() => AlbumRepositoryImpl(firestore: sl(), storage: sl(), assetRepository: sl()));
 
   // Assets
   // state management

@@ -30,7 +30,11 @@ class AlbumObserverBloc extends Bloc<AlbumObserverEvent, AlbumObserverState> {
       (event, emit) async {
         event.failureOrAlbums.fold((failure) => emit(AlbumObserverFailure(failure)), (albums) {
           albums.sort((a, b) => a.createdAt.compareTo(b.createdAt));
-          emit(AlbumObserverLoaded(albums: albums.where((element) => element.id != trashAlbumId).toList()));
+          var filteredAlbums = albums.where((album) => album.id != trashAlbumId);
+
+          filteredAlbums = filteredAlbums.where((element) => element.deleted == false);
+
+          emit(AlbumObserverLoaded(albums: filteredAlbums.toList()));
         });
       },
     );

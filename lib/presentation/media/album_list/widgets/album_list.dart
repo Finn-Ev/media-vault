@@ -14,7 +14,6 @@ class AlbumList extends StatelessWidget {
         if (state is AlbumObserverInitial) {
           return Container();
         } else if (state is AlbumObserverLoading) {
-          print(state.toString());
           return const Center(child: LoadingIndicator());
         } else if (state is AlbumObserverFailure) {
           return const Center(child: Text('Failed to load albums'));

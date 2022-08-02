@@ -25,6 +25,7 @@ class AuthFormBloc extends Bloc<AuthFormEvent, AuthFormState> {
           email: event.email!,
           password: event.password!,
         );
+
         emit(state.copyWith(isSubmitting: false, authFailureOrSuccessOption: optionOf(failureOrSuccess)));
       }
     });
@@ -45,12 +46,14 @@ class AuthFormBloc extends Bloc<AuthFormEvent, AuthFormState> {
     on<SignInWithGooglePressed>((event, emit) async {
       emit(state.copyWith(isSubmitting: false));
       final failureOrSuccess = await authRepository.signInWithGoogle();
+
       emit(state.copyWith(isSubmitting: false, authFailureOrSuccessOption: optionOf(failureOrSuccess)));
     });
 
     on<SignInWithApplePressed>((event, emit) async {
       emit(state.copyWith(isSubmitting: false));
       final failureOrSuccess = await authRepository.signInWithApple();
+
       emit(state.copyWith(isSubmitting: false, authFailureOrSuccessOption: optionOf(failureOrSuccess)));
     });
 

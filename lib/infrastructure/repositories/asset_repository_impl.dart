@@ -47,7 +47,7 @@ class AssetRepositoryImpl extends AssetRepository {
       }
 
       if (newAsset.isVideo) {
-        // if asset is a video, generate a thumbnail and save it to firebase storage
+        // if [newAsset] is a video, generate a thumbnail and save it to firebase storage
         final thumbnail = await VideoThumbnail.thumbnailFile(
           video: file.path,
           thumbnailPath: (await getTemporaryDirectory()).path,
@@ -112,13 +112,19 @@ class AssetRepositoryImpl extends AssetRepository {
       await userDoc.collection('albums/$sourceAlbumId/assets').doc(assetToMove.id).delete();
 
       await userDoc.collection('albums/$destinationAlbumId/assets').doc(assetToMove.id).set(
-            AssetModel.fromEntity(assetToMove)
-                .copyWith(
-                  albumId: destinationAlbumId,
-                  modifiedAt: DateTime.now(),
-                )
-                .toMap(),
+            AssetModel.fromEntity(assetToMove).copyWith(albumId: destinationAlbumId, modifiedAt: DateTime.now()).toMap(),
           );
+
+      // todo refactor
+      // it could be the case that a user has deleted the whole album and then tries to move an asset to the previous deleted album
+      // As a result the deleted-flag will be set to false everytime an asset gets moved to it
+
+      final albumData = await userDoc.collection('albums').doc(destinationAlbumId).get();
+      final albumIsMarkedAsDeleted = albumData.data()!['deleted'];
+
+      if (albumIsMarkedAsDeleted) {
+        await userDoc.albumCollection.doc(destinationAlbumId).update({'deleted': false});
+      }
 
       return right(unit);
     } on FirebaseException catch (error) {

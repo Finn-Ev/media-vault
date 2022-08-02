@@ -34,7 +34,7 @@ class CustomButton extends StatelessWidget {
                       fontSize: 20,
                     ),
                   )
-                : const LoadingIndicator()),
+                : const LoadingIndicator(onPrimary: false)),
       ),
     );
   }

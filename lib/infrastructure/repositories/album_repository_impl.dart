@@ -4,21 +4,29 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:media_vault/core/failures/media_failures.dart';
 import 'package:media_vault/domain/entities/media/album.dart';
 import 'package:media_vault/domain/repositories/album_repository.dart';
+import 'package:media_vault/domain/repositories/asset_repository.dart';
 import 'package:media_vault/infrastructure/extensions/firebase_extensions.dart';
 import 'package:media_vault/infrastructure/models/album_model.dart';
+import 'package:media_vault/infrastructure/models/asset_model.dart';
 
 class AlbumRepositoryImpl extends AlbumRepository {
   final FirebaseFirestore firestore;
   final FirebaseStorage storage;
-  AlbumRepositoryImpl({required this.firestore, required this.storage});
+  final AssetRepository assetRepository;
+
+  AlbumRepositoryImpl({required this.firestore, required this.storage, required this.assetRepository});
 
   @override
-  Future<Either<MediaFailure, Unit>> create(String title) async {
+  Future<Either<MediaFailure, Unit>> create(String title, {String? id}) async {
     try {
       final userDoc = await firestore.userDocument();
 
       // go 'reverse' from domain to infrastructure
-      final albumModel = AlbumModel.fromEntity(Album.empty().copyWith(title: title));
+      var albumModel = AlbumModel.fromEntity(Album.empty().copyWith(title: title));
+
+      if (id != null) {
+        albumModel = albumModel.copyWith(id: id);
+      }
 
       await userDoc.albumCollection.doc(albumModel.id).set(albumModel.toMap());
 
@@ -38,7 +46,9 @@ class AlbumRepositoryImpl extends AlbumRepository {
 
       final albumModel = AlbumModel.fromEntity(album);
 
-      await userDoc.albumCollection.doc(albumModel.id).update(albumModel.copyWith(updatedAt: FieldValue.serverTimestamp()).toMap());
+      await userDoc.albumCollection
+          .doc(albumModel.id)
+          .update(albumModel.copyWith(updatedAt: FieldValue.serverTimestamp()).toMap());
 
       return right(unit);
     } on FirebaseException catch (e) {
@@ -50,7 +60,34 @@ class AlbumRepositoryImpl extends AlbumRepository {
   }
 
   @override
-  Future<Either<MediaFailure, Unit>> delete(String albumId) async {
+  Future<Either<MediaFailure, Unit>> moveToTrash(String albumId) async {
+    try {
+      final userDoc = await firestore.userDocument();
+
+      // delete the storage files of the album
+      final assetDocsToMoveToTrash = await userDoc.collection("albums/$albumId/assets").get();
+
+      for (final assetDoc in assetDocsToMoveToTrash.docs) {
+        assetRepository.moveToTrash(
+          AssetModel.fromFirestore(assetDoc).copyWith(modifiedAt: DateTime.now()).toEntity(),
+          albumId,
+        );
+      }
+
+      // set the deleted-field to true
+      await userDoc.albumCollection.doc(albumId).update({'deleted': true});
+
+      return right(unit);
+    } on FirebaseException catch (e) {
+      if (e.code == 'permission-denied' || e.code == 'PERMISSION_DENIED') {
+        return left(InsufficientPermissions());
+      }
+      return left(UnexpectedFailure());
+    }
+  }
+
+  @override
+  Future<Either<MediaFailure, Unit>> deletePermanently(String albumId) async {
     try {
       final userDoc = await firestore.userDocument();
 
@@ -81,7 +118,8 @@ class AlbumRepositoryImpl extends AlbumRepository {
 
     yield* userDoc.albumCollection
         .snapshots()
-        .map((snapshot) => right<MediaFailure, List<Album>>(snapshot.docs.map((doc) => AlbumModel.fromFirestore(doc).toEntity()).toList()))
+        .map((snapshot) =>
+            right<MediaFailure, List<Album>>(snapshot.docs.map((doc) => AlbumModel.fromFirestore(doc).toEntity()).toList()))
         .handleError((e) {
       if (e is FirebaseException) {
         print(e);
