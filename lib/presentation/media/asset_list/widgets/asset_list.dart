@@ -47,6 +47,12 @@ class _AssetListState extends State<AssetList> {
           return BlocBuilder<AssetListBloc, AssetListState>(
             builder: (context, assetListState) {
               if (!cachedImagesHaveBeenLoaded) startLoadingCachedImages();
+
+              if (widget.albumId == trashAlbumId) {
+                // sort assets by the date they were deleted
+                assetObserverState.assets.sort((a, b) => a.modifiedAt.compareTo(b.modifiedAt));
+              }
+
               return SafeArea(
                 child: Stack(
                   children: [
