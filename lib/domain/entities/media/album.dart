@@ -3,18 +3,18 @@ import 'package:uuid/uuid.dart';
 class Album {
   final String id;
   final String title;
-  final dynamic createdAt;
-  final dynamic updatedAt;
+  final DateTime createdAt;
+  final bool deleted;
 
   Album({
     required this.id,
     required this.title,
     required this.createdAt,
-    required this.updatedAt,
+    this.deleted = false,
   });
 
   factory Album.empty() {
-    return Album(id: const Uuid().v4(), title: "", createdAt: DateTime.now(), updatedAt: DateTime.now());
+    return Album(id: const Uuid().v4(), title: "", createdAt: DateTime.now(), deleted: false);
   }
 
   Album copyWith({
@@ -22,12 +22,13 @@ class Album {
     String? title,
     DateTime? createdAt,
     DateTime? updatedAt,
+    bool? deleted,
   }) {
     return Album(
       id: id ?? this.id,
       title: title ?? this.title,
       createdAt: createdAt ?? this.createdAt,
-      updatedAt: updatedAt ?? this.updatedAt,
+      deleted: deleted ?? this.deleted,
     );
   }
 }

@@ -5,13 +5,13 @@ class AlbumModel {
   final String id;
   final String title;
   final dynamic createdAt;
-  final dynamic updatedAt;
+  final bool deleted;
 
   AlbumModel({
     required this.id,
     required this.title,
     required this.createdAt,
-    required this.updatedAt,
+    this.deleted = false,
   });
 
   Map<String, dynamic> toMap() {
@@ -19,16 +19,17 @@ class AlbumModel {
       'id': id,
       'title': title,
       'createdAt': createdAt,
-      'updatedAt': updatedAt,
+      'deleted': deleted,
     };
   }
 
   factory AlbumModel.fromMap(Map<String, dynamic> map) {
+    final createdAt = DateTime.fromMillisecondsSinceEpoch(map['createdAt'].seconds * 1000);
     return AlbumModel(
       id: "",
       title: map['title'] as String,
-      createdAt: map['createdAt'],
-      updatedAt: map['updatedAt'],
+      createdAt: createdAt,
+      deleted: map['deleted'] as bool,
     );
   }
 
@@ -37,12 +38,13 @@ class AlbumModel {
     String? title,
     dynamic createdAt,
     dynamic updatedAt,
+    bool? deleted,
   }) {
     return AlbumModel(
       id: id ?? this.id,
       title: title ?? this.title,
       createdAt: createdAt ?? this.createdAt,
-      updatedAt: updatedAt ?? this.updatedAt,
+      deleted: deleted ?? this.deleted,
     );
   }
 
@@ -55,7 +57,7 @@ class AlbumModel {
       id: id,
       title: title,
       createdAt: createdAt,
-      updatedAt: updatedAt,
+      deleted: deleted,
     );
   }
 
@@ -64,7 +66,7 @@ class AlbumModel {
       id: album.id.toString(),
       title: album.title,
       createdAt: album.createdAt,
-      updatedAt: album.updatedAt,
+      deleted: album.deleted,
     );
   }
 }

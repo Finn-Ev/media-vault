@@ -8,14 +8,14 @@ class AssetModel {
   final String thumbnailUrl;
   final int duration;
   final dynamic uploadedAt;
-  final dynamic createdAt;
+  final dynamic modifiedAt;
 
   AssetModel({
     required this.id,
     required this.albumId,
     required this.url,
     required this.thumbnailUrl,
-    required this.createdAt,
+    required this.modifiedAt,
     required this.duration,
     required this.uploadedAt,
   });
@@ -27,20 +27,22 @@ class AssetModel {
       'url': url,
       'thumbnailUrl': thumbnailUrl,
       'duration': duration,
-      'createdAt': createdAt,
+      'modifiedAt': modifiedAt,
       'uploadedAt': uploadedAt,
     };
   }
 
   factory AssetModel.fromMap(Map<String, dynamic> map) {
+    final modifiedAt = DateTime.fromMillisecondsSinceEpoch(map['modifiedAt'].seconds * 1000);
+    final uploadedAt = DateTime.fromMillisecondsSinceEpoch(map['uploadedAt'].seconds * 1000);
     return AssetModel(
       id: "",
       albumId: map['albumId'] as String,
       url: map['url'] as String,
       thumbnailUrl: map['thumbnailUrl'] as String,
       duration: map['duration'] as int,
-      createdAt: map['createdAt'],
-      uploadedAt: map['uploadedAt'],
+      modifiedAt: modifiedAt,
+      uploadedAt: uploadedAt,
     );
   }
 
@@ -50,7 +52,7 @@ class AssetModel {
     String? url,
     String? thumbnailUrl,
     int? duration,
-    DateTime? createdAt,
+    DateTime? modifiedAt,
     DateTime? uploadedAt,
   }) {
     return AssetModel(
@@ -59,7 +61,7 @@ class AssetModel {
       url: url ?? this.url,
       thumbnailUrl: thumbnailUrl ?? this.thumbnailUrl,
       duration: duration ?? this.duration,
-      createdAt: createdAt ?? this.createdAt,
+      modifiedAt: modifiedAt ?? this.modifiedAt,
       uploadedAt: uploadedAt ?? this.uploadedAt,
     );
   }
@@ -76,7 +78,7 @@ class AssetModel {
       thumbnailUrl: thumbnailUrl,
       isVideo: duration > 0,
       duration: duration,
-      createdAt: createdAt,
+      modifiedAt: modifiedAt,
       uploadedAt: uploadedAt,
     );
   }
@@ -88,7 +90,7 @@ class AssetModel {
       url: asset.url,
       thumbnailUrl: asset.thumbnailUrl,
       duration: asset.duration,
-      createdAt: asset.createdAt,
+      modifiedAt: asset.modifiedAt,
       uploadedAt: asset.uploadedAt,
     );
   }

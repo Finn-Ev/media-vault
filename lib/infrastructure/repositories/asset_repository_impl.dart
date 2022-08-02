@@ -35,31 +35,15 @@ class AssetRepositoryImpl extends AssetRepository {
         return Left(UnexpectedFailure());
       }
 
-      Asset newAsset;
+      Asset newAsset = Asset(
+        id: const Uuid().v4(),
+        albumId: albumId,
+        uploadedAt: DateTime.now(),
+        modifiedAt: DateTime.now(),
+      );
 
       if (asset.duration > 0) {
-        print('[AssetRepositoryImpl]: Generating thumbnail');
-        newAsset = Asset(
-          id: const Uuid().v4(),
-          albumId: albumId,
-          url: "",
-          thumbnailUrl: "",
-          isVideo: true,
-          duration: asset.duration,
-          createdAt: asset.createDateTime,
-          uploadedAt: DateTime.now(),
-        );
-      } else {
-        newAsset = Asset(
-          id: const Uuid().v4(),
-          albumId: albumId,
-          url: "",
-          thumbnailUrl: "",
-          isVideo: false,
-          duration: 0,
-          createdAt: asset.createDateTime,
-          uploadedAt: DateTime.now(),
-        );
+        newAsset = newAsset.copyWith(duration: asset.duration, isVideo: true);
       }
 
       if (newAsset.isVideo) {
@@ -85,7 +69,9 @@ class AssetRepositoryImpl extends AssetRepository {
           final assetModel = AssetModel.fromEntity(newAsset.copyWith(url: downloadUrl));
           await userDoc.collection('albums/$albumId/assets').doc(assetModel.id).set(assetModel.toMap());
         },
-      ).catchError((e) => print("upload-error: $e"));
+      ).catchError((e) {
+        print("upload-error: $e");
+      });
 
       return right(unit);
     } on FirebaseException catch (error) {
@@ -126,7 +112,12 @@ class AssetRepositoryImpl extends AssetRepository {
       await userDoc.collection('albums/$sourceAlbumId/assets').doc(assetToMove.id).delete();
 
       await userDoc.collection('albums/$destinationAlbumId/assets').doc(assetToMove.id).set(
-            AssetModel.fromEntity(assetToMove).copyWith(albumId: destinationAlbumId).toMap(),
+            AssetModel.fromEntity(assetToMove)
+                .copyWith(
+                  albumId: destinationAlbumId,
+                  modifiedAt: DateTime.now(),
+                )
+                .toMap(),
           );
 
       return right(unit);
@@ -150,7 +141,9 @@ class AssetRepositoryImpl extends AssetRepository {
 
       await userDoc.collection('albums/$trashAlbumId/assets').doc(assetToMove.id).set(
             // don't update albumId, otherwise we can't move it back to the original album
-            AssetModel.fromEntity(assetToMove).toMap(),
+            AssetModel.fromEntity(assetToMove.copyWith(
+              modifiedAt: DateTime.now(),
+            )).toMap(),
           );
 
       return right(unit);

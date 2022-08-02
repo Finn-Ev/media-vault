@@ -7,18 +7,18 @@ class Asset {
   final bool isVideo;
   final String thumbnailUrl;
   final int duration;
-  final dynamic uploadedAt;
-  final dynamic createdAt;
+  final DateTime uploadedAt;
+  final DateTime modifiedAt;
 
   Asset({
     required this.id,
     required this.albumId,
-    required this.url,
-    required this.isVideo,
-    required this.thumbnailUrl,
-    required this.duration,
     required this.uploadedAt,
-    required this.createdAt,
+    required this.modifiedAt,
+    this.url = "",
+    this.duration = 0,
+    this.isVideo = false,
+    this.thumbnailUrl = "",
   });
 
   factory Asset.empty() {
@@ -30,7 +30,7 @@ class Asset {
       thumbnailUrl: "",
       duration: 0,
       uploadedAt: DateTime.now(),
-      createdAt: DateTime.now(),
+      modifiedAt: DateTime.now(),
     );
   }
 
@@ -42,7 +42,7 @@ class Asset {
     String? thumbnailUrl,
     int? duration,
     DateTime? uploadedAt,
-    DateTime? createdAt,
+    DateTime? modifiedAt,
   }) {
     return Asset(
       id: id ?? this.id,
@@ -51,7 +51,7 @@ class Asset {
       thumbnailUrl: thumbnailUrl ?? this.thumbnailUrl,
       duration: duration ?? this.duration,
       isVideo: isVideo ?? this.isVideo,
-      createdAt: createdAt ?? this.createdAt,
+      modifiedAt: modifiedAt ?? this.modifiedAt,
       uploadedAt: uploadedAt ?? this.uploadedAt,
     );
   }

@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:media_vault/application/assets/controller/asset_controller_bloc.dart';
 import 'package:media_vault/application/assets/observer/asset_observer_bloc.dart';
 import 'package:media_vault/infrastructure/repositories/asset_repository_impl.dart';
 import 'package:media_vault/presentation/_routes/routes.gr.dart';
@@ -16,10 +17,19 @@ class TrashAppBarIcon extends StatelessWidget {
     final assetObserverBloc = sl<AssetObserverBloc>()..add(ObserveAlbumAssets(albumId: trashAlbumId));
     return BlocProvider(
       create: (context) => assetObserverBloc,
-      child: BlocBuilder<AssetObserverBloc, AssetObserverState>(
+      child: BlocConsumer<AssetObserverBloc, AssetObserverState>(
+        listener: (context, state) {
+          if (state is AssetObserverLoaded) {
+            final outdatedAssets = state.assets
+                .where((asset) => asset.modifiedAt.isBefore(DateTime.now().subtract(const Duration(days: 7))))
+                .toList();
+
+            BlocProvider.of<AssetControllerBloc>(context).add(DeleteAssetsPermanently(assetsToDelete: outdatedAssets));
+          }
+        },
         builder: (context, state) {
           if (state is AssetObserverLoaded) {
-            final trashAlbumAssetCount = state.assets.length;
+            final trashAlbumAssetCount = state.assets.length.toString();
             return Center(
               child: Stack(
                 children: [
@@ -29,7 +39,7 @@ class TrashAppBarIcon extends StatelessWidget {
                     },
                     icon: const Icon(CupertinoIcons.trash),
                   ),
-                  Positioned(top: 0, right: 3, child: Text(state.assets.length.toString())),
+                  Positioned(top: 0, right: 3, child: Text(trashAlbumAssetCount)),
                 ],
               ),
             );
