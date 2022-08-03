@@ -60,6 +60,7 @@ class AlbumListPage extends StatelessWidget {
                         title: 'Create Album',
                         hintText: 'Enter the name of the album',
                         confirmText: 'Create',
+                        popContextOnAction: true,
                         onConfirm: (value) {
                           BlocProvider.of<AlbumControllerBloc>(context).add(CreateAlbum(title: value));
                         },
