@@ -33,7 +33,6 @@ class AlbumListPage extends StatelessWidget {
           leading: IconButton(
             icon: const Icon(Icons.settings),
             onPressed: () {
-              // BlocProvider.of<AuthCoreBloc>(context).add(SignOutButtonPressed());
               AutoRouter.of(context).push(const SettingsRoute());
             },
           ),
@@ -67,12 +66,38 @@ class AlbumListPage extends StatelessWidget {
         ),
         body: BlocBuilder<AlbumControllerBloc, AlbumControllerState>(
           builder: (context, state) {
-            if (state is! AlbumControllerLoading) {
-              // fully re-render the album-list every time the albums changes
-              // otherwise the albums-sort-order will be buggy
-              return const AlbumList();
-            } else {
+            if (state is AlbumControllerLoading) {
               return const Center(child: LoadingIndicator());
+            } else {
+              // fully re-render the album-list every time the albums changes
+              // otherwise the albums-sort-order will be buggy sometimes
+              return BlocBuilder<AlbumObserverBloc, AlbumObserverState>(
+                builder: (context, state) {
+                  if (state is AlbumObserverLoaded) {
+                    return state.albums.isNotEmpty
+                        ? const AlbumList()
+                        : Center(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                Text(
+                                  "You have no albums yet.",
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                                SizedBox(height: 10),
+                                Text(
+                                  "Create one by tapping the + button.",
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                              ],
+                            ),
+                          );
+                  } else {
+                    return const Center(child: LoadingIndicator());
+                  }
+                },
+              );
             }
           },
         ),

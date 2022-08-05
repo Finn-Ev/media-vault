@@ -13,6 +13,7 @@ class RegisterPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Media Vault"),
+        centerTitle: true,
       ),
       body: BlocProvider(
         create: (context) => sl<AuthFormBloc>(),

@@ -21,11 +21,10 @@ class CustomInputAlertDialog extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  final TextEditingController _controller = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
-    _controller.text = initialInputValue;
+    final TextEditingController controller = TextEditingController(text: initialInputValue);
+    controller.text = initialInputValue;
     final themeData = Theme.of(context);
     return PlatformAlertDialog(
       title: Text(title),
@@ -39,7 +38,7 @@ class CustomInputAlertDialog extends StatelessWidget {
               color: themeData.colorScheme.onPrimary,
             ),
             onChanged: (value) {},
-            controller: _controller,
+            controller: controller,
           ),
         ],
       ),
@@ -57,14 +56,14 @@ class CustomInputAlertDialog extends StatelessWidget {
           },
         ),
         PlatformDialogAction(
-          child: const Text('Create'),
+          child: Text(confirmText),
           cupertino: (_, __) => CupertinoDialogActionData(
             isDefaultAction: true,
             child: Text(confirmText),
           ),
           onPressed: () {
-            if (_controller.text.isNotEmpty) {
-              onConfirm(_controller.text);
+            if (controller.text.isNotEmpty) {
+              onConfirm(controller.text);
               if (popContextOnAction) Navigator.of(context).pop();
             }
           },

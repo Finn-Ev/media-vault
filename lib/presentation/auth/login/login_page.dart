@@ -17,6 +17,7 @@ class LoginPage extends StatelessWidget {
       appBar: AppBar(
         leading: const Text(""), // workaround because replace() doesn't work as intended
         title: const Text("Media Vault"),
+        centerTitle: true,
       ),
       body: BlocProvider(
         create: (context) => sl<AuthFormBloc>(),

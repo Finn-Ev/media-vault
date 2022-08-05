@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:31030779030:android:ea4fc454e029d2555036b7",
         "android_client_info": {
-          "package_name": "com.example.media_vault"
+          "package_name": "com.finnevermann.mediavault"
         }
       },
       "oauth_client": [

@@ -46,6 +46,7 @@ class TrashPage extends StatelessWidget {
                 return Scaffold(
                   appBar: AppBar(
                     title: const Text("Trash"),
+                    centerTitle: true,
                     leadingWidth: assetListState.isSelectModeEnabled ? 90 : 56,
                     leading: assetControllerState is! AssetControllerLoading && assetListState.isSelectModeEnabled
                         ? const AssetListLeadingAction(albumId: trashAlbumId)

@@ -30,6 +30,7 @@ class AlbumActionSheet extends StatelessWidget {
                     BlocProvider.of<AlbumControllerBloc>(context).add(UpdateAlbum(album: album.copyWith(title: newTitle)));
                     Navigator.of(context).pop();
                   },
+                  initialInputValue: album.title,
                   popContextOnAction: true,
                 );
               },
