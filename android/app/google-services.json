@@ -1,77 +1,34 @@
 {
   "project_info": {
-    "project_number": "31030779030",
-    "project_id": "fe--media-vault",
-    "storage_bucket": "fe--media-vault.appspot.com"
+    "project_number": "216046168879",
+    "project_id": "fe-media-vault",
+    "storage_bucket": "fe-media-vault.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:31030779030:android:ea4fc454e029d2555036b7",
+        "mobilesdk_app_id": "1:216046168879:android:776e54c2ed3f70f989cfda",
         "android_client_info": {
-          "package_name": "com.finnevermann.mediavault"
+          "package_name": "com.example.media_vault"
         }
       },
       "oauth_client": [
         {
-          "client_id": "31030779030-mcvtrf3kjlq169oci7kde3l7c9pe9g04.apps.googleusercontent.com",
+          "client_id": "216046168879-8e2s26516sr4bv03p5i7qhfkn132pai7.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCnkgfKMuGi7613IX3BTvqOni1Q5WDTmAU"
+          "current_key": "AIzaSyBn50_V6s8phW_X-Tlf0q4qnw4IMt1OtU8"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "31030779030-mcvtrf3kjlq169oci7kde3l7c9pe9g04.apps.googleusercontent.com",
+              "client_id": "216046168879-8e2s26516sr4bv03p5i7qhfkn132pai7.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "31030779030-ej3jprjqqjb1faaup142lkpm68kfmujn.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.finnevermann.mediavault"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:31030779030:android:b7322a04e8f851b95036b7",
-        "android_client_info": {
-          "package_name": "com.finnevermann.mediavault"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "31030779030-mcvtrf3kjlq169oci7kde3l7c9pe9g04.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCnkgfKMuGi7613IX3BTvqOni1Q5WDTmAU"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "31030779030-mcvtrf3kjlq169oci7kde3l7c9pe9g04.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "31030779030-ej3jprjqqjb1faaup142lkpm68kfmujn.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.finnevermann.mediavault"
-              }
             }
           ]
         }

@@ -37,7 +37,7 @@ class SettingsPage extends StatelessWidget {
         ),
         body: Column(
           children: [
-            const Text("Logged in as:"),
+            const Text("Logged in as"),
             const SizedBox(height: 5),
             Text((BlocProvider.of<AuthCoreBloc>(context).state as AuthCoreAuthenticated).user.email),
             const SizedBox(height: 20),
