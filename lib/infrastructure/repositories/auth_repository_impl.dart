@@ -100,6 +100,7 @@ class AuthRepositoryImpl implements AuthRepository {
 
         return right(unit);
       } on FirebaseAuthException catch (e) {
+        print(e);
         if (e.code == 'account-exists-with-different-credential') {
           left(EmailAlreadyInUseFailure());
         }
@@ -140,6 +141,7 @@ class AuthRepositoryImpl implements AuthRepository {
 
       return right(unit);
     } on FirebaseAuthException catch (e) {
+      print(e);
       if (e.code == 'account-exists-with-different-credential') {
         left(EmailAlreadyInUseFailure());
       }

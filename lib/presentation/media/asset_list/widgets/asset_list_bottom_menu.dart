@@ -56,9 +56,9 @@ class AssetListBottomMenu extends StatelessWidget {
         context: context,
         builder: (_) => CustomAlertDialog(
           title: selectedAssets.length > 1 ? "Delete assets" : "Delete asset",
-          content: "Are you sure you want to move all of the selected assets to the trash-bin?",
+          content: "The selected assets will be moved to trash",
           confirmIsDestructive: true,
-          confirmButtonText: "Delete",
+          confirmButtonText: "Confirm",
           onConfirm: () {
             BlocProvider.of<AssetControllerBloc>(context).add(
               MoveAssetsToTrash(

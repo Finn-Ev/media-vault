@@ -44,8 +44,8 @@ class AlbumActionSheet extends StatelessWidget {
               context: context,
               builder: (_) {
                 return CustomAlertDialog(
-                  title: 'Delete',
-                  content: 'Are you sure you want to delete this album?',
+                  title: 'Delete album?',
+                  content: 'It will be moved to trash',
                   onConfirm: () {
                     BlocProvider.of<AlbumControllerBloc>(context).add(DeleteAlbum(id: album.id));
                     Navigator.pop(context);

@@ -54,7 +54,7 @@ class AssetRepositoryImpl extends AssetRepository {
           imageFormat: ImageFormat.PNG,
         );
 
-        await storage.ref(userDoc.id).child(const Uuid().v4()).putFile(File(thumbnail!)).then(
+        await storage.ref('thumbnails').child(const Uuid().v4()).putFile(File(thumbnail!)).then(
           (taskSnapshot) async {
             final thumbnailUrl = await taskSnapshot.ref.getDownloadURL();
             newAsset = newAsset.copyWith(thumbnailUrl: thumbnailUrl);
@@ -63,7 +63,7 @@ class AssetRepositoryImpl extends AssetRepository {
       }
 
       // then we upload the video itself to firebase storage
-      await storage.ref(userDoc.id).child(const Uuid().v4()).putFile(file).then(
+      await storage.ref('assets').child(const Uuid().v4()).putFile(file).then(
         (taskSnapshot) async {
           final downloadUrl = await taskSnapshot.ref.getDownloadURL();
           final assetModel = AssetModel.fromEntity(newAsset.copyWith(url: downloadUrl));
@@ -91,6 +91,10 @@ class AssetRepositoryImpl extends AssetRepository {
       await userDoc.collection('albums/$trashAlbumId/assets').doc(assetToDelete.id.toString()).delete();
 
       await storage.refFromURL(assetToDelete.url).delete();
+
+      if (assetToDelete.thumbnailUrl.isNotEmpty) {
+        await storage.refFromURL(assetToDelete.thumbnailUrl).delete();
+      }
 
       return right(unit);
     } on FirebaseException catch (error) {
@@ -180,7 +184,7 @@ class AssetRepositoryImpl extends AssetRepository {
 
       await Dio().download(assetToCopy.url, path);
 
-      await storage.ref(userDoc.id).child(const Uuid().v4()).putFile(File(path)).then(
+      await storage.ref('assets').child(const Uuid().v4()).putFile(File(path)).then(
         (taskSnapshot) async {
           final downloadUrl = await taskSnapshot.ref.getDownloadURL();
           final assetModel = AssetModel.fromEntity(assetToCopy.copyWith(url: downloadUrl));
@@ -188,7 +192,9 @@ class AssetRepositoryImpl extends AssetRepository {
                 assetModel.toMap(),
               );
         },
-      ).catchError((e) => print("upload-error: $e"));
+      ).catchError((e) {
+        print("upload-error: $e");
+      });
 
       File(path).delete();
 
