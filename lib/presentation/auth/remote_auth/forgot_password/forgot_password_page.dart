@@ -1,12 +1,11 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:media_vault/application/auth/auth_form/auth_form_bloc.dart';
 import 'package:media_vault/injection.dart';
-import 'package:media_vault/presentation/auth/register/widgets/register_form.dart';
+import 'package:media_vault/presentation/auth/remote_auth/forgot_password/widgets/forgot_password_form.dart';
 
-class RegisterPage extends StatelessWidget {
-  const RegisterPage({Key? key}) : super(key: key);
+class ForgotPasswordPage extends StatelessWidget {
+  const ForgotPasswordPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +24,7 @@ class RegisterPage extends StatelessWidget {
               children: [
                 const SizedBox(height: 40.0),
                 const Text(
-                  "Register",
+                  "Reset Password",
                   style: TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
@@ -34,21 +33,11 @@ class RegisterPage extends StatelessWidget {
                 ),
                 const SizedBox(height: 12.0),
                 const Text(
-                  "Create your personal account",
+                  "Please enter the email-address of your account.",
                   style: TextStyle(fontSize: 16),
                 ),
                 const SizedBox(height: 16.0),
-                RegisterForm(),
-                const SizedBox(height: 16.0),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    InkResponse(
-                      onTap: () => AutoRouter.of(context).pop(),
-                      child: const Text("Already have an account?"),
-                    ),
-                  ],
-                ),
+                ForgotPasswordForm(),
               ],
             ),
           ),

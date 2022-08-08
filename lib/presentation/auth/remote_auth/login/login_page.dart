@@ -5,8 +5,8 @@ import 'package:media_vault/application/auth/auth_form/auth_form_bloc.dart';
 import 'package:media_vault/injection.dart';
 import 'package:media_vault/presentation/_routes/routes.gr.dart';
 import 'package:media_vault/presentation/_widgets/horizontal_text_divider.dart';
-import 'package:media_vault/presentation/auth/login/widgets/login_form.dart';
-import 'package:media_vault/presentation/auth/login/widgets/social_sign_in_button.dart';
+import 'package:media_vault/presentation/auth/remote_auth/login/widgets/login_form.dart';
+import 'package:media_vault/presentation/auth/remote_auth/login/widgets/social_sign_in_button.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -15,7 +15,7 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: const Text(""), // workaround because replace() doesn't work as intended
+        leading: const Text(""), // workaround because replace() doesn't always work as excepted
         title: const Text("Media Vault"),
         centerTitle: true,
       ),

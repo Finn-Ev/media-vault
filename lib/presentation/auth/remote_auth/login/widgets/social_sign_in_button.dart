@@ -52,6 +52,7 @@ class SocialSignInButton extends StatelessWidget {
   Widget build(BuildContext context) {
     if (_shouldBeDisplayed()) {
       return BlocListener<AuthFormBloc, AuthFormState>(
+        listenWhen: (previous, current) => previous.authFailureOrSuccessOption != current.authFailureOrSuccessOption,
         listener: (context, state) {
           state.authFailureOrSuccessOption.fold(
             () {},
@@ -65,8 +66,9 @@ class SocialSignInButton extends StatelessWidget {
                   );
                 }
               },
-              (_) {
-                AutoRouter.of(context).replace(const AlbumListRoute());
+              (success) {
+                AutoRouter.of(context).replace(const LocalAuthRootRoute());
+                AutoRouter.of(context).pop();
               },
             ),
           );

@@ -59,17 +59,18 @@ class LoginForm extends StatelessWidget {
                   (failure) {
                     if (failure is EmailNotVerifiedFailure) {
                       showDialog(
-                          context: context,
-                          builder: (_) => PlatformAlertDialog(
-                                title: const Text("Email not verified"),
-                                content: Text(mapAuthFailureToMessage(failure)),
-                                actions: [
-                                  PlatformDialogAction(
-                                    child: const Text("OK"),
-                                    onPressed: () => Navigator.of(context).pop(),
-                                  )
-                                ],
-                              ));
+                        context: context,
+                        builder: (_) => PlatformAlertDialog(
+                          title: const Text("Email not verified"),
+                          content: Text(mapAuthFailureToMessage(failure)),
+                          actions: [
+                            PlatformDialogAction(
+                              child: const Text("OK"),
+                              onPressed: () => Navigator.of(context).pop(),
+                            )
+                          ],
+                        ),
+                      );
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
@@ -82,7 +83,7 @@ class LoginForm extends StatelessWidget {
                       );
                     }
                   },
-                  (success) => AutoRouter.of(context).replace(const AlbumListRoute()),
+                  (success) => AutoRouter.of(context).replace(const LocalAuthRootRoute()),
                 ));
       },
       builder: (context, state) {

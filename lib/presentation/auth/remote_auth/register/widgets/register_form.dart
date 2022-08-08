@@ -79,11 +79,12 @@ class RegisterForm extends StatelessWidget {
                         context: context,
                         builder: (_) {
                           return PlatformAlertDialog(
-                            title: Text("Success"),
-                            content: Text("To complete your registration, please check your email for a confirmation link."),
+                            title: const Text("Success"),
+                            content:
+                                const Text("To complete your registration, please check your email for a confirmation link."),
                             actions: [
                               PlatformDialogAction(
-                                child: Text("OK"),
+                                child: const Text("OK"),
                                 onPressed: () => AutoRouter.of(context).replace(const LoginRoute()),
                               )
                             ],
