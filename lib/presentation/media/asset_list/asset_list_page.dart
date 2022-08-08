@@ -112,14 +112,12 @@ class AssetListPage extends StatelessWidget {
                 }
               }
 
-              // final showUI = assetControllerState is AssetControllerInitial || assetControllerState is AssetControllerLoaded;
-
               return BlocBuilder<AssetListBloc, AssetListState>(
                 builder: (context, assetListState) {
                   return Scaffold(
                     appBar: AppBar(
                       title: Text(album.title),
-                      leadingWidth: assetListState.isSelectModeEnabled ? 90 : 56,
+                      leadingWidth: assetListState.isSelectModeEnabled ? 90 : 56, // 56 is flutter-default
                       leading: assetControllerState is! AssetControllerLoading && assetListState.isSelectModeEnabled
                           ? AssetListLeadingAction(albumId: album.id)
                           : null,

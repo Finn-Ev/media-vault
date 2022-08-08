@@ -1,7 +1,11 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:media_vault/presentation/auth/forgot_password/forgot_password_page.dart';
-import 'package:media_vault/presentation/auth/login/login_page.dart';
-import 'package:media_vault/presentation/auth/register/register_page.dart';
+import 'package:media_vault/presentation/auth/local_auth/enter_local_auth/enter_local_auth_page.dart';
+import 'package:media_vault/presentation/auth/local_auth/forgot_pin/forgot_pin_page.dart';
+import 'package:media_vault/presentation/auth/local_auth/local_auth_root_page.dart';
+import 'package:media_vault/presentation/auth/local_auth/setup_local_auth/setup_local_auth_page.dart';
+import 'package:media_vault/presentation/auth/remote_auth/forgot_password/forgot_password_page.dart';
+import 'package:media_vault/presentation/auth/remote_auth/login/login_page.dart';
+import 'package:media_vault/presentation/auth/remote_auth/register/register_page.dart';
 import 'package:media_vault/presentation/media/album_list/album_list_page.dart';
 import 'package:media_vault/presentation/media/asset_carousel/asset_carousel_page.dart';
 import 'package:media_vault/presentation/media/asset_list/asset_list_page.dart';
@@ -19,10 +23,16 @@ import 'package:media_vault/presentation/other/splash/splash_page.dart';
     AutoRoute(page: SplashPage, initial: true),
     AutoRoute(page: SettingsPage),
 
-    // Auth
+    // Remote Auth
     AutoRoute(page: LoginPage),
     AutoRoute(page: RegisterPage),
     AutoRoute(page: ForgotPasswordPage),
+
+    // Local Auth
+    AutoRoute(page: LocalAuthRootPage),
+    AutoRoute(page: EnterLocalAuthPage),
+    AutoRoute(page: SetupLocalAuthPage),
+    AutoRoute(page: ForgotPinPage),
 
     // Media
     AutoRoute(page: AlbumListPage, maintainState: false),

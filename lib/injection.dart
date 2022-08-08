@@ -10,6 +10,7 @@ import 'package:media_vault/application/assets/controller/asset_controller_bloc.
 import 'package:media_vault/application/assets/observer/asset_observer_bloc.dart';
 import 'package:media_vault/application/auth/auth_core/auth_core_bloc.dart';
 import 'package:media_vault/application/auth/auth_form/auth_form_bloc.dart';
+import 'package:media_vault/application/auth/auth_local/auth_local_bloc.dart';
 import 'package:media_vault/domain/repositories/album_repository.dart';
 import 'package:media_vault/domain/repositories/asset_repository.dart';
 import 'package:media_vault/domain/repositories/auth_repository.dart';
@@ -25,12 +26,16 @@ Future<void> init() async {
   sl.registerLazySingleton(() => FirebaseAuth.instance);
   sl.registerLazySingleton(() => FirebaseStorage.instance);
 
-  // Auth
+  // Remote-Auth
   // state management
   sl.registerFactory(() => AuthFormBloc(authRepository: sl()));
   sl.registerFactory(() => AuthCoreBloc(authRepository: sl()));
   // repositories
   sl.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(firebaseAuth: sl(), albumRepository: sl()));
+
+  // Local-Auth
+  // state management
+  sl.registerFactory(() => AuthLocalBloc());
 
   // Albums
   // state management
