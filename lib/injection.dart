@@ -8,15 +8,18 @@ import 'package:media_vault/application/assets/asset_carousel/asset_carousel_blo
 import 'package:media_vault/application/assets/asset_list/asset_list_bloc.dart';
 import 'package:media_vault/application/assets/controller/asset_controller_bloc.dart';
 import 'package:media_vault/application/assets/observer/asset_observer_bloc.dart';
-import 'package:media_vault/application/auth/auth_core/auth_core_bloc.dart';
-import 'package:media_vault/application/auth/auth_form/auth_form_bloc.dart';
-import 'package:media_vault/application/auth/auth_local/auth_local_bloc.dart';
+import 'package:media_vault/application/auth/local_auth/local_auth_bloc.dart';
+import 'package:media_vault/application/auth/remote_auth/remote_auth_core/remote_auth_core_bloc.dart';
+import 'package:media_vault/application/auth/remote_auth/remote_auth_form/remote_auth_form_bloc.dart';
 import 'package:media_vault/domain/repositories/album_repository.dart';
 import 'package:media_vault/domain/repositories/asset_repository.dart';
-import 'package:media_vault/domain/repositories/auth_repository.dart';
+import 'package:media_vault/domain/repositories/local_auth_repository.dart';
+import 'package:media_vault/domain/repositories/remote_auth_repository.dart';
 import 'package:media_vault/infrastructure/repositories/album_repository_impl.dart';
 import 'package:media_vault/infrastructure/repositories/asset_repository_impl.dart';
-import 'package:media_vault/infrastructure/repositories/auth_repository_impl.dart';
+import 'package:media_vault/infrastructure/repositories/local_auth_repository_impl.dart';
+import 'package:media_vault/infrastructure/repositories/remote_auth_repository_impl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 final sl = GetIt.I;
 
@@ -31,11 +34,16 @@ Future<void> init() async {
   sl.registerFactory(() => AuthFormBloc(authRepository: sl()));
   sl.registerFactory(() => AuthCoreBloc(authRepository: sl()));
   // repositories
-  sl.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(firebaseAuth: sl(), albumRepository: sl()));
+  sl.registerLazySingleton<RemoteAuthRepository>(() => AuthRepositoryImpl(firebaseAuth: sl(), albumRepository: sl()));
 
   // Local-Auth
   // state management
-  sl.registerFactory(() => AuthLocalBloc());
+  sl.registerFactory(() => LocalAuthBloc(localAuthRepository: sl()));
+  // repositories
+  sl.registerLazySingleton<LocalAuthRepository>(() => LocalAuthRepositoryImpl(sharedPreferences: sl()));
+  // external
+  final sharedPreferences = await SharedPreferences.getInstance();
+  sl.registerLazySingleton(() => sharedPreferences);
 
   // Albums
   // state management

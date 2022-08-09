@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:media_vault/application/auth/auth_local/auth_local_bloc.dart';
+import 'package:media_vault/application/auth/local_auth/local_auth_bloc.dart';
 import 'package:media_vault/presentation/_routes/routes.gr.dart';
 import 'package:media_vault/presentation/_widgets/loading_overlay.dart';
 
@@ -10,11 +10,14 @@ class LocalAuthRootPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AutoRouter.of(context).replace(const SetupLocalAuthRoute());
-    // AutoRouter.of(context).replace(const EnterLocalAuthRoute());
-    return BlocListener<AuthLocalBloc, AuthLocalState>(
+    BlocProvider.of<LocalAuthBloc>(context).add(LocalAuthSetupCheckRequest());
+    return BlocListener<LocalAuthBloc, LocalAuthState>(
       listener: (context, state) {
-        // TODO: check if the user has setup local auth and redirect the user accordingly
+        if (state.isSetup) {
+          AutoRouter.of(context).replace(const EnterLocalAuthRoute());
+        } else {
+          AutoRouter.of(context).replace(const LocalAuthSetupRoute());
+        }
       },
       child: const Scaffold(
         body: LoadingOverlay(),

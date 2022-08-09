@@ -1,9 +1,9 @@
-part of 'auth_form_bloc.dart';
+part of 'remote_auth_form_bloc.dart';
 
 class AuthFormState {
   final bool isSubmitting;
   final bool showValidationMessages;
-  final Option<Either<AuthFailure, Unit>> authFailureOrSuccessOption;
+  final Option<Either<RemoteAuthFailure, Unit>> authFailureOrSuccessOption;
 
   AuthFormState({
     required this.isSubmitting,
@@ -14,7 +14,7 @@ class AuthFormState {
   AuthFormState copyWith({
     bool? isSubmitting,
     bool? showValidationMessages,
-    Option<Either<AuthFailure, Unit>>? authFailureOrSuccessOption,
+    Option<Either<RemoteAuthFailure, Unit>>? authFailureOrSuccessOption,
   }) {
     return AuthFormState(
       isSubmitting: isSubmitting ?? this.isSubmitting,

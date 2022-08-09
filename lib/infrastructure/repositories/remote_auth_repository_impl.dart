@@ -5,22 +5,22 @@ import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:media_vault/constants.dart';
-import 'package:media_vault/core/failures/auth_failures.dart';
+import 'package:media_vault/core/failures/remote_auth_failures.dart';
 import 'package:media_vault/domain/entities/auth/user.dart';
 import 'package:media_vault/domain/repositories/album_repository.dart';
-import 'package:media_vault/domain/repositories/auth_repository.dart';
+import 'package:media_vault/domain/repositories/remote_auth_repository.dart';
 import 'package:media_vault/infrastructure/extensions/firebase_extensions.dart';
 import 'package:media_vault/infrastructure/repositories/asset_repository_impl.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
-class AuthRepositoryImpl implements AuthRepository {
+class AuthRepositoryImpl implements RemoteAuthRepository {
   final FirebaseAuth firebaseAuth;
   final AlbumRepository albumRepository;
 
   AuthRepositoryImpl({required this.firebaseAuth, required this.albumRepository});
 
   @override
-  Future<Either<AuthFailure, Unit>> registerWithEmailAndPassword({
+  Future<Either<RemoteAuthFailure, Unit>> registerWithEmailAndPassword({
     required String email,
     required String password,
   }) async {
@@ -42,7 +42,7 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<AuthFailure, Unit>> signInWithEmailAndPassword({required String email, required String password}) async {
+  Future<Either<RemoteAuthFailure, Unit>> signInWithEmailAndPassword({required String email, required String password}) async {
     try {
       final user = await firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
 
@@ -63,7 +63,7 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<AuthFailure, Unit>> sendPasswordResetEmail({required String email}) async {
+  Future<Either<RemoteAuthFailure, Unit>> sendPasswordResetEmail({required String email}) async {
     try {
       await firebaseAuth.sendPasswordResetEmail(email: email);
       return right(unit);
@@ -73,7 +73,7 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<AuthFailure, Unit>> signInWithGoogle() async {
+  Future<Either<RemoteAuthFailure, Unit>> signInWithGoogle() async {
     final GoogleSignIn googleSignIn = GoogleSignIn(
       clientId: FIREBASE_CLIENT_ID,
       scopes: [
@@ -112,7 +112,7 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<AuthFailure, Unit>> signInWithApple() async {
+  Future<Either<RemoteAuthFailure, Unit>> signInWithApple() async {
     String sha256ofString(String input) {
       final bytes = utf8.encode(input);
       final digest = sha256.convert(bytes);

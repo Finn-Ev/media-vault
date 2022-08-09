@@ -2,7 +2,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:media_vault/presentation/auth/local_auth/enter_local_auth/enter_local_auth_page.dart';
 import 'package:media_vault/presentation/auth/local_auth/forgot_pin/forgot_pin_page.dart';
 import 'package:media_vault/presentation/auth/local_auth/local_auth_root_page.dart';
-import 'package:media_vault/presentation/auth/local_auth/setup_local_auth/setup_local_auth_page.dart';
+import 'package:media_vault/presentation/auth/local_auth/local_auth_setup/confirm_local_auth_setup_page.dart';
+import 'package:media_vault/presentation/auth/local_auth/local_auth_setup/local_auth_setup_page.dart';
 import 'package:media_vault/presentation/auth/remote_auth/forgot_password/forgot_password_page.dart';
 import 'package:media_vault/presentation/auth/remote_auth/login/login_page.dart';
 import 'package:media_vault/presentation/auth/remote_auth/register/register_page.dart';
@@ -31,7 +32,8 @@ import 'package:media_vault/presentation/other/splash/splash_page.dart';
     // Local Auth
     AutoRoute(page: LocalAuthRootPage),
     AutoRoute(page: EnterLocalAuthPage),
-    AutoRoute(page: SetupLocalAuthPage),
+    AutoRoute(page: LocalAuthSetupPage),
+    AutoRoute(page: ConfirmLocalAuthSetupPage),
     AutoRoute(page: ForgotPinPage),
 
     // Media

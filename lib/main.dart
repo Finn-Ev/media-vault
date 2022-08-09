@@ -4,8 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:media_vault/application/albums/controller/album_controller_bloc.dart';
 import 'package:media_vault/application/assets/asset_list/asset_list_bloc.dart';
 import 'package:media_vault/application/assets/controller/asset_controller_bloc.dart';
-import 'package:media_vault/application/auth/auth_core/auth_core_bloc.dart';
-import 'package:media_vault/application/auth/auth_local/auth_local_bloc.dart';
+import 'package:media_vault/application/auth/local_auth/local_auth_bloc.dart';
+import 'package:media_vault/application/auth/remote_auth/remote_auth_core/remote_auth_core_bloc.dart';
 import 'package:media_vault/firebase_options.dart';
 import 'package:media_vault/presentation/_routes/routes.gr.dart' as router;
 import 'package:media_vault/theme.dart';
@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<AuthCoreBloc>(create: (context) => sl<AuthCoreBloc>()..add(AuthCheckRequested())),
-        BlocProvider<AuthLocalBloc>(create: (context) => sl<AuthLocalBloc>()),
+        BlocProvider<LocalAuthBloc>(create: (context) => sl<LocalAuthBloc>()),
         BlocProvider<AlbumControllerBloc>(create: (context) => sl<AlbumControllerBloc>()),
         BlocProvider<AssetControllerBloc>(create: (context) => sl<AssetControllerBloc>()),
         BlocProvider<AssetListBloc>(create: (context) => sl<AssetListBloc>()),

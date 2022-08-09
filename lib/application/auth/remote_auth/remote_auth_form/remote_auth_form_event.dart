@@ -1,4 +1,4 @@
-part of 'auth_form_bloc.dart';
+part of 'remote_auth_form_bloc.dart';
 
 @immutable
 abstract class AuthFormEvent {}

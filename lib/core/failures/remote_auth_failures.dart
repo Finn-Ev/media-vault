@@ -1,14 +1,14 @@
-abstract class AuthFailure {}
+abstract class RemoteAuthFailure {}
 
-class ServerFailure extends AuthFailure {}
+class ServerFailure extends RemoteAuthFailure {}
 
-class EmailAlreadyInUseFailure extends AuthFailure {}
+class EmailAlreadyInUseFailure extends RemoteAuthFailure {}
 
-class EmailNotVerifiedFailure extends AuthFailure {}
+class EmailNotVerifiedFailure extends RemoteAuthFailure {}
 
-class InvalidEmailAndPasswordCombinationFailure extends AuthFailure {}
+class InvalidEmailAndPasswordCombinationFailure extends RemoteAuthFailure {}
 
-String mapAuthFailureToMessage(AuthFailure failure) {
+String mapAuthFailureToMessage(RemoteAuthFailure failure) {
   switch (failure.runtimeType) {
     case ServerFailure:
       return 'Something went wrong';

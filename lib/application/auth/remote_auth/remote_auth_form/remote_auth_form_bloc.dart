@@ -1,14 +1,14 @@
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
-import 'package:media_vault/core/failures/auth_failures.dart';
-import 'package:media_vault/domain/repositories/auth_repository.dart';
+import 'package:media_vault/core/failures/remote_auth_failures.dart';
+import 'package:media_vault/domain/repositories/remote_auth_repository.dart';
 import 'package:meta/meta.dart';
 
-part 'auth_form_event.dart';
-part 'auth_form_state.dart';
+part 'remote_auth_form_event.dart';
+part 'remote_auth_form_state.dart';
 
 class AuthFormBloc extends Bloc<AuthFormEvent, AuthFormState> {
-  final AuthRepository authRepository;
+  final RemoteAuthRepository authRepository;
 
   AuthFormBloc({required this.authRepository})
       : super(AuthFormState(

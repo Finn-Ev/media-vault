@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:media_vault/application/auth/auth_form/auth_form_bloc.dart';
+import 'package:media_vault/application/auth/remote_auth/remote_auth_form/remote_auth_form_bloc.dart';
 import 'package:media_vault/injection.dart';
 import 'package:media_vault/presentation/auth/remote_auth/forgot_password/widgets/forgot_password_form.dart';
 
