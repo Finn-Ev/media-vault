@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:media_vault/application/auth/local_auth/local_auth_bloc.dart';
 import 'package:media_vault/application/auth/remote_auth/remote_auth_form/remote_auth_form_bloc.dart';
 import 'package:media_vault/injection.dart';
 import 'package:media_vault/presentation/_routes/routes.gr.dart';
@@ -13,6 +14,7 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    BlocProvider.of<LocalAuthBloc>(context).add(UserNavigatedToLoginPage());
     return Scaffold(
       appBar: AppBar(
         leading: const Text(""), // workaround because replace() doesn't always work as excepted

@@ -14,3 +14,5 @@ class LocalAuthSetupPinsMatch extends AuthLocalEvent {
   final String pin;
   LocalAuthSetupPinsMatch({required this.pin});
 }
+
+class UserNavigatedToLoginPage extends AuthLocalEvent {}

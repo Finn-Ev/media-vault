@@ -19,12 +19,13 @@ class SettingsPage extends StatelessWidget {
           title: "Logout?",
           content: "Do you really want to logout of Media-Vault?",
           confirmIsDestructive: true,
-          onConfirm: () => BlocProvider.of<AuthCoreBloc>(context).add(SignOutButtonPressed()),
+          onConfirm: () {
+            BlocProvider.of<AuthCoreBloc>(context).add(SignOutButtonPressed());
+          },
         ),
       );
     }
 
-    final themeData = Theme.of(context);
     return BlocListener<AuthCoreBloc, AuthCoreState>(
       listener: (context, state) {
         if (state is AuthCoreUnauthenticated) {
@@ -40,6 +41,11 @@ class SettingsPage extends StatelessWidget {
             const Text("Logged in as"),
             const SizedBox(height: 5),
             Text((BlocProvider.of<AuthCoreBloc>(context).state as AuthCoreAuthenticated).user.email),
+            const SizedBox(height: 20),
+            CustomButton(
+              text: "Change PIN",
+              onPressed: () => AutoRouter.of(context).push(const EditPinRoute()),
+            ),
             const SizedBox(height: 20),
             CustomButton(
               text: "Logout from Media-Vault",

@@ -6,19 +6,19 @@ import 'package:media_vault/application/auth/local_auth/local_auth_bloc.dart';
 import 'package:media_vault/presentation/_routes/routes.gr.dart';
 import 'package:media_vault/presentation/auth/local_auth/widgets/num_pad.dart';
 
-class EnterLocalAuthPage extends StatelessWidget {
-  const EnterLocalAuthPage({Key? key}) : super(key: key);
+class EditPinPage extends StatelessWidget {
+  const EditPinPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    onNumPadSubmit(String value) {
-      BlocProvider.of<LocalAuthBloc>(context).add(LocalAuthPinWasEntered(pin: value));
+    onNumPadSubmit(String pin) {
+      BlocProvider.of<LocalAuthBloc>(context).add(LocalAuthPinWasEntered(pin: pin));
     }
 
     return BlocListener<LocalAuthBloc, LocalAuthState>(
       listener: (context, state) {
-        if (state.isAuthenticated) {
-          AutoRouter.of(context).replace(const AlbumListRoute());
+        if (state.incorrectPinFailure == false) {
+          AutoRouter.of(context).push(const LocalAuthSetupRoute());
         } else if (state.incorrectPinFailure == true) {
           showPlatformDialog(
             context: context,
@@ -37,31 +37,21 @@ class EnterLocalAuthPage extends StatelessWidget {
           );
         }
       },
-      child: SafeArea(
-        child: Scaffold(
-          appBar: AppBar(
-            title: const Text('Media Vault'),
-            centerTitle: true,
-          ),
-          body: Column(
-            children: [
-              const Text(
-                'Please enter your PIN',
-                style: TextStyle(fontSize: 16),
-              ),
-              const SizedBox(height: 10),
-              NumPad(onSubmit: onNumPadSubmit),
-              const SizedBox(height: 10),
-              GestureDetector(
-                onTap: () => AutoRouter.of(context).push(const ForgotPinRoute()),
-                child: const Text(
-                  "Forgot your PIN?",
-                  style: TextStyle(fontSize: 16),
-                ),
-              ),
-              const SizedBox(height: 10),
-              const Text(""),
-            ],
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Media Vault'),
+          centerTitle: true,
+        ),
+        body: SafeArea(
+          child: Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Expanded(child: Text("Please enter your current PIN")),
+                NumPad(onSubmit: onNumPadSubmit),
+              ],
+            ),
           ),
         ),
       ),

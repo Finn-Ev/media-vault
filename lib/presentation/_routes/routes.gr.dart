@@ -10,13 +10,14 @@
 //
 // ignore_for_file: type=lint
 
-import 'package:auto_route/auto_route.dart' as _i17;
-import 'package:flutter/material.dart' as _i18;
+import 'package:auto_route/auto_route.dart' as _i18;
+import 'package:flutter/material.dart' as _i19;
 
-import '../../domain/entities/media/album.dart' as _i19;
-import '../../domain/entities/media/asset.dart' as _i20;
+import '../../domain/entities/media/album.dart' as _i20;
+import '../../domain/entities/media/asset.dart' as _i21;
+import '../auth/local_auth/edit_pin/edit_pin_page.dart' as _i10;
 import '../auth/local_auth/enter_local_auth/enter_local_auth_page.dart' as _i7;
-import '../auth/local_auth/forgot_pin/forgot_pin_page.dart' as _i10;
+import '../auth/local_auth/forgot_pin/forgot_pin_page.dart' as _i11;
 import '../auth/local_auth/local_auth_root_page.dart' as _i6;
 import '../auth/local_auth/local_auth_setup/confirm_local_auth_setup_page.dart'
     as _i9;
@@ -24,97 +25,103 @@ import '../auth/local_auth/local_auth_setup/local_auth_setup_page.dart' as _i8;
 import '../auth/remote_auth/forgot_password/forgot_password_page.dart' as _i5;
 import '../auth/remote_auth/login/login_page.dart' as _i3;
 import '../auth/remote_auth/register/register_page.dart' as _i4;
-import '../media/album_list/album_list_page.dart' as _i11;
-import '../media/asset_carousel/asset_carousel_page.dart' as _i13;
-import '../media/asset_list/asset_list_page.dart' as _i12;
-import '../media/asset_list/trash/trash_page.dart' as _i16;
-import '../media/asset_video_player/asset_video_player_page.dart' as _i14;
-import '../media/move_assets/move_assets_page.dart' as _i15;
+import '../media/album_list/album_list_page.dart' as _i12;
+import '../media/asset_carousel/asset_carousel_page.dart' as _i14;
+import '../media/asset_list/asset_list_page.dart' as _i13;
+import '../media/asset_list/trash/trash_page.dart' as _i17;
+import '../media/asset_video_player/asset_video_player_page.dart' as _i15;
+import '../media/move_assets/move_assets_page.dart' as _i16;
 import '../other/settings/settings_page.dart' as _i2;
 import '../other/splash/splash_page.dart' as _i1;
 
-class AppRouter extends _i17.RootStackRouter {
-  AppRouter([_i18.GlobalKey<_i18.NavigatorState>? navigatorKey])
+class AppRouter extends _i18.RootStackRouter {
+  AppRouter([_i19.GlobalKey<_i19.NavigatorState>? navigatorKey])
       : super(navigatorKey);
 
   @override
-  final Map<String, _i17.PageFactory> pagesMap = {
+  final Map<String, _i18.PageFactory> pagesMap = {
     SplashRoute.name: (routeData) {
-      return _i17.MaterialPageX<dynamic>(
+      return _i18.MaterialPageX<dynamic>(
           routeData: routeData, child: const _i1.SplashPage());
     },
     SettingsRoute.name: (routeData) {
-      return _i17.MaterialPageX<dynamic>(
+      return _i18.MaterialPageX<dynamic>(
           routeData: routeData, child: const _i2.SettingsPage());
     },
     LoginRoute.name: (routeData) {
-      return _i17.MaterialPageX<dynamic>(
+      return _i18.MaterialPageX<dynamic>(
           routeData: routeData, child: const _i3.LoginPage());
     },
     RegisterRoute.name: (routeData) {
-      return _i17.MaterialPageX<dynamic>(
+      return _i18.MaterialPageX<dynamic>(
           routeData: routeData, child: const _i4.RegisterPage());
     },
     ForgotPasswordRoute.name: (routeData) {
-      return _i17.MaterialPageX<dynamic>(
+      return _i18.MaterialPageX<dynamic>(
           routeData: routeData, child: const _i5.ForgotPasswordPage());
     },
     LocalAuthRootRoute.name: (routeData) {
-      return _i17.MaterialPageX<dynamic>(
+      return _i18.MaterialPageX<dynamic>(
           routeData: routeData, child: const _i6.LocalAuthRootPage());
     },
     EnterLocalAuthRoute.name: (routeData) {
-      return _i17.MaterialPageX<dynamic>(
+      return _i18.MaterialPageX<dynamic>(
           routeData: routeData, child: const _i7.EnterLocalAuthPage());
     },
     LocalAuthSetupRoute.name: (routeData) {
-      return _i17.MaterialPageX<dynamic>(
+      return _i18.MaterialPageX<dynamic>(
           routeData: routeData, child: const _i8.LocalAuthSetupPage());
     },
     ConfirmLocalAuthSetupRoute.name: (routeData) {
       final args = routeData.argsAs<ConfirmLocalAuthSetupRouteArgs>();
-      return _i17.MaterialPageX<dynamic>(
+      return _i18.MaterialPageX<dynamic>(
           routeData: routeData,
           child: _i9.ConfirmLocalAuthSetupPage(pin: args.pin, key: args.key));
     },
+    EditPinRoute.name: (routeData) {
+      return _i18.MaterialPageX<dynamic>(
+          routeData: routeData,
+          child: const _i10.EditPinPage(),
+          maintainState: false);
+    },
     ForgotPinRoute.name: (routeData) {
-      return _i17.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i10.ForgotPinPage());
+      return _i18.MaterialPageX<dynamic>(
+          routeData: routeData, child: const _i11.ForgotPinPage());
     },
     AlbumListRoute.name: (routeData) {
-      return _i17.MaterialPageX<dynamic>(
+      return _i18.MaterialPageX<dynamic>(
           routeData: routeData,
-          child: const _i11.AlbumListPage(),
+          child: const _i12.AlbumListPage(),
           maintainState: false);
     },
     AssetListRoute.name: (routeData) {
       final args = routeData.argsAs<AssetListRouteArgs>();
-      return _i17.MaterialPageX<dynamic>(
+      return _i18.MaterialPageX<dynamic>(
           routeData: routeData,
-          child: _i12.AssetListPage(album: args.album, key: args.key),
+          child: _i13.AssetListPage(album: args.album, key: args.key),
           maintainState: false);
     },
     AssetCarouselRoute.name: (routeData) {
       final args = routeData.argsAs<AssetCarouselRouteArgs>();
-      return _i17.MaterialPageX<dynamic>(
+      return _i18.MaterialPageX<dynamic>(
           routeData: routeData,
-          child: _i13.AssetCarouselPage(
+          child: _i14.AssetCarouselPage(
               albumId: args.albumId,
               initialIndex: args.initialIndex,
               key: args.key));
     },
     AssetVideoPlayerRoute.name: (routeData) {
       final args = routeData.argsAs<AssetVideoPlayerRouteArgs>();
-      return _i17.MaterialPageX<dynamic>(
+      return _i18.MaterialPageX<dynamic>(
           routeData: routeData,
-          child: _i14.AssetVideoPlayerPage(url: args.url, key: args.key),
+          child: _i15.AssetVideoPlayerPage(url: args.url, key: args.key),
           fullscreenDialog: true);
     },
     MoveAssetsRoute.name: (routeData) {
       final args = routeData.argsAs<MoveAssetsRouteArgs>();
-      return _i17.MaterialPageX<dynamic>(
+      return _i18.MaterialPageX<dynamic>(
           routeData: routeData,
-          child: _i15.MoveAssetsPage(
+          child: _i16.MoveAssetsPage(
               sourceAlbumId: args.sourceAlbumId,
               assets: args.assets,
               copy: args.copy,
@@ -122,43 +129,44 @@ class AppRouter extends _i17.RootStackRouter {
           fullscreenDialog: true);
     },
     TrashRoute.name: (routeData) {
-      return _i17.MaterialPageX<dynamic>(
+      return _i18.MaterialPageX<dynamic>(
           routeData: routeData,
-          child: const _i16.TrashPage(),
+          child: const _i17.TrashPage(),
           maintainState: false);
     }
   };
 
   @override
-  List<_i17.RouteConfig> get routes => [
-        _i17.RouteConfig(SplashRoute.name, path: '/'),
-        _i17.RouteConfig(SettingsRoute.name, path: '/settings-page'),
-        _i17.RouteConfig(LoginRoute.name, path: '/login-page'),
-        _i17.RouteConfig(RegisterRoute.name, path: '/register-page'),
-        _i17.RouteConfig(ForgotPasswordRoute.name,
+  List<_i18.RouteConfig> get routes => [
+        _i18.RouteConfig(SplashRoute.name, path: '/'),
+        _i18.RouteConfig(SettingsRoute.name, path: '/settings-page'),
+        _i18.RouteConfig(LoginRoute.name, path: '/login-page'),
+        _i18.RouteConfig(RegisterRoute.name, path: '/register-page'),
+        _i18.RouteConfig(ForgotPasswordRoute.name,
             path: '/forgot-password-page'),
-        _i17.RouteConfig(LocalAuthRootRoute.name,
+        _i18.RouteConfig(LocalAuthRootRoute.name,
             path: '/local-auth-root-page'),
-        _i17.RouteConfig(EnterLocalAuthRoute.name,
+        _i18.RouteConfig(EnterLocalAuthRoute.name,
             path: '/enter-local-auth-page'),
-        _i17.RouteConfig(LocalAuthSetupRoute.name,
+        _i18.RouteConfig(LocalAuthSetupRoute.name,
             path: '/local-auth-setup-page'),
-        _i17.RouteConfig(ConfirmLocalAuthSetupRoute.name,
+        _i18.RouteConfig(ConfirmLocalAuthSetupRoute.name,
             path: '/confirm-local-auth-setup-page'),
-        _i17.RouteConfig(ForgotPinRoute.name, path: '/forgot-pin-page'),
-        _i17.RouteConfig(AlbumListRoute.name, path: '/album-list-page'),
-        _i17.RouteConfig(AssetListRoute.name, path: '/asset-list-page'),
-        _i17.RouteConfig(AssetCarouselRoute.name, path: '/asset-carousel-page'),
-        _i17.RouteConfig(AssetVideoPlayerRoute.name,
+        _i18.RouteConfig(EditPinRoute.name, path: '/edit-pin-page'),
+        _i18.RouteConfig(ForgotPinRoute.name, path: '/forgot-pin-page'),
+        _i18.RouteConfig(AlbumListRoute.name, path: '/album-list-page'),
+        _i18.RouteConfig(AssetListRoute.name, path: '/asset-list-page'),
+        _i18.RouteConfig(AssetCarouselRoute.name, path: '/asset-carousel-page'),
+        _i18.RouteConfig(AssetVideoPlayerRoute.name,
             path: '/asset-video-player-page'),
-        _i17.RouteConfig(MoveAssetsRoute.name, path: '/move-assets-page'),
-        _i17.RouteConfig(TrashRoute.name, path: '/trash-page')
+        _i18.RouteConfig(MoveAssetsRoute.name, path: '/move-assets-page'),
+        _i18.RouteConfig(TrashRoute.name, path: '/trash-page')
       ];
 }
 
 /// generated route for
 /// [_i1.SplashPage]
-class SplashRoute extends _i17.PageRouteInfo<void> {
+class SplashRoute extends _i18.PageRouteInfo<void> {
   const SplashRoute() : super(SplashRoute.name, path: '/');
 
   static const String name = 'SplashRoute';
@@ -166,7 +174,7 @@ class SplashRoute extends _i17.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i2.SettingsPage]
-class SettingsRoute extends _i17.PageRouteInfo<void> {
+class SettingsRoute extends _i18.PageRouteInfo<void> {
   const SettingsRoute() : super(SettingsRoute.name, path: '/settings-page');
 
   static const String name = 'SettingsRoute';
@@ -174,7 +182,7 @@ class SettingsRoute extends _i17.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i3.LoginPage]
-class LoginRoute extends _i17.PageRouteInfo<void> {
+class LoginRoute extends _i18.PageRouteInfo<void> {
   const LoginRoute() : super(LoginRoute.name, path: '/login-page');
 
   static const String name = 'LoginRoute';
@@ -182,7 +190,7 @@ class LoginRoute extends _i17.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i4.RegisterPage]
-class RegisterRoute extends _i17.PageRouteInfo<void> {
+class RegisterRoute extends _i18.PageRouteInfo<void> {
   const RegisterRoute() : super(RegisterRoute.name, path: '/register-page');
 
   static const String name = 'RegisterRoute';
@@ -190,7 +198,7 @@ class RegisterRoute extends _i17.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i5.ForgotPasswordPage]
-class ForgotPasswordRoute extends _i17.PageRouteInfo<void> {
+class ForgotPasswordRoute extends _i18.PageRouteInfo<void> {
   const ForgotPasswordRoute()
       : super(ForgotPasswordRoute.name, path: '/forgot-password-page');
 
@@ -199,7 +207,7 @@ class ForgotPasswordRoute extends _i17.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i6.LocalAuthRootPage]
-class LocalAuthRootRoute extends _i17.PageRouteInfo<void> {
+class LocalAuthRootRoute extends _i18.PageRouteInfo<void> {
   const LocalAuthRootRoute()
       : super(LocalAuthRootRoute.name, path: '/local-auth-root-page');
 
@@ -208,7 +216,7 @@ class LocalAuthRootRoute extends _i17.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i7.EnterLocalAuthPage]
-class EnterLocalAuthRoute extends _i17.PageRouteInfo<void> {
+class EnterLocalAuthRoute extends _i18.PageRouteInfo<void> {
   const EnterLocalAuthRoute()
       : super(EnterLocalAuthRoute.name, path: '/enter-local-auth-page');
 
@@ -217,7 +225,7 @@ class EnterLocalAuthRoute extends _i17.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i8.LocalAuthSetupPage]
-class LocalAuthSetupRoute extends _i17.PageRouteInfo<void> {
+class LocalAuthSetupRoute extends _i18.PageRouteInfo<void> {
   const LocalAuthSetupRoute()
       : super(LocalAuthSetupRoute.name, path: '/local-auth-setup-page');
 
@@ -227,8 +235,8 @@ class LocalAuthSetupRoute extends _i17.PageRouteInfo<void> {
 /// generated route for
 /// [_i9.ConfirmLocalAuthSetupPage]
 class ConfirmLocalAuthSetupRoute
-    extends _i17.PageRouteInfo<ConfirmLocalAuthSetupRouteArgs> {
-  ConfirmLocalAuthSetupRoute({required String pin, _i18.Key? key})
+    extends _i18.PageRouteInfo<ConfirmLocalAuthSetupRouteArgs> {
+  ConfirmLocalAuthSetupRoute({required String pin, _i19.Key? key})
       : super(ConfirmLocalAuthSetupRoute.name,
             path: '/confirm-local-auth-setup-page',
             args: ConfirmLocalAuthSetupRouteArgs(pin: pin, key: key));
@@ -241,7 +249,7 @@ class ConfirmLocalAuthSetupRouteArgs {
 
   final String pin;
 
-  final _i18.Key? key;
+  final _i19.Key? key;
 
   @override
   String toString() {
@@ -250,25 +258,33 @@ class ConfirmLocalAuthSetupRouteArgs {
 }
 
 /// generated route for
-/// [_i10.ForgotPinPage]
-class ForgotPinRoute extends _i17.PageRouteInfo<void> {
+/// [_i10.EditPinPage]
+class EditPinRoute extends _i18.PageRouteInfo<void> {
+  const EditPinRoute() : super(EditPinRoute.name, path: '/edit-pin-page');
+
+  static const String name = 'EditPinRoute';
+}
+
+/// generated route for
+/// [_i11.ForgotPinPage]
+class ForgotPinRoute extends _i18.PageRouteInfo<void> {
   const ForgotPinRoute() : super(ForgotPinRoute.name, path: '/forgot-pin-page');
 
   static const String name = 'ForgotPinRoute';
 }
 
 /// generated route for
-/// [_i11.AlbumListPage]
-class AlbumListRoute extends _i17.PageRouteInfo<void> {
+/// [_i12.AlbumListPage]
+class AlbumListRoute extends _i18.PageRouteInfo<void> {
   const AlbumListRoute() : super(AlbumListRoute.name, path: '/album-list-page');
 
   static const String name = 'AlbumListRoute';
 }
 
 /// generated route for
-/// [_i12.AssetListPage]
-class AssetListRoute extends _i17.PageRouteInfo<AssetListRouteArgs> {
-  AssetListRoute({required _i19.Album album, _i18.Key? key})
+/// [_i13.AssetListPage]
+class AssetListRoute extends _i18.PageRouteInfo<AssetListRouteArgs> {
+  AssetListRoute({required _i20.Album album, _i19.Key? key})
       : super(AssetListRoute.name,
             path: '/asset-list-page',
             args: AssetListRouteArgs(album: album, key: key));
@@ -279,9 +295,9 @@ class AssetListRoute extends _i17.PageRouteInfo<AssetListRouteArgs> {
 class AssetListRouteArgs {
   const AssetListRouteArgs({required this.album, this.key});
 
-  final _i19.Album album;
+  final _i20.Album album;
 
-  final _i18.Key? key;
+  final _i19.Key? key;
 
   @override
   String toString() {
@@ -290,10 +306,10 @@ class AssetListRouteArgs {
 }
 
 /// generated route for
-/// [_i13.AssetCarouselPage]
-class AssetCarouselRoute extends _i17.PageRouteInfo<AssetCarouselRouteArgs> {
+/// [_i14.AssetCarouselPage]
+class AssetCarouselRoute extends _i18.PageRouteInfo<AssetCarouselRouteArgs> {
   AssetCarouselRoute(
-      {required String albumId, required int initialIndex, _i18.Key? key})
+      {required String albumId, required int initialIndex, _i19.Key? key})
       : super(AssetCarouselRoute.name,
             path: '/asset-carousel-page',
             args: AssetCarouselRouteArgs(
@@ -310,7 +326,7 @@ class AssetCarouselRouteArgs {
 
   final int initialIndex;
 
-  final _i18.Key? key;
+  final _i19.Key? key;
 
   @override
   String toString() {
@@ -319,10 +335,10 @@ class AssetCarouselRouteArgs {
 }
 
 /// generated route for
-/// [_i14.AssetVideoPlayerPage]
+/// [_i15.AssetVideoPlayerPage]
 class AssetVideoPlayerRoute
-    extends _i17.PageRouteInfo<AssetVideoPlayerRouteArgs> {
-  AssetVideoPlayerRoute({required String url, _i18.Key? key})
+    extends _i18.PageRouteInfo<AssetVideoPlayerRouteArgs> {
+  AssetVideoPlayerRoute({required String url, _i19.Key? key})
       : super(AssetVideoPlayerRoute.name,
             path: '/asset-video-player-page',
             args: AssetVideoPlayerRouteArgs(url: url, key: key));
@@ -335,7 +351,7 @@ class AssetVideoPlayerRouteArgs {
 
   final String url;
 
-  final _i18.Key? key;
+  final _i19.Key? key;
 
   @override
   String toString() {
@@ -344,13 +360,13 @@ class AssetVideoPlayerRouteArgs {
 }
 
 /// generated route for
-/// [_i15.MoveAssetsPage]
-class MoveAssetsRoute extends _i17.PageRouteInfo<MoveAssetsRouteArgs> {
+/// [_i16.MoveAssetsPage]
+class MoveAssetsRoute extends _i18.PageRouteInfo<MoveAssetsRouteArgs> {
   MoveAssetsRoute(
       {required String sourceAlbumId,
-      required List<_i20.Asset> assets,
+      required List<_i21.Asset> assets,
       required bool copy,
-      _i18.Key? key})
+      _i19.Key? key})
       : super(MoveAssetsRoute.name,
             path: '/move-assets-page',
             args: MoveAssetsRouteArgs(
@@ -371,11 +387,11 @@ class MoveAssetsRouteArgs {
 
   final String sourceAlbumId;
 
-  final List<_i20.Asset> assets;
+  final List<_i21.Asset> assets;
 
   final bool copy;
 
-  final _i18.Key? key;
+  final _i19.Key? key;
 
   @override
   String toString() {
@@ -384,8 +400,8 @@ class MoveAssetsRouteArgs {
 }
 
 /// generated route for
-/// [_i16.TrashPage]
-class TrashRoute extends _i17.PageRouteInfo<void> {
+/// [_i17.TrashPage]
+class TrashRoute extends _i18.PageRouteInfo<void> {
   const TrashRoute() : super(TrashRoute.name, path: '/trash-page');
 
   static const String name = 'TrashRoute';

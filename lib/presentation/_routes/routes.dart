@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:media_vault/presentation/auth/local_auth/edit_pin/edit_pin_page.dart';
 import 'package:media_vault/presentation/auth/local_auth/enter_local_auth/enter_local_auth_page.dart';
 import 'package:media_vault/presentation/auth/local_auth/forgot_pin/forgot_pin_page.dart';
 import 'package:media_vault/presentation/auth/local_auth/local_auth_root_page.dart';
@@ -34,6 +35,7 @@ import 'package:media_vault/presentation/other/splash/splash_page.dart';
     AutoRoute(page: EnterLocalAuthPage),
     AutoRoute(page: LocalAuthSetupPage),
     AutoRoute(page: ConfirmLocalAuthSetupPage),
+    AutoRoute(page: EditPinPage, maintainState: false),
     AutoRoute(page: ForgotPinPage),
 
     // Media

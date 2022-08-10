@@ -21,11 +21,11 @@ class ConfirmLocalAuthSetupPage extends StatelessWidget {
             context: context,
             builder: (_) {
               return PlatformAlertDialog(
-                title: Text('PINs do not match'),
-                content: Text('Please try again'),
+                title: const Text('PINs do not match'),
+                content: const Text('Please try again'),
                 actions: <Widget>[
                   PlatformDialogAction(
-                    child: Text('OK'),
+                    child: const Text('OK'),
                     onPressed: () => Navigator.pop(context),
                   )
                 ],
@@ -37,7 +37,19 @@ class ConfirmLocalAuthSetupPage extends StatelessWidget {
     return BlocListener<LocalAuthBloc, LocalAuthState>(
       listener: (context, state) {
         if (state.isAuthenticated && state.isSetup) {
-          AutoRouter.of(context).replace(const AlbumListRoute());
+          showPlatformDialog(
+              context: context,
+              builder: (_) {
+                return PlatformAlertDialog(
+                  title: const Text('PIN was set successfully!'),
+                  actions: <Widget>[
+                    PlatformDialogAction(
+                      child: const Text('OK'),
+                      onPressed: () => AutoRouter.of(context).replace(const AlbumListRoute()),
+                    )
+                  ],
+                );
+              });
         }
       },
       child: Scaffold(

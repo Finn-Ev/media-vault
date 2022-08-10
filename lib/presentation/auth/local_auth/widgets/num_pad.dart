@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:media_vault/presentation/auth/local_auth/widgets/num_pad_field.dart';
 
+// A separate bloc would be overkill for this widget,
+// as all the state is only used in this widget and nothing elsewhere in the app.
 class NumPad extends StatefulWidget {
   final Function(String) onSubmit;
   const NumPad({required this.onSubmit, Key? key}) : super(key: key);
@@ -44,15 +45,13 @@ class _NumPadState extends State<NumPad> {
       return Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: _pin
-            .map(
-              (value) => Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 6.0),
-                child: Text(
-                  value,
-                  style: const TextStyle(fontSize: 42),
-                ),
-              ),
-            )
+            .map((value) => Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 6.0),
+                  child: Text(
+                    value,
+                    style: const TextStyle(fontSize: 42),
+                  ),
+                ))
             .toList(),
       );
     }

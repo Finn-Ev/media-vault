@@ -39,9 +39,14 @@ class LocalAuthBloc extends Bloc<AuthLocalEvent, LocalAuthState> {
     });
 
     on<LocalAuthSetupPinsMatch>((event, emit) async {
-      // save the PIN to the device and authenticate the user afterwards
       await localAuthRepository.savePIN(pin: event.pin);
       emit(state.copyWith(isSetup: true, isAuthenticated: true));
+    });
+
+    on<UserNavigatedToLoginPage>((event, emit) async {
+      // when the user is logged out, we need to remove the saved PIN to make sure we don't have a stale one
+      await localAuthRepository.deleteSavedPIN();
+      emit(state.copyWith(isSetup: false, isAuthenticated: false));
     });
   }
 }
