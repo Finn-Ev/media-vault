@@ -25,7 +25,7 @@ class UploadAssetsFloatingButton extends StatelessWidget {
             videoOption: const FilterOption(
               durationConstraint: DurationConstraint(
                 min: Duration(seconds: 1),
-                max: Duration(seconds: 300),
+                max: Duration(seconds: 60),
               ),
             ),
           ),
