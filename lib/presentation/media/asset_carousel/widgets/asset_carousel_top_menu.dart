@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:media_vault/application/assets/asset_carousel/asset_carousel_bloc.dart';
@@ -21,20 +24,25 @@ class AssetCarouselTopMenu extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Icon(
-                          Icons.close,
-                          color: themeData.scaffoldBackgroundColor,
-                          size: 28, // invisible, but needed to exactly center the counter
-                        ),
-                        Text('${state.carouselIndex + 1}/${state.carouselItemCount}', style: const TextStyle(fontSize: 16.0)),
                         GestureDetector(
                           onTap: () {
                             Navigator.pop(context);
                           },
-                          child: const Icon(
-                            Icons.close,
-                            size: 28,
-                          ),
+                          child: Platform.isIOS
+                              ? const Icon(
+                                  CupertinoIcons.back,
+                                  size: 28,
+                                )
+                              : const Icon(
+                                  Icons.arrow_back,
+                                  size: 28,
+                                ),
+                        ),
+                        Text('${state.carouselIndex + 1}/${state.carouselItemCount}', style: const TextStyle(fontSize: 16.0)),
+                        Icon(
+                          CupertinoIcons.back,
+                          color: themeData.scaffoldBackgroundColor,
+                          size: 28, // invisible, but needed to exactly center the counter
                         ),
                       ],
                     ),
