@@ -20,10 +20,7 @@ class AuthRepositoryImpl implements RemoteAuthRepository {
   AuthRepositoryImpl({required this.firebaseAuth, required this.albumRepository});
 
   @override
-  Future<Either<RemoteAuthFailure, Unit>> registerWithEmailAndPassword({
-    required String email,
-    required String password,
-  }) async {
+  Future<Either<RemoteAuthFailure, Unit>> registerWithEmailAndPassword({required String email, required String password}) async {
     try {
       final user = await firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
 

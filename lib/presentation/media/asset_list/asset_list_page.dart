@@ -77,7 +77,7 @@ class AssetListPage extends StatelessWidget {
                                 assetsToMove: BlocProvider.of<AssetListBloc>(context).state.selectedAssets,
                               ),
                             );
-                            BlocProvider.of<AssetListBloc>(context).add(DisableSelectMode());
+                            resetAssetListPage();
                             Navigator.pop(context);
                           },
                         );

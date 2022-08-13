@@ -39,6 +39,7 @@ class _AssetVideoPlayerPageState extends State<AssetVideoPlayerPage> {
       zoomAndPan: true,
       allowMuting: false,
       autoPlay: true,
+
       hideControlsTimer: const Duration(seconds: 2),
       playbackSpeeds: const [0.5, 1.0, 1.25, 1.5, 2.0],
     );

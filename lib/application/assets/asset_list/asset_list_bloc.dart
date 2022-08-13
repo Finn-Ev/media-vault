@@ -34,4 +34,9 @@ class AssetListBloc extends Bloc<AssetListEvent, AssetListState> {
       emit(const AssetListState());
     });
   }
+
+  @override
+  Future<void> close() {
+    return super.close();
+  }
 }
