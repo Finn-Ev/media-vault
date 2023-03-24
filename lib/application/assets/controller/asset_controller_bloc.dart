@@ -15,17 +15,19 @@ class AssetControllerBloc extends Bloc<AssetControllerEvent, AssetControllerStat
 
   AssetControllerBloc({required this.assetRepository}) : super(AssetControllerInitial()) {
     on<UploadAssets>((event, emit) async {
+      final assets = event.assets;
+      print(assets.length);
       emit(AssetControllerLoading());
 
       var uploadedAssetIds = [];
 
-      for (int i = 0; i < event.assets.length; i++) {
-        final failureOrSuccess = await assetRepository.upload(event.assets[i], event.albumId);
+      for (int i = 0; i < assets.length; i++) {
+        final failureOrSuccess = await assetRepository.upload(assets[i], event.albumId);
         failureOrSuccess.fold(
-          (failure) => emit(AssetControllerLoading(message: 'Error Uploading asset: ${i + 1}/${event.assets.length}')),
+          (failure) => emit(AssetControllerLoading(message: 'Error Uploading asset: ${i + 1}/${assets.length}')),
           (success) {
-            uploadedAssetIds.add(event.assets[i].id);
-            emit(AssetControllerLoading(message: 'Uploading assets: ${i + 1}/${event.assets.length}'));
+            uploadedAssetIds.add(assets[i].id);
+            emit(AssetControllerLoading(message: 'Uploading assets: ${i + 1}/${assets.length}'));
           },
         );
       }
@@ -66,7 +68,8 @@ class AssetControllerBloc extends Bloc<AssetControllerEvent, AssetControllerStat
       emit(AssetControllerLoading());
 
       for (int i = 0; i < event.assetsToMove.length; i++) {
-        final failureOrSuccess = await assetRepository.move(event.assetsToMove[i], event.sourceAlbumId, event.destinationAlbumId);
+        final failureOrSuccess =
+            await assetRepository.move(event.assetsToMove[i], event.sourceAlbumId, event.destinationAlbumId);
         failureOrSuccess.fold(
           (failure) => emit(AssetControllerFailure(failure)),
           (success) => emit(AssetControllerLoading()),

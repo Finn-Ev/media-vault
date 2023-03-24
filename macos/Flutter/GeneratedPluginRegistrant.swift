@@ -9,9 +9,9 @@ import cloud_firestore
 import firebase_auth
 import firebase_core
 import firebase_storage
-import path_provider_macos
+import path_provider_foundation
 import photo_manager
-import shared_preferences_macos
+import shared_preferences_foundation
 import sign_in_with_apple
 import sqflite
 import wakelock_macos
