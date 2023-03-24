@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:media_vault/presentation/auth/local_auth/widgets/num_pad_field.dart';
+import 'package:media_vault/presentation/auth/local_auth/widgets/pin_value.dart';
 
 // A separate bloc would be overkill for this widget,
 // as all the state is only used in this widget and nothing elsewhere in the app.
@@ -39,28 +40,25 @@ class _NumPadState extends State<NumPad> {
     }
   }
 
+  void handleSubmit() {
+    // submit pin
+    widget.onSubmit(_pin.join());
+
+    // reset pin
+    setState(() {
+      for (var i = 0; i < _pin.length; i++) {
+        _pin[i] = "_";
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    pinValue() {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: _pin
-            .map((value) => Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 6.0),
-                  child: Text(
-                    value,
-                    style: const TextStyle(fontSize: 42),
-                  ),
-                ))
-            .toList(),
-      );
-    }
-
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
         children: [
-          pinValue(),
+          PinValue(digits: _pin),
           const SizedBox(height: 16),
           GridView.count(
             shrinkWrap: true,
@@ -98,7 +96,7 @@ class _NumPadState extends State<NumPad> {
                       if (_pin.contains("_")) {
                         return;
                       }
-                      widget.onSubmit(_pin.join());
+                      handleSubmit();
                     });
               }
             }),
