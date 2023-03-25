@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:media_vault/application/assets/asset_list/asset_list_bloc.dart';
@@ -21,6 +20,7 @@ class UploadAssetsFloatingButton extends StatelessWidget {
         pickerConfig: AssetPickerConfig(
           maxAssets: 10,
           themeColor: Colors.grey[800],
+          specialPickerType: SpecialPickerType.noPreview,
           filterOptions: FilterOptionGroup(
             videoOption: const FilterOption(
               durationConstraint: DurationConstraint(
