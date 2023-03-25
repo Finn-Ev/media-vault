@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,16 +20,12 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await di.init();
-  // try {
+
   runApp(
     Phoenix(
       child: const MyApp(),
     ),
   );
-  // }
-  // on NotAuthenticatedError {
-  //   router.AppRouter().replace(const router.LoginPageRoute());
-  // }
 }
 
 class MyApp extends StatefulWidget {
@@ -43,21 +37,22 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   final _appRouter = router.AppRouter();
-  // bool hideContent = false;
 
-  // @override
-  // void initState() {
-  //   WidgetsBinding.instance.addObserver(this);
-  //   super.initState();
-  // }
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    // if (state == AppLifecycleState.inactive || state == AppLifecycleState.paused) {
-    //   setState(() {
-    //     hideContent = true;
-    //   });
-    // }
+    print("didChangeAppLifecycleState: $state");
     if (state != AppLifecycleState.resumed) {
       Phoenix.rebirth(context);
     }
