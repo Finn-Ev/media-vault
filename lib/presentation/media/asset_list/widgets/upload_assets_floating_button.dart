@@ -18,9 +18,11 @@ class UploadAssetsFloatingButton extends StatelessWidget {
       final List<AssetEntity>? selectedAssets = await AssetPicker.pickAssets(
         context,
         pickerConfig: AssetPickerConfig(
-          maxAssets: 10,
+          maxAssets: 12,
           themeColor: Colors.grey[800],
           specialPickerType: SpecialPickerType.noPreview,
+          pageSize: 24,
+          gridCount: 3,
           filterOptions: FilterOptionGroup(
             videoOption: const FilterOption(
               durationConstraint: DurationConstraint(

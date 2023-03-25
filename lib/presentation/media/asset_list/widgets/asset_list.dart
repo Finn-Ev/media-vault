@@ -107,6 +107,7 @@ class _AssetListState extends State<AssetList> {
                   'Nothing to find here',
                   style: TextStyle(fontSize: 18),
                 ),
+                SizedBox(height: 50), // to move the text up a bit
               ],
             ),
           );
