@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:media_vault/core/failures/media_failures.dart';
 import 'package:media_vault/domain/entities/media/album.dart';
 import 'package:media_vault/domain/repositories/album_repository.dart';
@@ -118,11 +119,13 @@ class AlbumRepositoryImpl extends AlbumRepository {
 
     yield* userDoc.albumCollection
         .snapshots()
-        .map((snapshot) =>
-            right<MediaFailure, List<Album>>(snapshot.docs.map((doc) => AlbumModel.fromFirestore(doc).toEntity()).toList()))
+        .map((snapshot) => right<MediaFailure, List<Album>>(
+            snapshot.docs.map((doc) => AlbumModel.fromFirestore(doc).toEntity()).toList()))
         .handleError((e) {
       if (e is FirebaseException) {
-        print(e);
+        if (kDebugMode) {
+          print(e);
+        }
         if (e.code.contains('permission-denied') || e.code.contains("PERMISSION_DENIED")) {
           return left(InsufficientPermissions());
         } else {

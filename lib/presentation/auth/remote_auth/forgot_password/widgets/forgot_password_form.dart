@@ -7,6 +7,7 @@ import 'package:media_vault/core/validators.dart';
 import 'package:media_vault/presentation/_routes/routes.gr.dart';
 import 'package:media_vault/presentation/_widgets/custom_button.dart';
 
+// ignore: must_be_immutable
 class ForgotPasswordForm extends StatelessWidget {
   ForgotPasswordForm({Key? key}) : super(key: key);
 

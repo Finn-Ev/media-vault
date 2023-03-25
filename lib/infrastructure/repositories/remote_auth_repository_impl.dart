@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:media_vault/constants.dart';
 import 'package:media_vault/core/failures/remote_auth_failures.dart';
@@ -20,7 +21,8 @@ class AuthRepositoryImpl implements RemoteAuthRepository {
   AuthRepositoryImpl({required this.firebaseAuth, required this.albumRepository});
 
   @override
-  Future<Either<RemoteAuthFailure, Unit>> registerWithEmailAndPassword({required String email, required String password}) async {
+  Future<Either<RemoteAuthFailure, Unit>> registerWithEmailAndPassword(
+      {required String email, required String password}) async {
     try {
       final user = await firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
 
@@ -39,7 +41,8 @@ class AuthRepositoryImpl implements RemoteAuthRepository {
   }
 
   @override
-  Future<Either<RemoteAuthFailure, Unit>> signInWithEmailAndPassword({required String email, required String password}) async {
+  Future<Either<RemoteAuthFailure, Unit>> signInWithEmailAndPassword(
+      {required String email, required String password}) async {
     try {
       final user = await firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
 
@@ -64,7 +67,7 @@ class AuthRepositoryImpl implements RemoteAuthRepository {
     try {
       await firebaseAuth.sendPasswordResetEmail(email: email);
       return right(unit);
-    } on FirebaseAuthException catch (e) {
+    } on FirebaseAuthException {
       return left(ServerFailure());
     }
   }
@@ -72,7 +75,7 @@ class AuthRepositoryImpl implements RemoteAuthRepository {
   @override
   Future<Either<RemoteAuthFailure, Unit>> signInWithGoogle() async {
     final GoogleSignIn googleSignIn = GoogleSignIn(
-      clientId: FIREBASE_CLIENT_ID,
+      clientId: kFirebaseClientId,
       scopes: [
         'email',
       ],
@@ -97,7 +100,9 @@ class AuthRepositoryImpl implements RemoteAuthRepository {
 
         return right(unit);
       } on FirebaseAuthException catch (e) {
-        print(e);
+        if (kDebugMode) {
+          print(e);
+        }
         if (e.code == 'account-exists-with-different-credential') {
           left(EmailAlreadyInUseFailure());
         }
@@ -138,13 +143,17 @@ class AuthRepositoryImpl implements RemoteAuthRepository {
 
       return right(unit);
     } on FirebaseAuthException catch (e) {
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
       if (e.code == 'account-exists-with-different-credential') {
         left(EmailAlreadyInUseFailure());
       }
       return left(ServerFailure());
     } catch (e) {
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
       return left(ServerFailure());
     }
   }

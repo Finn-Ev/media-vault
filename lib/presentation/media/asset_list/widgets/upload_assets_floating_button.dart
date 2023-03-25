@@ -14,7 +14,7 @@ class UploadAssetsFloatingButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeData = Theme.of(context);
     final assetControllerBloc = BlocProvider.of<AssetControllerBloc>(context);
-    void _pickAssets() async {
+    void pickAssets() async {
       final List<AssetEntity>? selectedAssets = await AssetPicker.pickAssets(
         context,
         pickerConfig: AssetPickerConfig(
@@ -46,7 +46,7 @@ class UploadAssetsFloatingButton extends StatelessWidget {
       builder: (context, state) {
         if (!state.isSelectModeEnabled) {
           return GestureDetector(
-            onTap: _pickAssets,
+            onTap: pickAssets,
             child: Container(
               height: 65,
               width: 65,

@@ -15,13 +15,15 @@ class AppTheme {
   static final Color _darkSecondaryColor = Colors.grey[100] as Color;
   static const Color _appbarColorDark = Colors.black;
 
-  static const TextStyle _lightHeadingText = TextStyle(color: _lightTextColorPrimary, fontFamily: "Rubik", fontSize: 32, fontWeight: FontWeight.bold);
+  static const TextStyle _lightHeadingText =
+      TextStyle(color: _lightTextColorPrimary, fontFamily: "Rubik", fontSize: 32, fontWeight: FontWeight.bold);
 
-  static const TextStyle _lightBodyText = TextStyle(color: _lightTextColorPrimary, fontFamily: "Rubik", fontWeight: FontWeight.w500, fontSize: 16);
+  static const TextStyle _lightBodyText =
+      TextStyle(color: _lightTextColorPrimary, fontFamily: "Rubik", fontWeight: FontWeight.w500, fontSize: 16);
 
   static const TextTheme _lightTextTheme = TextTheme(
-    headline1: _lightHeadingText,
-    bodyText1: _lightBodyText,
+    displayLarge: _lightHeadingText,
+    bodyLarge: _lightBodyText,
   );
 
   static final TextStyle _darkThemeHeadingTextStyle = _lightHeadingText.copyWith(color: _darkTextColorPrimary);
@@ -29,8 +31,8 @@ class AppTheme {
   static final TextStyle _darkThemeBodyTextStyle = _lightBodyText.copyWith(color: _darkTextColorPrimary);
 
   static final TextTheme _darkTextTheme = TextTheme(
-    headline1: _darkThemeHeadingTextStyle,
-    bodyText1: _darkThemeBodyTextStyle,
+    displayLarge: _darkThemeHeadingTextStyle,
+    bodyLarge: _darkThemeBodyTextStyle,
   );
 
   static final InputDecorationTheme _inputDecorationTheme = InputDecorationTheme(
@@ -49,25 +51,25 @@ class AppTheme {
       scaffoldBackgroundColor: _lightPrimaryColor,
       appBarTheme: AppBarTheme(color: _appbarColorLight, iconTheme: IconThemeData(color: _lightOnPrimaryColor)),
       iconTheme: IconThemeData(color: _lightOnPrimaryColor),
-      bottomAppBarColor: _appbarColorLight,
       colorScheme: ColorScheme.light(
         primary: _lightTextColorPrimary,
         onPrimary: _lightOnPrimaryColor,
         secondary: _lightSecondaryColor,
       ),
-      textTheme: _lightTextTheme);
+      textTheme: _lightTextTheme,
+      bottomAppBarTheme: const BottomAppBarTheme(color: _appbarColorLight));
 
   static final ThemeData darkTheme = ThemeData(
     inputDecorationTheme: _inputDecorationTheme,
     scaffoldBackgroundColor: _darkPrimaryColor,
     appBarTheme: AppBarTheme(color: _appbarColorDark, iconTheme: IconThemeData(color: _darkOnPrimaryColor)),
     iconTheme: IconThemeData(color: _darkOnPrimaryColor),
-    bottomAppBarColor: _appbarColorDark,
     colorScheme: ColorScheme.dark(
       primary: _darkTextColorPrimary,
       secondary: _darkSecondaryColor,
       onPrimary: _darkOnPrimaryColor,
     ),
     textTheme: _darkTextTheme,
+    bottomAppBarTheme: const BottomAppBarTheme(color: _appbarColorDark),
   );
 }

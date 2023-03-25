@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:media_vault/application/albums/controller/album_controller_bloc.dart';
@@ -27,7 +26,8 @@ class AlbumActionSheet extends StatelessWidget {
                   title: 'Rename album',
                   hintText: 'Enter a new name for this album',
                   onConfirm: (String newTitle) {
-                    BlocProvider.of<AlbumControllerBloc>(context).add(UpdateAlbum(album: album.copyWith(title: newTitle)));
+                    BlocProvider.of<AlbumControllerBloc>(context)
+                        .add(UpdateAlbum(album: album.copyWith(title: newTitle)));
                     Navigator.of(context).pop();
                   },
                   initialInputValue: album.title,

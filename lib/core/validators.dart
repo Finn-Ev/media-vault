@@ -4,7 +4,7 @@ String? emailValidator(String? value) {
   if (value == null || value.isEmpty) {
     return 'Please enter an email';
   }
-  if (!EMAIL_REGEX.hasMatch(value)) {
+  if (!kEmailRegex.hasMatch(value)) {
     return 'Please enter a valid email';
   }
   return null;

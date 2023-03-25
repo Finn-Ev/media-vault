@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:media_vault/application/assets/asset_list/asset_list_bloc.dart';
@@ -12,7 +11,7 @@ class TrashAssetListBottomMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    void _openModalSheetMenu({required selectedAssets}) {
+    void openModalSheetMenu({required selectedAssets}) {
       CustomModalBottomSheet.open(context: context, actions: [
         CustomModalBottomSheetAction(
             text: 'Move back to gallery',
@@ -24,7 +23,7 @@ class TrashAssetListBottomMenu extends StatelessWidget {
       ]);
     }
 
-    _openDeleteDialog(selectedAssets) {
+    openDeleteDialog(selectedAssets) {
       showPlatformDialog(
         context: context,
         builder: (_) => CustomAlertDialog(
@@ -51,19 +50,20 @@ class TrashAssetListBottomMenu extends StatelessWidget {
             ? Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
                 child: Row(
-                  mainAxisAlignment: state.selectedAssets.isNotEmpty ? MainAxisAlignment.spaceBetween : MainAxisAlignment.center,
+                  mainAxisAlignment:
+                      state.selectedAssets.isNotEmpty ? MainAxisAlignment.spaceBetween : MainAxisAlignment.center,
                   children: [
                     if (state.selectedAssets.isNotEmpty)
                       GestureDetector(
                         onTap: () {
-                          _openDeleteDialog(state.selectedAssets);
+                          openDeleteDialog(state.selectedAssets);
                         },
                         child: const Icon(CupertinoIcons.trash),
                       ),
                     Text("${state.selectedAssets.length} selected"),
                     if (state.selectedAssets.isNotEmpty)
                       GestureDetector(
-                          onTap: () => _openModalSheetMenu(selectedAssets: state.selectedAssets),
+                          onTap: () => openModalSheetMenu(selectedAssets: state.selectedAssets),
                           child: const Icon(CupertinoIcons.share)),
                   ],
                 ))

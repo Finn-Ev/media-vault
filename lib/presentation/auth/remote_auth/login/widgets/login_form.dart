@@ -8,6 +8,7 @@ import 'package:media_vault/core/validators.dart';
 import 'package:media_vault/presentation/_routes/routes.gr.dart';
 import 'package:media_vault/presentation/_widgets/custom_button.dart';
 
+// ignore: must_be_immutable
 class LoginForm extends StatelessWidget {
   LoginForm({Key? key}) : super(key: key);
 
@@ -77,7 +78,7 @@ class LoginForm extends StatelessWidget {
                           backgroundColor: Colors.redAccent,
                           content: Text(
                             mapAuthFailureToMessage(failure),
-                            style: themeData.textTheme.bodyText1,
+                            style: themeData.textTheme.bodyLarge,
                           ),
                         ),
                       );

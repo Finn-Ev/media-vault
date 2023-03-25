@@ -52,7 +52,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    print("didChangeAppLifecycleState: $state");
     if (state != AppLifecycleState.resumed) {
       Phoenix.rebirth(context);
     }

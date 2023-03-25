@@ -12,7 +12,7 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _openLogoutAlert() {
+    openLogoutAlert() {
       showPlatformDialog(
         context: context,
         builder: (_) => CustomAlertDialog(
@@ -49,7 +49,7 @@ class SettingsPage extends StatelessWidget {
             const SizedBox(height: 20),
             CustomButton(
               text: "Logout from Media-Vault",
-              onPressed: _openLogoutAlert,
+              onPressed: openLogoutAlert,
             )
           ],
         ),

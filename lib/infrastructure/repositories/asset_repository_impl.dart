@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:media_vault/core/failures/media_failures.dart';
 import 'package:media_vault/domain/entities/media/asset.dart';
@@ -32,7 +33,9 @@ class AssetRepositoryImpl extends AssetRepository {
       File? file = await asset.originFile; // original file ending
 
       if (file == null) {
-        print('[AssetRepositoryImpl]: File is null');
+        if (kDebugMode) {
+          print('[AssetRepositoryImpl]: File is null');
+        }
         return Left(UnexpectedFailure());
       }
 
@@ -60,7 +63,7 @@ class AssetRepositoryImpl extends AssetRepository {
             final thumbnailUrl = await taskSnapshot.ref.getDownloadURL();
             newAsset = newAsset.copyWith(thumbnailUrl: thumbnailUrl);
           },
-        ).catchError((e) => print("thumbnail upload-error: $e"));
+        );
       }
 
       // then we upload the video itself to firebase storage
@@ -71,12 +74,16 @@ class AssetRepositoryImpl extends AssetRepository {
           await userDoc.collection('albums/$albumId/assets').doc(assetModel.id).set(assetModel.toMap());
         },
       ).catchError((e) {
-        print("upload-error: $e");
+        if (kDebugMode) {
+          print("upload-error: $e");
+        }
       });
 
       return right(unit);
     } on FirebaseException catch (error) {
-      print("upload-error: $error");
+      if (kDebugMode) {
+        print("upload-error: $error");
+      }
       if (error.code == 'permission-denied' || error.code == 'PERMISSION_DENIED') {
         return left(InsufficientPermissions());
       }
@@ -99,7 +106,9 @@ class AssetRepositoryImpl extends AssetRepository {
 
       return right(unit);
     } on FirebaseException catch (error) {
-      print("delete-error: $error");
+      if (kDebugMode) {
+        print("delete-error: $error");
+      }
       if (error.code == 'permission-denied' || error.code == 'PERMISSION_DENIED') {
         return left(InsufficientPermissions());
       }
@@ -131,7 +140,9 @@ class AssetRepositoryImpl extends AssetRepository {
 
       return right(unit);
     } on FirebaseException catch (error) {
-      print("delete-error: $error");
+      if (kDebugMode) {
+        print("delete-error: $error");
+      }
       if (error.code == 'permission-denied' || error.code == 'PERMISSION_DENIED') {
         return left(InsufficientPermissions());
       }
@@ -157,7 +168,9 @@ class AssetRepositoryImpl extends AssetRepository {
 
       return right(unit);
     } on FirebaseException catch (error) {
-      print("delete-error: $error");
+      if (kDebugMode) {
+        print("delete-error: $error");
+      }
       if (error.code == 'permission-denied' || error.code == 'PERMISSION_DENIED') {
         return left(InsufficientPermissions());
       }
@@ -192,14 +205,18 @@ class AssetRepositoryImpl extends AssetRepository {
               );
         },
       ).catchError((e) {
-        print("upload-error: $e");
+        if (kDebugMode) {
+          print("upload-error: $e");
+        }
       });
 
       File(path).delete();
 
       return right(unit);
     } on FirebaseException catch (error) {
-      print("delete-error: $error");
+      if (kDebugMode) {
+        print("delete-error: $error");
+      }
       if (error.code == 'permission-denied' || error.code == 'PERMISSION_DENIED') {
         return left(InsufficientPermissions());
       }
@@ -229,7 +246,9 @@ class AssetRepositoryImpl extends AssetRepository {
       File(path).delete();
       return right(unit);
     } catch (error) {
-      print("export-error: $error");
+      if (kDebugMode) {
+        print("export-error: $error");
+      }
       return left(UnexpectedFailure());
     }
   }
@@ -245,7 +264,9 @@ class AssetRepositoryImpl extends AssetRepository {
             snapshot.docs.map((doc) => AssetModel.fromFirestore(doc).toEntity()).toList()))
         .handleError(
       (error) {
-        print("observer-error: $error");
+        if (kDebugMode) {
+          print("observer-error: $error");
+        }
         if (error is FirebaseException) {
           if (error.code.contains('permission-denied') || error.code.contains("PERMISSION_DENIED")) {
             return left(InsufficientPermissions());

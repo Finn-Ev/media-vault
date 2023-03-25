@@ -76,7 +76,8 @@ class _AssetListPreviewCardState extends State<AssetListPreviewCard> with Automa
                   fit: BoxFit.cover,
                 ),
               ),
-              if (widget.asset.isVideo) const Positioned(top: 0, left: 0, child: Icon(CupertinoIcons.video_camera_solid)),
+              if (widget.asset.isVideo)
+                const Positioned(top: 0, left: 0, child: Icon(CupertinoIcons.video_camera_solid)),
               // if (asset.isVideo) Text(asset.duration.toString()),
               if (widget.asset.isVideo)
                 Positioned(
@@ -90,7 +91,7 @@ class _AssetListPreviewCardState extends State<AssetListPreviewCard> with Automa
                 Container(
                   constraints: const BoxConstraints.expand(),
                   color: Colors.black.withOpacity(0.5),
-                  child: Icon(size: 35.0, Icons.check_circle),
+                  child: const Icon(size: 35.0, Icons.check_circle),
                 ),
             ],
           ),

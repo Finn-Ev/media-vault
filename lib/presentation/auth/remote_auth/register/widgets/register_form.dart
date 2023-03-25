@@ -8,6 +8,7 @@ import 'package:media_vault/core/validators.dart';
 import 'package:media_vault/presentation/_routes/routes.gr.dart';
 import 'package:media_vault/presentation/_widgets/custom_button.dart';
 
+// ignore: must_be_immutable
 class RegisterForm extends StatelessWidget {
   RegisterForm({Key? key}) : super(key: key);
 
@@ -69,7 +70,7 @@ class RegisterForm extends StatelessWidget {
                         backgroundColor: Colors.redAccent,
                         content: Text(
                           mapAuthFailureToMessage(failure),
-                          style: themeData.textTheme.bodyText1,
+                          style: themeData.textTheme.bodyLarge,
                         ),
                       ),
                     );
@@ -80,8 +81,8 @@ class RegisterForm extends StatelessWidget {
                         builder: (_) {
                           return PlatformAlertDialog(
                             title: const Text("Success"),
-                            content:
-                                const Text("To complete your registration, please check your email for a confirmation link."),
+                            content: const Text(
+                                "To complete your registration, please check your email for a confirmation link."),
                             actions: [
                               PlatformDialogAction(
                                 child: const Text("OK"),

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:chewie/chewie.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:media_vault/presentation/_widgets/loading_indicator.dart';
@@ -50,14 +51,19 @@ class _AssetVideoPlayerPageState extends State<AssetVideoPlayerPage> {
     final fileInfo = await DefaultCacheManager().getFileFromCache(widget.url);
 
     if (fileInfo == null) {
-      print('[VideoControllerService]: No video in cache');
-      //
-      print('[VideoControllerService]: Saving video to cache');
+      if (kDebugMode) {
+        print('[VideoControllerService]: No video in cache');
+      }
+      if (kDebugMode) {
+        print('[VideoControllerService]: Saving video to cache');
+      }
       unawaited(cacheManager.downloadFile(widget.url));
 
       return VideoPlayerController.network(widget.url);
     } else {
-      print('[VideoControllerService]: Loading video from cache');
+      if (kDebugMode) {
+        print('[VideoControllerService]: Loading video from cache');
+      }
       return VideoPlayerController.file(fileInfo.file);
     }
   }
