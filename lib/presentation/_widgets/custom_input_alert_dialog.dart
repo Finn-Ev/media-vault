@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
@@ -11,7 +10,7 @@ class CustomInputAlertDialog extends StatelessWidget {
   // sometimes it is necessary to run a extra pop() out of this widget's context to close all popups and dialogs correctly
   final bool popContextOnAction;
 
-  CustomInputAlertDialog({
+  const CustomInputAlertDialog({
     required this.title,
     required this.hintText,
     required this.onConfirm,
@@ -51,8 +50,6 @@ class CustomInputAlertDialog extends StatelessWidget {
           ),
           onPressed: () {
             Navigator.of(context).pop();
-
-            if (popContextOnAction) Navigator.of(context).pop();
           },
         ),
         PlatformDialogAction(
