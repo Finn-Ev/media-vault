@@ -27,6 +27,7 @@ class AssetRepositoryImpl extends AssetRepository {
     try {
       final userDoc = await firestore.userDocument();
 
+      // await Future.delayed(const Duration(seconds: 2));
       // final file = await asset.file; // always jpg
       File? file = await asset.originFile; // original file ending
 
@@ -116,7 +117,9 @@ class AssetRepositoryImpl extends AssetRepository {
       await userDoc.collection('albums/$sourceAlbumId/assets').doc(assetToMove.id).delete();
 
       await userDoc.collection('albums/$destinationAlbumId/assets').doc(assetToMove.id).set(
-            AssetModel.fromEntity(assetToMove).copyWith(albumId: destinationAlbumId, modifiedAt: DateTime.now()).toMap(),
+            AssetModel.fromEntity(assetToMove)
+                .copyWith(albumId: destinationAlbumId, modifiedAt: DateTime.now())
+                .toMap(),
           );
 
       // todo refactor
@@ -242,8 +245,8 @@ class AssetRepositoryImpl extends AssetRepository {
     yield* userDoc
         .collection("albums/$albumId/assets")
         .snapshots()
-        .map((snapshot) =>
-            right<MediaFailure, List<Asset>>(snapshot.docs.map((doc) => AssetModel.fromFirestore(doc).toEntity()).toList()))
+        .map((snapshot) => right<MediaFailure, List<Asset>>(
+            snapshot.docs.map((doc) => AssetModel.fromFirestore(doc).toEntity()).toList()))
         .handleError(
       (error) {
         print("observer-error: $error");
