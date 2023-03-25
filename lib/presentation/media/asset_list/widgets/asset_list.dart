@@ -103,9 +103,13 @@ class _AssetListState extends State<AssetList> {
                   size: 50,
                 ),
                 SizedBox(height: 8),
-                Text(
-                  'Nothing to find here',
-                  style: TextStyle(fontSize: 18),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 50),
+                  child: Text(
+                    'Add some assets by tapping on the camera button',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 18),
+                  ),
                 ),
                 SizedBox(height: 50), // to move the text up a bit
               ],
