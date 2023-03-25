@@ -15,21 +15,26 @@ class AssetControllerBloc extends Bloc<AssetControllerEvent, AssetControllerStat
 
   AssetControllerBloc({required this.assetRepository}) : super(AssetControllerInitial()) {
     on<UploadAssets>((event, emit) async {
-      final assets = event.assets;
-      print(assets.length);
+      //? a deep-copy is needed because [event.assets] gets somehow modified while iterating
+      //* I guess that the wechat_assets_picker package in version 8.4 is modifying the list subsequently (everything was working fine in 7.3)
+      final assets = List.unmodifiable(event.assets);
       emit(AssetControllerLoading());
 
       var uploadedAssetIds = [];
 
       for (int i = 0; i < assets.length; i++) {
-        final failureOrSuccess = await assetRepository.upload(assets[i], event.albumId);
+        var asset = assets[i];
+        final failureOrSuccess = await assetRepository.upload(asset, event.albumId);
         failureOrSuccess.fold(
-          (failure) => emit(AssetControllerLoading(message: 'Error Uploading asset: ${i + 1}/${assets.length}')),
+          (failure) => emit(AssetControllerLoading(message: 'Error Uploading asset: ${i + 1}/${event.assets.length}')),
           (success) {
-            uploadedAssetIds.add(assets[i].id);
-            emit(AssetControllerLoading(message: 'Uploading assets: ${i + 1}/${assets.length}'));
+            uploadedAssetIds.add(asset.id);
+            emit(AssetControllerLoading(message: 'Uploading assets: ${i + 1}/${event.assets.length}'));
+            emit(AssetControllerLoading(message: 'Uploading assets'));
           },
         );
+
+        emit(AssetControllerLoading(message: 'Uploading assets'));
       }
 
       emit(AssetControllerLoaded(action: AssetControllerLoadedActions.upload, payload: uploadedAssetIds));
