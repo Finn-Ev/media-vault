@@ -20,7 +20,9 @@ class AssetObserverBloc extends Bloc<AssetObserverEvent, AssetObserverState> {
       (event, emit) async {
         emit(AssetObserverLoading());
         await _assetSubscription?.cancel();
-        _assetSubscription = assetRepository.watchAlbum(event.albumId).listen((failureOrAssets) => add(AssetsUpdated(failureOrAssets: failureOrAssets)));
+        _assetSubscription = assetRepository
+            .watchAlbum(event.albumId)
+            .listen((failureOrAssets) => add(AssetsUpdated(failureOrAssets: failureOrAssets)));
       },
     );
 
@@ -29,7 +31,7 @@ class AssetObserverBloc extends Bloc<AssetObserverEvent, AssetObserverState> {
         event.failureOrAssets.fold((failure) {
           emit(AssetObserverFailure(failure));
         }, (assets) {
-          assets.sort((a, b) => a.uploadedAt.compareTo(b.uploadedAt));
+          assets.sort((a, b) => a.modifiedAt.compareTo(b.modifiedAt));
           emit(AssetObserverLoaded(assets: assets));
         });
       },
