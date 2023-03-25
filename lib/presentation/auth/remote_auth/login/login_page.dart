@@ -17,7 +17,8 @@ class LoginPage extends StatelessWidget {
     BlocProvider.of<LocalAuthBloc>(context).add(UserNavigatedToLoginPage());
     return Scaffold(
       appBar: AppBar(
-        leading: const Text(""), // workaround because replace() doesn't always work as excepted
+        // workaround because replace() doesn't always work as excepted and thus the back button is shown
+        leading: const Text(""),
         title: const Text("Media Vault"),
         centerTitle: true,
       ),
@@ -31,7 +32,7 @@ class LoginPage extends StatelessWidget {
               children: [
                 const SizedBox(height: 40.0),
                 const Text(
-                  "Login",
+                  "Welcome",
                   style: TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
