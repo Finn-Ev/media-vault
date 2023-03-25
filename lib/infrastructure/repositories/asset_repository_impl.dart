@@ -122,10 +122,6 @@ class AssetRepositoryImpl extends AssetRepository {
                 .toMap(),
           );
 
-      // todo refactor
-      // it could be the case that a user has deleted the whole album and then tries to move an asset to the previous deleted album
-      // As a result the deleted-flag will be set to false everytime an asset gets moved to it
-
       final albumData = await userDoc.collection('albums').doc(destinationAlbumId).get();
       final albumIsMarkedAsDeleted = albumData.data()!['deleted'];
 
@@ -190,7 +186,7 @@ class AssetRepositoryImpl extends AssetRepository {
       await storage.ref('assets').child(const Uuid().v4()).putFile(File(path)).then(
         (taskSnapshot) async {
           final downloadUrl = await taskSnapshot.ref.getDownloadURL();
-          final assetModel = AssetModel.fromEntity(assetToCopy.copyWith(url: downloadUrl));
+          final assetModel = AssetModel.fromEntity(assetToCopy.copyWith(url: downloadUrl, modifiedAt: DateTime.now()));
           await userDoc.collection('albums/$destinationAlbumId/assets').doc(const Uuid().v4()).set(
                 assetModel.toMap(),
               );
