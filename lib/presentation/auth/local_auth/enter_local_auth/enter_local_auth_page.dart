@@ -47,7 +47,7 @@ class EnterLocalAuthPage extends StatelessWidget {
             children: [
               const Text(
                 'Please enter your PIN',
-                style: TextStyle(fontSize: 16),
+                style: TextStyle(fontSize: 18),
               ),
               const SizedBox(height: 10),
               NumPad(onSubmit: onNumPadSubmit),
