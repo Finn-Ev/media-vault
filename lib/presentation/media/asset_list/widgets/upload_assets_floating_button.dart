@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:media_vault/application/assets/asset_list/asset_list_bloc.dart';
 import 'package:media_vault/application/assets/controller/asset_controller_bloc.dart';
 import 'package:media_vault/presentation/_widgets/loading_indicator.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 class UploadAssetsFloatingButton extends StatelessWidget {
@@ -15,30 +17,56 @@ class UploadAssetsFloatingButton extends StatelessWidget {
     final themeData = Theme.of(context);
     final assetControllerBloc = BlocProvider.of<AssetControllerBloc>(context);
     void pickAssets() async {
-      final List<AssetEntity>? selectedAssets = await AssetPicker.pickAssets(
-        context,
-        pickerConfig: AssetPickerConfig(
-          maxAssets: 12,
-          themeColor: Colors.grey[800],
-          specialPickerType: SpecialPickerType.noPreview,
-          pageSize: 24,
-          gridCount: 3,
-          filterOptions: FilterOptionGroup(
-            videoOption: const FilterOption(
-              durationConstraint: DurationConstraint(
-                min: Duration(seconds: 1),
-                max: Duration(seconds: 60),
+      //get current permission status
+      final photoAccessStatus = await Permission.photos.status;
+      final mediaAccessIsPermanentlyDenied = photoAccessStatus == PermissionStatus.permanentlyDenied;
+      final mediaAccessIsGranted = photoAccessStatus == PermissionStatus.granted;
+
+      if (mediaAccessIsPermanentlyDenied) {
+        showPlatformDialog(
+            context: context,
+            builder: (_) => PlatformAlertDialog(
+                  title: const Text('Permission denied'),
+                  content: const Text('Please grant permission to access photos'),
+                  actions: [
+                    PlatformTextButton(
+                      child: const Text('OK'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        openAppSettings();
+                      },
+                    ),
+                  ],
+                ));
+      } else if (!mediaAccessIsGranted) {
+        await Permission.photos.request();
+      }
+
+      if (mediaAccessIsGranted) {
+        final List<AssetEntity>? selectedAssets = await AssetPicker.pickAssets(
+          context,
+          pickerConfig: AssetPickerConfig(
+            maxAssets: 12,
+            themeColor: Colors.grey[800],
+            specialPickerType: SpecialPickerType.noPreview,
+            pageSize: 24,
+            gridCount: 3,
+            filterOptions: FilterOptionGroup(
+              videoOption: const FilterOption(
+                durationConstraint: DurationConstraint(
+                  min: Duration(seconds: 1),
+                  max: Duration(seconds: 60),
+                ),
               ),
             ),
+            loadingIndicatorBuilder: (BuildContext context, bool isSelected) {
+              return const Center(child: LoadingIndicator());
+            },
           ),
-          loadingIndicatorBuilder: (BuildContext context, bool isSelected) {
-            return const Center(child: LoadingIndicator());
-          },
-        ),
-      );
-
-      if (selectedAssets != null) {
-        assetControllerBloc.add(UploadAssets(albumId: albumId, assets: selectedAssets));
+        );
+        if (selectedAssets != null) {
+          assetControllerBloc.add(UploadAssets(albumId: albumId, assets: selectedAssets));
+        }
       }
     }
 
