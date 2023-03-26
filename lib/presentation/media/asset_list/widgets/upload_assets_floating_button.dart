@@ -20,53 +20,49 @@ class UploadAssetsFloatingButton extends StatelessWidget {
       //get current permission status
       final photoAccessStatus = await Permission.photos.status;
       final mediaAccessIsPermanentlyDenied = photoAccessStatus == PermissionStatus.permanentlyDenied;
-      final mediaAccessIsGranted = photoAccessStatus == PermissionStatus.granted;
 
       if (mediaAccessIsPermanentlyDenied) {
         showPlatformDialog(
-            context: context,
-            builder: (_) => PlatformAlertDialog(
-                  title: const Text('Permission denied'),
-                  content: const Text('Please grant permission to access photos'),
-                  actions: [
-                    PlatformTextButton(
-                      child: const Text('OK'),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                        openAppSettings();
-                      },
-                    ),
-                  ],
-                ));
-      } else if (!mediaAccessIsGranted) {
-        await Permission.photos.request();
-      }
-
-      if (mediaAccessIsGranted) {
-        final List<AssetEntity>? selectedAssets = await AssetPicker.pickAssets(
-          context,
-          pickerConfig: AssetPickerConfig(
-            maxAssets: 12,
-            themeColor: Colors.grey[800],
-            specialPickerType: SpecialPickerType.noPreview,
-            pageSize: 24,
-            gridCount: 3,
-            filterOptions: FilterOptionGroup(
-              videoOption: const FilterOption(
-                durationConstraint: DurationConstraint(
-                  min: Duration(seconds: 1),
-                  max: Duration(seconds: 60),
-                ),
+          context: context,
+          builder: (_) => PlatformAlertDialog(
+            title: const Text('Permission denied'),
+            content: const Text('Please grant permission to access photos'),
+            actions: [
+              PlatformTextButton(
+                child: const Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  openAppSettings();
+                },
               ),
-            ),
-            loadingIndicatorBuilder: (BuildContext context, bool isSelected) {
-              return const Center(child: LoadingIndicator());
-            },
+            ],
           ),
         );
-        if (selectedAssets != null) {
-          assetControllerBloc.add(UploadAssets(albumId: albumId, assets: selectedAssets));
-        }
+      }
+
+      final List<AssetEntity>? selectedAssets = await AssetPicker.pickAssets(
+        context,
+        pickerConfig: AssetPickerConfig(
+          maxAssets: 12,
+          themeColor: Colors.grey[800],
+          specialPickerType: SpecialPickerType.noPreview,
+          pageSize: 24,
+          gridCount: 3,
+          filterOptions: FilterOptionGroup(
+            videoOption: const FilterOption(
+              durationConstraint: DurationConstraint(
+                min: Duration(seconds: 1),
+                max: Duration(seconds: 60),
+              ),
+            ),
+          ),
+          loadingIndicatorBuilder: (BuildContext context, bool isSelected) {
+            return const Center(child: LoadingIndicator());
+          },
+        ),
+      );
+      if (selectedAssets != null) {
+        assetControllerBloc.add(UploadAssets(albumId: albumId, assets: selectedAssets));
       }
     }
 
