@@ -24,26 +24,30 @@ class AssetCarouselTopMenu extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        GestureDetector(
-                          onTap: () {
+                        IconButton(
+                          splashRadius: 16,
+                          onPressed: () {
                             Navigator.pop(context);
                           },
-                          child: Platform.isIOS
+                          icon: Platform.isIOS
                               ? const Icon(
                                   CupertinoIcons.back,
-                                  size: 30,
+                                  size: 32,
                                 )
                               : const Icon(
                                   Icons.arrow_back,
-                                  size: 30,
+                                  size: 32,
                                 ),
                         ),
                         Text('${state.carouselIndex + 1}/${state.carouselItemCount}',
                             style: const TextStyle(fontSize: 16.0)),
-                        Icon(
-                          CupertinoIcons.back,
-                          color: themeData.scaffoldBackgroundColor,
-                          size: 30, // invisible, but needed to exactly center the counter
+                        IconButton(
+                          onPressed: () {},
+                          icon: Icon(
+                            CupertinoIcons.back,
+                            size: 32,
+                            color: themeData.scaffoldBackgroundColor,
+                          ),
                         ),
                       ],
                     ),
