@@ -36,7 +36,7 @@ class ConfirmLocalAuthSetupPage extends StatelessWidget {
 
     return BlocListener<LocalAuthBloc, LocalAuthState>(
       listener: (context, state) {
-        if (state.isAuthenticated && state.isSetup) {
+        if (state.isAuthenticated && state.hasBeenSetup) {
           showPlatformDialog(
               context: context,
               builder: (_) {

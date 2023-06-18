@@ -1,13 +1,14 @@
 part of 'local_auth_bloc.dart';
 
 class LocalAuthState {
-  final bool isSetup;
+  final bool hasBeenSetup;
   final bool isAuthenticated;
   final bool incorrectPinFailure;
-  LocalAuthState({required this.isSetup, required this.isAuthenticated, required this.incorrectPinFailure});
+  LocalAuthState(
+      {required this.hasBeenSetup, required this.isAuthenticated, required this.incorrectPinFailure});
 
   factory LocalAuthState.initial() {
-    return LocalAuthState(isSetup: false, isAuthenticated: false, incorrectPinFailure: false);
+    return LocalAuthState(hasBeenSetup: false, isAuthenticated: false, incorrectPinFailure: false);
   }
 
   LocalAuthState copyWith({
@@ -16,7 +17,7 @@ class LocalAuthState {
     bool? incorrectPinFailure,
   }) {
     return LocalAuthState(
-      isSetup: isSetup ?? this.isSetup,
+      hasBeenSetup: isSetup ?? this.hasBeenSetup,
       isAuthenticated: isAuthenticated ?? this.isAuthenticated,
       incorrectPinFailure: incorrectPinFailure ?? this.incorrectPinFailure,
     );

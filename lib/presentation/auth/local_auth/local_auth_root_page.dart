@@ -13,7 +13,7 @@ class LocalAuthRootPage extends StatelessWidget {
     BlocProvider.of<LocalAuthBloc>(context).add(LocalAuthSetupCheckRequest());
     return BlocListener<LocalAuthBloc, LocalAuthState>(
       listener: (context, state) {
-        if (state.isSetup) {
+        if (state.hasBeenSetup) {
           AutoRouter.of(context).replace(const EnterLocalAuthRoute());
         } else {
           AutoRouter.of(context).replace(const LocalAuthSetupRoute());
