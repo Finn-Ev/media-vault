@@ -10,7 +10,7 @@ class AuthCoreBloc extends Bloc<AuthCoreEvent, AuthCoreState> {
   final RemoteAuthRepository authRepository;
 
   AuthCoreBloc({required this.authRepository}) : super(AuthCoreInitial()) {
-    on<SignOutButtonPressed>((event, emit) async {
+    on<LogoutRequested>((event, emit) async {
       await authRepository.signOut();
       emit(AuthCoreUnauthenticated());
     });

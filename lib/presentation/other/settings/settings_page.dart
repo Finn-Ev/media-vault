@@ -20,7 +20,7 @@ class SettingsPage extends StatelessWidget {
           content: "Do you really want to logout of Media-Vault?",
           confirmIsDestructive: true,
           onConfirm: () {
-            BlocProvider.of<AuthCoreBloc>(context).add(SignOutButtonPressed());
+            BlocProvider.of<AuthCoreBloc>(context).add(LogoutRequested());
           },
         ),
       );

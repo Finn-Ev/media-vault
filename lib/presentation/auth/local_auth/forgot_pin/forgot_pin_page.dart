@@ -38,7 +38,7 @@ class ForgotPinPage extends StatelessWidget {
             const SizedBox(height: 10),
             CustomButton(
               onPressed: () {
-                BlocProvider.of<AuthCoreBloc>(context).add(SignOutButtonPressed());
+                BlocProvider.of<AuthCoreBloc>(context).add(LogoutRequested());
                 AutoRouter.of(context).replace(const LoginRoute());
               },
               text: 'Logout and reset PIN',
