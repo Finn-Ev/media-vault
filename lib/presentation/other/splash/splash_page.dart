@@ -5,8 +5,39 @@ import 'package:media_vault/application/auth/remote_auth/remote_auth_core/remote
 import 'package:media_vault/presentation/_routes/routes.gr.dart';
 import 'package:media_vault/presentation/_widgets/loading_indicator.dart';
 
-class SplashPage extends StatelessWidget {
+class SplashPage extends StatefulWidget {
   const SplashPage({Key? key}) : super(key: key);
+
+  @override
+  State<SplashPage> createState() => _SplashPageState();
+}
+
+class _SplashPageState extends State<SplashPage> with WidgetsBindingObserver {
+  bool _isInForeground = true;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+
+    // Any setState() call inside the didChangeAppLifecycleState-method seems to do the trick.
+    // So it would work just as well without changing the _isInForeground variable (but keeping the setState() call with a empty body).
+    // However, this seems to be a kind of buggy and not really intended, so I'm using the variable to be safe in case the behavior changes in the future.
+    setState(() {
+      _isInForeground = state == AppLifecycleState.resumed;
+    });
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
 
   void _showSnackbar(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -23,6 +54,10 @@ class SplashPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (!_isInForeground) {
+      return Container();
+    }
+
     return BlocListener<AuthCoreBloc, AuthCoreState>(
       listener: (context, state) {
         if (state is AuthCoreUnauthenticated) {
@@ -39,7 +74,7 @@ class SplashPage extends StatelessWidget {
             future: Future.delayed(const Duration(seconds: 8)),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
-                // display hint that there was an issue with the authentication and that the user should log in again
+                // display a hint that there was an issue with the authentication and that the user should log in again
                 WidgetsBinding.instance.addPostFrameCallback((_) => _showSnackbar(context));
 
                 BlocProvider.of<AuthCoreBloc>(context).add(LogoutRequested());
