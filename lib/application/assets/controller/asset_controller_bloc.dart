@@ -18,7 +18,7 @@ class AssetControllerBloc extends Bloc<AssetControllerEvent, AssetControllerStat
       //? a clone is needed because [event.assets] gets somehow modified while iterating
       //* I guess that the wechat_assets_picker package in version 8.4 is modifying the list subsequently (everything was working fine in 7.3)
       final assets = [...event.assets];
-      emit(AssetControllerLoading());
+      emit(AssetControllerLoading(message: 'Uploading asset${assets.length > 1 ? ": 1/${assets.length}" : ""}...'));
 
       var uploadedAssetIds = [];
 
@@ -29,7 +29,8 @@ class AssetControllerBloc extends Bloc<AssetControllerEvent, AssetControllerStat
           (failure) => emit(AssetControllerLoading(message: 'Error Uploading asset: ${i + 1}/${assets.length}')),
           (success) {
             uploadedAssetIds.add(asset.id);
-            emit(AssetControllerLoading(message: 'Uploading assets: ${i + 1}/${assets.length}'));
+            // asset with index i+1 has just been uploaded, so the asset that gets currently uploaded is i+2
+            emit(AssetControllerLoading(message: 'Uploading asset: ${i + 2}/${assets.length}...'));
           },
         );
       }
