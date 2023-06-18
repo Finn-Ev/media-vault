@@ -61,6 +61,7 @@ class _NumPadState extends State<NumPad> {
           PinValue(digits: _pin),
           const SizedBox(height: 16),
           GridView.count(
+            physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             crossAxisCount: 3,
             children: List.generate(9, (index) {
@@ -71,6 +72,7 @@ class _NumPadState extends State<NumPad> {
             }),
           ),
           GridView.count(
+            physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             crossAxisCount: 3,
             children: List.generate(3, (index) {
