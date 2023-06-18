@@ -69,7 +69,8 @@ class AssetCarouselBottomMenu extends StatelessWidget {
                         title: 'Export',
                         content: 'Are you sure you want to export this asset into your device gallery?',
                         onConfirm: () {
-                          BlocProvider.of<AssetControllerBloc>(context).add(ExportAssets(assetsToExport: [currentAsset]));
+                          BlocProvider.of<AssetControllerBloc>(context)
+                              .add(ExportAssets(assetsToExport: [currentAsset]));
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                               content: Text('Asset exported'),
@@ -83,14 +84,16 @@ class AssetCarouselBottomMenu extends StatelessWidget {
             CustomModalBottomSheetAction(
                 text: "Copy asset",
                 onPressed: () {
-                  AutoRouter.of(context).push(MoveAssetsRoute(assets: [currentAsset], sourceAlbumId: albumId, copy: true));
+                  AutoRouter.of(context)
+                      .push(MoveAssetsRoute(assets: [currentAsset], sourceAlbumId: albumId, copy: true));
                   BlocProvider.of<AssetListBloc>(context).add(DisableSelectMode());
                 }),
           if (showMoveCopyActions)
             CustomModalBottomSheetAction(
                 text: "Move asset",
                 onPressed: () {
-                  AutoRouter.of(context).push(MoveAssetsRoute(assets: [currentAsset], sourceAlbumId: albumId, copy: false));
+                  AutoRouter.of(context)
+                      .push(MoveAssetsRoute(assets: [currentAsset], sourceAlbumId: albumId, copy: false));
                   BlocProvider.of<AssetListBloc>(context).add(DisableSelectMode());
                 }),
         ],
@@ -112,7 +115,7 @@ class AssetCarouselBottomMenu extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         GestureDetector(onTap: deleteAsset, child: const Icon(CupertinoIcons.delete)),
-                        GestureDetector(onTap: openDiaShowMenu, child: const Icon(CupertinoIcons.play_arrow)),
+                        // GestureDetector(onTap: openDiaShowMenu, child: const Icon(CupertinoIcons.play_arrow)),
                         GestureDetector(
                           onTap: openAssetMenu,
                           child: const Icon(CupertinoIcons.share),
