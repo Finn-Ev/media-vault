@@ -34,6 +34,8 @@ class _AssetListState extends State<AssetList> {
     });
   }
 
+  final scrollController = ScrollController();
+
   @override
   Widget build(BuildContext context) {
     final themeData = Theme.of(context);
@@ -55,6 +57,16 @@ class _AssetListState extends State<AssetList> {
                 assetObserverState.assets.sort((a, b) => a.modifiedAt.compareTo(b.modifiedAt));
               }
 
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                scrollController.animateTo(
+                    // scrollController.position.hasContentDimensions
+                    //     ? scrollController.position.maxScrollExtent
+                    //     : 0,
+                    scrollController.position.maxScrollExtent,
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeOut);
+              });
+
               return SafeArea(
                 child: Stack(
                   children: [
@@ -62,6 +74,7 @@ class _AssetListState extends State<AssetList> {
                       children: [
                         Expanded(
                           child: GridView.count(
+                            controller: scrollController,
                             addAutomaticKeepAlives: true,
                             crossAxisSpacing: 6,
                             mainAxisSpacing: 6,
