@@ -31,18 +31,19 @@ class AssetCarouselTopMenu extends StatelessWidget {
                           child: Platform.isIOS
                               ? const Icon(
                                   CupertinoIcons.back,
-                                  size: 28,
+                                  size: 30,
                                 )
                               : const Icon(
                                   Icons.arrow_back,
-                                  size: 28,
+                                  size: 30,
                                 ),
                         ),
-                        Text('${state.carouselIndex + 1}/${state.carouselItemCount}', style: const TextStyle(fontSize: 16.0)),
+                        Text('${state.carouselIndex + 1}/${state.carouselItemCount}',
+                            style: const TextStyle(fontSize: 16.0)),
                         Icon(
                           CupertinoIcons.back,
                           color: themeData.scaffoldBackgroundColor,
-                          size: 28, // invisible, but needed to exactly center the counter
+                          size: 30, // invisible, but needed to exactly center the counter
                         ),
                       ],
                     ),
