@@ -14,7 +14,9 @@ import 'package:media_vault/presentation/media/asset_list/widgets/asset_list_pre
 class AssetList extends StatefulWidget {
   final String albumId;
 
-  const AssetList({required this.albumId, Key? key}) : super(key: key);
+  final bool isTrash;
+
+  const AssetList({required this.albumId, this.isTrash = false, Key? key}) : super(key: key);
 
   @override
   State<AssetList> createState() => _AssetListState();
@@ -97,21 +99,21 @@ class _AssetListState extends State<AssetList> {
           return Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                Icon(
+              children: [
+                const Icon(
                   CupertinoIcons.photo,
                   size: 50,
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 50),
+                  padding: const EdgeInsets.symmetric(horizontal: 50),
                   child: Text(
-                    'Add some assets by tapping on the camera button',
+                    widget.isTrash ? 'Trash is empty' : 'Add some assets by tapping on the camera button',
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 18),
+                    style: const TextStyle(fontSize: 18),
                   ),
                 ),
-                SizedBox(height: 50), // to move the text up a bit
+                const SizedBox(height: 50), // to move the text up a bit
               ],
             ),
           );

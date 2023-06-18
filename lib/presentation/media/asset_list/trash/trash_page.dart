@@ -48,9 +48,10 @@ class TrashPage extends StatelessWidget {
                     title: const Text("Trash"),
                     centerTitle: true,
                     leadingWidth: assetListState.isSelectModeEnabled ? 90 : 56,
-                    leading: assetControllerState is! AssetControllerLoading && assetListState.isSelectModeEnabled
-                        ? const AssetListLeadingAction(albumId: trashAlbumId)
-                        : null,
+                    leading:
+                        assetControllerState is! AssetControllerLoading && assetListState.isSelectModeEnabled
+                            ? const AssetListLeadingAction(albumId: trashAlbumId)
+                            : null,
                     actions: [
                       if (assetControllerState is! AssetControllerLoading)
                         const AssetListAppBarActions(
@@ -69,7 +70,10 @@ class TrashPage extends StatelessWidget {
                             Text(assetControllerState.message),
                           ],
                         ))
-                      : const AssetList(albumId: trashAlbumId)),
+                      : const AssetList(
+                          albumId: trashAlbumId,
+                          isTrash: true,
+                        )),
                 );
               },
             );
