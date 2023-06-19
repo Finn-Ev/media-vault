@@ -24,10 +24,10 @@ class AssetListAppBarActions extends StatelessWidget {
                   onTap: () {
                     assetListBloc.add(DisableSelectMode());
                   },
-                  child: Column(
+                  child: const Column(
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
+                    children: [
                       Padding(
                         padding: EdgeInsets.only(right: 12.0),
                         child: Text("Cancel"),
@@ -40,10 +40,10 @@ class AssetListAppBarActions extends StatelessWidget {
                   onTap: () {
                     assetListBloc.add(EnableSelectMode());
                   },
-                  child: Column(
+                  child: const Column(
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
+                    children: [
                       Padding(
                         padding: EdgeInsets.only(right: 12.0),
                         child: Text("Select"),

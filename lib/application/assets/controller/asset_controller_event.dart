@@ -56,7 +56,9 @@ class CopyAssets extends AssetControllerEvent {
 class ExportAssets extends AssetControllerEvent {
   final List<Asset> assetsToExport;
 
-  ExportAssets({required this.assetsToExport});
+  final bool skipActionCallback;
+
+  ExportAssets({required this.assetsToExport, this.skipActionCallback = false});
 }
 
 class ResetAssetController extends AssetControllerEvent {}

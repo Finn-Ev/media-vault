@@ -69,13 +69,20 @@ class AssetCarouselBottomMenu extends StatelessWidget {
                         title: 'Export',
                         content: 'Are you sure you want to export this asset into your device gallery?',
                         onConfirm: () {
-                          BlocProvider.of<AssetControllerBloc>(context)
-                              .add(ExportAssets(assetsToExport: [currentAsset]));
+                          BlocProvider.of<AssetControllerBloc>(context).add(
+                            ExportAssets(
+                              assetsToExport: [currentAsset],
+                              // to prevent the dialog which asks delete the asset after exporting it from showing up
+                              skipActionCallback: true,
+                            ),
+                          );
+
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                               content: Text('Asset exported'),
                             ),
                           );
+                          Navigator.pop(context);
                         },
                       );
                     });

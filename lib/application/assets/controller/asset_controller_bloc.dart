@@ -18,7 +18,8 @@ class AssetControllerBloc extends Bloc<AssetControllerEvent, AssetControllerStat
       //? a clone is needed because [event.assets] gets somehow modified while iterating
       //* I guess that the wechat_assets_picker package in version 8.4 is modifying the list subsequently (everything was working fine in 7.3)
       final assets = [...event.assets];
-      emit(AssetControllerLoading(message: 'Uploading asset${assets.length > 1 ? ": 1/${assets.length}" : ""}...'));
+      emit(AssetControllerLoading(
+          message: 'Uploading asset${assets.length > 1 ? ": 1/${assets.length}" : ""}...'));
 
       var uploadedAssetIds = [];
 
@@ -26,7 +27,8 @@ class AssetControllerBloc extends Bloc<AssetControllerEvent, AssetControllerStat
         var asset = assets[i];
         final failureOrSuccess = await assetRepository.upload(asset, event.albumId);
         failureOrSuccess.fold(
-          (failure) => emit(AssetControllerLoading(message: 'Error Uploading asset: ${i + 1}/${assets.length}')),
+          (failure) =>
+              emit(AssetControllerLoading(message: 'Error Uploading asset: ${i + 1}/${assets.length}')),
           (success) {
             uploadedAssetIds.add(asset.id);
             // asset with index i+1 has just been uploaded, so the asset that gets currently uploaded is i+2
@@ -64,6 +66,12 @@ class AssetControllerBloc extends Bloc<AssetControllerEvent, AssetControllerStat
         );
       }
 
+      if (event.skipActionCallback) {
+        // by setting the action to none, the corresponding widget will invoke a callback based on an action
+        emit(AssetControllerLoaded(action: AssetControllerLoadedActions.none));
+        return;
+      }
+
       emit(AssetControllerLoaded(action: AssetControllerLoadedActions.export));
     });
 
@@ -86,7 +94,8 @@ class AssetControllerBloc extends Bloc<AssetControllerEvent, AssetControllerStat
       emit(AssetControllerLoading());
 
       for (int i = 0; i < event.assetsToMove.length; i++) {
-        final failureOrSuccess = await assetRepository.moveToTrash(event.assetsToMove[i], event.sourceAlbumId);
+        final failureOrSuccess =
+            await assetRepository.moveToTrash(event.assetsToMove[i], event.sourceAlbumId);
         failureOrSuccess.fold(
           (failure) => emit(AssetControllerFailure(failure)),
           (success) => emit(AssetControllerLoading()),
@@ -100,7 +109,8 @@ class AssetControllerBloc extends Bloc<AssetControllerEvent, AssetControllerStat
       emit(AssetControllerLoading());
 
       for (int i = 0; i < event.assets.length; i++) {
-        final failureOrSuccess = await assetRepository.move(event.assets[i], trashAlbumId, event.assets[i].albumId);
+        final failureOrSuccess =
+            await assetRepository.move(event.assets[i], trashAlbumId, event.assets[i].albumId);
         failureOrSuccess.fold(
           (failure) => emit(AssetControllerFailure(failure)),
           (success) => emit(AssetControllerLoading()),
