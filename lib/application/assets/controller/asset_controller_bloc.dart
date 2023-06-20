@@ -68,7 +68,7 @@ class AssetControllerBloc extends Bloc<AssetControllerEvent, AssetControllerStat
       }
 
       if (event.skipActionCallback) {
-        // by setting the action to none, the corresponding widget will invoke a callback based on an action
+        // by setting the action to none, the corresponding widget cant invoke a callback based on a specific action
         emit(AssetControllerLoaded(action: AssetControllerLoadedActions.none));
         return;
       }
