@@ -4,8 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:media_vault/application/assets/asset_list/asset_list_bloc.dart';
+import 'package:media_vault/constants.dart';
 import 'package:media_vault/domain/entities/media/asset.dart';
-import 'package:media_vault/infrastructure/repositories/asset_repository_impl.dart';
 import 'package:media_vault/presentation/_routes/routes.gr.dart';
 
 class AssetListPreviewCard extends StatefulWidget {
@@ -49,7 +49,8 @@ class _AssetListPreviewCardState extends State<AssetListPreviewCard> with Automa
           onTap: () {
             if (widget.albumId == trashAlbumId) {
               if (!state.isSelectModeEnabled) {
-                BlocProvider.of<AssetListBloc>(context).add(EnableSelectMode(initialSelectedAsset: widget.asset));
+                BlocProvider.of<AssetListBloc>(context)
+                    .add(EnableSelectMode(initialSelectedAsset: widget.asset));
               } else {
                 BlocProvider.of<AssetListBloc>(context).add(ToggleAsset(asset: widget.asset));
               }
@@ -57,14 +58,16 @@ class _AssetListPreviewCardState extends State<AssetListPreviewCard> with Automa
               if (state.isSelectModeEnabled) {
                 BlocProvider.of<AssetListBloc>(context).add(ToggleAsset(asset: widget.asset));
               } else {
-                AutoRouter.of(context).push(AssetCarouselRoute(albumId: widget.albumId, initialIndex: widget.index));
+                AutoRouter.of(context)
+                    .push(AssetCarouselRoute(albumId: widget.albumId, initialIndex: widget.index));
               }
             }
           },
           onLongPress: () {
             // activate select mode and set this asset as selected
             if (!state.isSelectModeEnabled) {
-              BlocProvider.of<AssetListBloc>(context).add(EnableSelectMode(initialSelectedAsset: widget.asset));
+              BlocProvider.of<AssetListBloc>(context)
+                  .add(EnableSelectMode(initialSelectedAsset: widget.asset));
             }
           },
           child: Stack(

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
+import 'package:media_vault/constants.dart';
 import 'package:media_vault/core/failures/media_failures.dart';
 import 'package:media_vault/domain/entities/media/album.dart';
 import 'package:media_vault/domain/repositories/album_repository.dart';
@@ -18,16 +19,12 @@ class AlbumRepositoryImpl extends AlbumRepository {
   AlbumRepositoryImpl({required this.firestore, required this.storage, required this.assetRepository});
 
   @override
-  Future<Either<MediaFailure, Unit>> create(String title, {String? id}) async {
+  Future<Either<MediaFailure, Unit>> create(String title) async {
     try {
       final userDoc = await firestore.userDocument();
 
       // go 'reverse' from domain to infrastructure
       var albumModel = AlbumModel.fromEntity(Album.empty().copyWith(title: title));
-
-      if (id != null) {
-        albumModel = albumModel.copyWith(id: id);
-      }
 
       await userDoc.albumCollection.doc(albumModel.id).set(albumModel.toMap());
 
@@ -50,6 +47,26 @@ class AlbumRepositoryImpl extends AlbumRepository {
       await userDoc.albumCollection
           .doc(albumModel.id)
           .update(albumModel.copyWith(updatedAt: FieldValue.serverTimestamp()).toMap());
+
+      return right(unit);
+    } on FirebaseException catch (e) {
+      if (e.code == 'permission-denied' || e.code == 'PERMISSION_DENIED') {
+        return left(InsufficientPermissions());
+      }
+      return left(UnexpectedFailure());
+    }
+  }
+
+  @override
+  Future<Either<MediaFailure, Unit>> createTrash() async {
+    try {
+      final userDoc = await firestore.userDocument();
+
+      var albumModel = AlbumModel.fromEntity(Album.empty());
+
+      albumModel = albumModel.copyWith(id: trashAlbumId);
+
+      await userDoc.albumCollection.doc(albumModel.id).set(albumModel.toMap());
 
       return right(unit);
     } on FirebaseException catch (e) {
@@ -95,7 +112,8 @@ class AlbumRepositoryImpl extends AlbumRepository {
       // delete the storage files of the album
       final assetDocsToDelete = await userDoc.collection("albums/$albumId/assets").get();
 
-      final List<String> assetsUrlsToDelete = assetDocsToDelete.docs.map((doc) => doc.data()["url"] as String).toList();
+      final List<String> assetsUrlsToDelete =
+          assetDocsToDelete.docs.map((doc) => doc.data()["url"] as String).toList();
 
       for (final url in assetsUrlsToDelete) {
         await storage.refFromURL(url).delete();

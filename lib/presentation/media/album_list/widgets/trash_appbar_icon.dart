@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:media_vault/application/assets/controller/asset_controller_bloc.dart';
 import 'package:media_vault/application/assets/observer/asset_observer_bloc.dart';
-import 'package:media_vault/infrastructure/repositories/asset_repository_impl.dart';
+import 'package:media_vault/constants.dart';
 import 'package:media_vault/presentation/_routes/routes.gr.dart';
 
 import '../../../../injection.dart';
@@ -24,7 +24,8 @@ class TrashAppBarIcon extends StatelessWidget {
                 .where((asset) => asset.modifiedAt.isBefore(DateTime.now().subtract(const Duration(days: 7))))
                 .toList();
 
-            BlocProvider.of<AssetControllerBloc>(context).add(DeleteAssetsPermanently(assetsToDelete: outdatedAssets));
+            BlocProvider.of<AssetControllerBloc>(context)
+                .add(DeleteAssetsPermanently(assetsToDelete: outdatedAssets));
           }
         },
         builder: (context, state) {

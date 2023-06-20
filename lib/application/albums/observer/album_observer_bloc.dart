@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
+import 'package:media_vault/constants.dart';
 import 'package:media_vault/core/failures/media_failures.dart';
 import 'package:media_vault/domain/entities/media/album.dart';
 import 'package:media_vault/domain/repositories/album_repository.dart';
-import 'package:media_vault/infrastructure/repositories/asset_repository_impl.dart';
 import 'package:meta/meta.dart';
 
 part 'album_observer_event.dart';
@@ -21,8 +21,9 @@ class AlbumObserverBloc extends Bloc<AlbumObserverEvent, AlbumObserverState> {
       (event, emit) async {
         emit(AlbumObserverLoading());
         await _albumSubscription?.cancel();
-        _albumSubscription =
-            albumRepository.watchAll().listen((failureOrAlbums) => add(AlbumsUpdated(failureOrAlbums: failureOrAlbums)));
+        _albumSubscription = albumRepository
+            .watchAll()
+            .listen((failureOrAlbums) => add(AlbumsUpdated(failureOrAlbums: failureOrAlbums)));
       },
     );
 

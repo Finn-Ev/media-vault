@@ -11,7 +11,6 @@ import 'package:media_vault/domain/entities/auth/user.dart';
 import 'package:media_vault/domain/repositories/album_repository.dart';
 import 'package:media_vault/domain/repositories/remote_auth_repository.dart';
 import 'package:media_vault/infrastructure/extensions/firebase_extensions.dart';
-import 'package:media_vault/infrastructure/repositories/asset_repository_impl.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class AuthRepositoryImpl implements RemoteAuthRepository {
@@ -28,7 +27,11 @@ class AuthRepositoryImpl implements RemoteAuthRepository {
 
       user.user!.sendEmailVerification();
 
-      albumRepository.create("Trash", id: trashAlbumId);
+      if (user.additionalUserInfo?.isNewUser == true) {
+        albumRepository.createTrash();
+      }
+
+      // firebaseAuth.signOut();
 
       return right(unit);
     } on FirebaseAuthException catch (e) {
@@ -95,7 +98,7 @@ class AuthRepositoryImpl implements RemoteAuthRepository {
         final result = await firebaseAuth.signInWithCredential(credential);
 
         if (result.additionalUserInfo?.isNewUser == true) {
-          albumRepository.create("Trash", id: trashAlbumId);
+          albumRepository.createTrash();
         }
 
         return right(unit);
@@ -138,7 +141,7 @@ class AuthRepositoryImpl implements RemoteAuthRepository {
       final result = await firebaseAuth.signInWithCredential(oauthCredential);
 
       if (result.additionalUserInfo?.isNewUser == true) {
-        albumRepository.create("Trash", id: trashAlbumId);
+        albumRepository.createTrash();
       }
 
       return right(unit);

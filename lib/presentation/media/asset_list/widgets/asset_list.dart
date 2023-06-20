@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:media_vault/application/assets/asset_list/asset_list_bloc.dart';
 import 'package:media_vault/application/assets/controller/asset_controller_bloc.dart';
 import 'package:media_vault/application/assets/observer/asset_observer_bloc.dart';
-import 'package:media_vault/infrastructure/repositories/asset_repository_impl.dart';
+import 'package:media_vault/constants.dart';
 import 'package:media_vault/presentation/_widgets/loading_indicator.dart';
 import 'package:media_vault/presentation/media/asset_list/trash/widgets/trash_asset_list_bottom_menu.dart';
 import 'package:media_vault/presentation/media/asset_list/widgets/asset_list_bottom_menu.dart';

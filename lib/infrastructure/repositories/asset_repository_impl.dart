@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:gallery_saver/gallery_saver.dart';
+import 'package:media_vault/constants.dart';
 import 'package:media_vault/core/failures/media_failures.dart';
 import 'package:media_vault/domain/entities/media/asset.dart';
 import 'package:media_vault/domain/repositories/asset_repository.dart';
@@ -15,8 +16,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart' as asset_picker;
-
-const trashAlbumId = "___trash";
 
 class AssetRepositoryImpl extends AssetRepository {
   final FirebaseFirestore firestore;
@@ -117,7 +116,8 @@ class AssetRepositoryImpl extends AssetRepository {
   }
 
   @override
-  Future<Either<MediaFailure, Unit>> move(Asset assetToMove, String sourceAlbumId, String destinationAlbumId) async {
+  Future<Either<MediaFailure, Unit>> move(
+      Asset assetToMove, String sourceAlbumId, String destinationAlbumId) async {
     try {
       final userDoc = await firestore.userDocument();
 
@@ -199,7 +199,8 @@ class AssetRepositoryImpl extends AssetRepository {
       await storage.ref('assets').child(const Uuid().v4()).putFile(File(path)).then(
         (taskSnapshot) async {
           final downloadUrl = await taskSnapshot.ref.getDownloadURL();
-          final assetModel = AssetModel.fromEntity(assetToCopy.copyWith(url: downloadUrl, modifiedAt: DateTime.now()));
+          final assetModel =
+              AssetModel.fromEntity(assetToCopy.copyWith(url: downloadUrl, modifiedAt: DateTime.now()));
           await userDoc.collection('albums/$destinationAlbumId/assets').doc(const Uuid().v4()).set(
                 assetModel.toMap(),
               );
