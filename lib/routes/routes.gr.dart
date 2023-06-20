@@ -12,39 +12,28 @@ import 'package:auto_route/auto_route.dart' as _i18;
 import 'package:flutter/foundation.dart' as _i21;
 import 'package:flutter/material.dart' as _i19;
 import 'package:media_vault/features/albums/domain/entities/album.dart' as _i20;
-import 'package:media_vault/features/albums/presentation/album_list_page.dart'
-    as _i15;
+import 'package:media_vault/features/albums/presentation/album_list_page.dart' as _i15;
 import 'package:media_vault/features/assets/domain/entities/asset.dart' as _i22;
-import 'package:media_vault/features/assets/presentation/asset_carousel/asset_carousel_page.dart'
-    as _i10;
-import 'package:media_vault/features/assets/presentation/asset_list/asset_list_page.dart'
-    as _i12;
-import 'package:media_vault/features/assets/presentation/asset_list/trash/trash_page.dart'
-    as _i11;
+import 'package:media_vault/features/assets/presentation/asset_carousel/asset_carousel_page.dart' as _i10;
+import 'package:media_vault/features/assets/presentation/asset_list/asset_list_page.dart' as _i12;
+import 'package:media_vault/features/assets/presentation/asset_list/trash/trash_page.dart' as _i11;
 import 'package:media_vault/features/assets/presentation/asset_video_player/asset_video_player_page.dart'
     as _i13;
-import 'package:media_vault/features/assets/presentation/move_assets/move_assets_page.dart'
-    as _i14;
-import 'package:media_vault/features/auth/presentation/local_auth/edit_pin/edit_pin_page.dart'
-    as _i6;
+import 'package:media_vault/features/assets/presentation/move_assets/move_assets_page.dart' as _i14;
+import 'package:media_vault/features/auth/presentation/local_auth/edit_pin/edit_pin_page.dart' as _i6;
 import 'package:media_vault/features/auth/presentation/local_auth/enter_local_auth/enter_local_auth_page.dart'
     as _i8;
-import 'package:media_vault/features/auth/presentation/local_auth/forgot_pin/forgot_pin_page.dart'
-    as _i7;
-import 'package:media_vault/features/auth/presentation/local_auth/local_auth_root_page.dart'
-    as _i9;
+import 'package:media_vault/features/auth/presentation/local_auth/forgot_pin/forgot_pin_page.dart' as _i7;
+import 'package:media_vault/features/auth/presentation/local_auth/local_auth_root_page.dart' as _i9;
 import 'package:media_vault/features/auth/presentation/local_auth/local_auth_setup/confirm_local_auth_setup_page.dart'
     as _i5;
 import 'package:media_vault/features/auth/presentation/local_auth/local_auth_setup/local_auth_setup_page.dart'
     as _i4;
 import 'package:media_vault/features/auth/presentation/remote_auth/forgot_password/forgot_password_page.dart'
     as _i1;
-import 'package:media_vault/features/auth/presentation/remote_auth/login/login_page.dart'
-    as _i3;
-import 'package:media_vault/features/auth/presentation/remote_auth/register/register_page.dart'
-    as _i2;
-import 'package:media_vault/features/auth/presentation/settings/settings_page.dart'
-    as _i17;
+import 'package:media_vault/features/auth/presentation/remote_auth/login/login_page.dart' as _i3;
+import 'package:media_vault/features/auth/presentation/remote_auth/register/register_page.dart' as _i2;
+import 'package:media_vault/features/auth/presentation/settings/settings_page.dart' as _i17;
 import 'package:media_vault/splash_page.dart' as _i16;
 
 abstract class $AppRouter extends _i18.RootStackRouter {
@@ -238,8 +227,7 @@ class LocalAuthSetupRoute extends _i18.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i5.ConfirmLocalAuthSetupPage]
-class ConfirmLocalAuthSetupRoute
-    extends _i18.PageRouteInfo<ConfirmLocalAuthSetupRouteArgs> {
+class ConfirmLocalAuthSetupRoute extends _i18.PageRouteInfo<ConfirmLocalAuthSetupRouteArgs> {
   ConfirmLocalAuthSetupRoute({
     required String pin,
     _i19.Key? key,
@@ -351,8 +339,7 @@ class AssetCarouselRoute extends _i18.PageRouteInfo<AssetCarouselRouteArgs> {
 
   static const String name = 'AssetCarouselRoute';
 
-  static const _i18.PageInfo<AssetCarouselRouteArgs> page =
-      _i18.PageInfo<AssetCarouselRouteArgs>(name);
+  static const _i18.PageInfo<AssetCarouselRouteArgs> page = _i18.PageInfo<AssetCarouselRouteArgs>(name);
 }
 
 class AssetCarouselRouteArgs {
@@ -406,8 +393,7 @@ class AssetListRoute extends _i18.PageRouteInfo<AssetListRouteArgs> {
 
   static const String name = 'AssetListRoute';
 
-  static const _i18.PageInfo<AssetListRouteArgs> page =
-      _i18.PageInfo<AssetListRouteArgs>(name);
+  static const _i18.PageInfo<AssetListRouteArgs> page = _i18.PageInfo<AssetListRouteArgs>(name);
 }
 
 class AssetListRouteArgs {
@@ -428,8 +414,7 @@ class AssetListRouteArgs {
 
 /// generated route for
 /// [_i13.AssetVideoPlayerPage]
-class AssetVideoPlayerRoute
-    extends _i18.PageRouteInfo<AssetVideoPlayerRouteArgs> {
+class AssetVideoPlayerRoute extends _i18.PageRouteInfo<AssetVideoPlayerRouteArgs> {
   AssetVideoPlayerRoute({
     required String url,
     _i21.Key? key,
@@ -445,8 +430,7 @@ class AssetVideoPlayerRoute
 
   static const String name = 'AssetVideoPlayerRoute';
 
-  static const _i18.PageInfo<AssetVideoPlayerRouteArgs> page =
-      _i18.PageInfo<AssetVideoPlayerRouteArgs>(name);
+  static const _i18.PageInfo<AssetVideoPlayerRouteArgs> page = _i18.PageInfo<AssetVideoPlayerRouteArgs>(name);
 }
 
 class AssetVideoPlayerRouteArgs {
@@ -487,8 +471,7 @@ class MoveAssetsRoute extends _i18.PageRouteInfo<MoveAssetsRouteArgs> {
 
   static const String name = 'MoveAssetsRoute';
 
-  static const _i18.PageInfo<MoveAssetsRouteArgs> page =
-      _i18.PageInfo<MoveAssetsRouteArgs>(name);
+  static const _i18.PageInfo<MoveAssetsRouteArgs> page = _i18.PageInfo<MoveAssetsRouteArgs>(name);
 }
 
 class MoveAssetsRouteArgs {
