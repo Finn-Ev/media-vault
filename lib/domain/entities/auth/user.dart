@@ -2,6 +2,7 @@
 class CustomUser {
   final String id;
   final String email;
+  final bool emailVerified;
 
-  CustomUser({required this.id, required this.email});
+  CustomUser({required this.id, required this.email, required this.emailVerified});
 }
