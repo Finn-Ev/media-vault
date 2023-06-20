@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:media_vault/routes/routes.gr.dart';
 
-// ❯❯ flutter packages pub run build_runner build
+// ❯❯ dart run build_runner build
 @AutoRouterConfig(
   replaceInRouteName: 'Page,Route',
 )

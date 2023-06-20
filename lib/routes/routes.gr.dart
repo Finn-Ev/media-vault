@@ -43,8 +43,9 @@ import 'package:media_vault/features/auth/presentation/remote_auth/login/login_p
     as _i3;
 import 'package:media_vault/features/auth/presentation/remote_auth/register/register_page.dart'
     as _i2;
-import 'package:media_vault/other/settings/settings_page.dart' as _i16;
-import 'package:media_vault/other/splash/splash_page.dart' as _i17;
+import 'package:media_vault/features/auth/presentation/settings/settings_page.dart'
+    as _i17;
+import 'package:media_vault/splash_page.dart' as _i16;
 
 abstract class $AppRouter extends _i18.RootStackRouter {
   $AppRouter({super.navigatorKey});
@@ -164,16 +165,16 @@ abstract class $AppRouter extends _i18.RootStackRouter {
         child: const _i15.AlbumListPage(),
       );
     },
-    SettingsRoute.name: (routeData) {
-      return _i18.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const _i16.SettingsPage(),
-      );
-    },
     SplashRoute.name: (routeData) {
       return _i18.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i17.SplashPage(),
+        child: const _i16.SplashPage(),
+      );
+    },
+    SettingsRoute.name: (routeData) {
+      return _i18.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const _i17.SettingsPage(),
       );
     },
   };
@@ -527,21 +528,7 @@ class AlbumListRoute extends _i18.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i16.SettingsPage]
-class SettingsRoute extends _i18.PageRouteInfo<void> {
-  const SettingsRoute({List<_i18.PageRouteInfo>? children})
-      : super(
-          SettingsRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'SettingsRoute';
-
-  static const _i18.PageInfo<void> page = _i18.PageInfo<void>(name);
-}
-
-/// generated route for
-/// [_i17.SplashPage]
+/// [_i16.SplashPage]
 class SplashRoute extends _i18.PageRouteInfo<void> {
   const SplashRoute({List<_i18.PageRouteInfo>? children})
       : super(
@@ -550,6 +537,20 @@ class SplashRoute extends _i18.PageRouteInfo<void> {
         );
 
   static const String name = 'SplashRoute';
+
+  static const _i18.PageInfo<void> page = _i18.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i17.SettingsPage]
+class SettingsRoute extends _i18.PageRouteInfo<void> {
+  const SettingsRoute({List<_i18.PageRouteInfo>? children})
+      : super(
+          SettingsRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'SettingsRoute';
 
   static const _i18.PageInfo<void> page = _i18.PageInfo<void>(name);
 }
