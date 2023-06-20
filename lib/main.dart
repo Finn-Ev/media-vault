@@ -2,13 +2,13 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
-import 'package:media_vault/application/albums/controller/album_controller_bloc.dart';
-import 'package:media_vault/application/assets/asset_list/asset_list_bloc.dart';
-import 'package:media_vault/application/assets/controller/asset_controller_bloc.dart';
-import 'package:media_vault/application/auth/local_auth/local_auth_bloc.dart';
-import 'package:media_vault/application/auth/remote_auth/remote_auth_core/remote_auth_core_bloc.dart';
+import 'package:media_vault/features/albums/application/controller/album_controller_bloc.dart';
+import 'package:media_vault/features/assets/application/asset_list/asset_list_bloc.dart';
+import 'package:media_vault/features/assets/application/controller/asset_controller_bloc.dart';
+import 'package:media_vault/features/auth/application/local_auth/local_auth_bloc.dart';
+import 'package:media_vault/features/auth/application/remote_auth/remote_auth_core/remote_auth_core_bloc.dart';
 import 'package:media_vault/firebase_options.dart';
-import 'package:media_vault/presentation/_routes/routes.gr.dart' as router;
+import 'package:media_vault/routes/routes.dart';
 import 'package:media_vault/theme.dart';
 
 import 'injection.dart' as di;
@@ -36,7 +36,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
-  final _appRouter = router.AppRouter();
+  final _appRouter = AppRouter();
 
   @override
   void initState() {
@@ -68,13 +68,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         BlocProvider<AssetControllerBloc>(create: (context) => sl<AssetControllerBloc>()),
         BlocProvider<AssetListBloc>(create: (context) => sl<AssetListBloc>()),
       ],
-      child:
-          // hideContent
-          //     ? BlocBuilder<AuthCoreBloc, AuthCoreState>(
-          //         bloc: BlocProvider.of<AuthCoreBloc>(context),
-          //         builder: (context, state) => SizedBox(),
-          //       ):
-          MaterialApp.router(
+      child: MaterialApp.router(
         routeInformationParser: _appRouter.defaultRouteParser(),
         routerDelegate: _appRouter.delegate(),
         title: 'Media-Vault',
