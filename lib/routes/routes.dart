@@ -7,7 +7,7 @@ import 'package:media_vault/routes/routes.gr.dart';
 )
 class AppRouter extends $AppRouter {
   @override
-  RouteType get defaultRouteType => const RouteType.material();
+  RouteType get defaultRouteType => const RouteType.adaptive();
   @override
   final List<AutoRoute> routes = [
     AutoRoute(page: SplashRoute.page, path: '/'),
