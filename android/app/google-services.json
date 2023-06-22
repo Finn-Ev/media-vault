@@ -7,7 +7,7 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:216046168879:android:776e54c2ed3f70f989cfda",
+        "mobilesdk_app_id": "1:216046168879:android:14508a8b451246dc89cfda",
         "android_client_info": {
           "package_name": "com.example.media_vault"
         }
@@ -29,6 +29,49 @@
             {
               "client_id": "216046168879-8e2s26516sr4bv03p5i7qhfkn132pai7.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "216046168879-aiok1oqpsbqc56jclkv10cncuj19t5rq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.finnevermann.mediavault"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:216046168879:android:7eca4d714a491ddf89cfda",
+        "android_client_info": {
+          "package_name": "com.finnevermann.mediavault"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "216046168879-8e2s26516sr4bv03p5i7qhfkn132pai7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBn50_V6s8phW_X-Tlf0q4qnw4IMt1OtU8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "216046168879-8e2s26516sr4bv03p5i7qhfkn132pai7.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "216046168879-aiok1oqpsbqc56jclkv10cncuj19t5rq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.finnevermann.mediavault"
+              }
             }
           ]
         }
