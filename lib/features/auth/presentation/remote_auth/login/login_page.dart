@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:media_vault/constants.dart';
 import 'package:media_vault/features/auth/application/local_auth/local_auth_bloc.dart';
 import 'package:media_vault/features/auth/application/remote_auth/remote_auth_form/remote_auth_form_bloc.dart';
 import 'package:media_vault/features/auth/presentation/remote_auth/login/widgets/login_form.dart';
@@ -67,22 +68,27 @@ class LoginPage extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 24),
-                const HorizontalTextDivider("or"),
-                const SizedBox(height: 24.0),
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SocialSignInButton(socialProvider: SocialProvider.apple),
-                  ],
-                ),
-                const SizedBox(height: 16.0),
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SocialSignInButton(socialProvider: SocialProvider.google),
-                  ],
-                ),
+                if (kEnableSocialSignIn)
+                  const Column(
+                    children: [
+                      SizedBox(height: 24),
+                      HorizontalTextDivider("or"),
+                      SizedBox(height: 24.0),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SocialSignInButton(socialProvider: SocialProvider.apple),
+                        ],
+                      ),
+                      SizedBox(height: 16.0),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SocialSignInButton(socialProvider: SocialProvider.google),
+                        ],
+                      ),
+                    ],
+                  ),
               ],
             ),
           ),
