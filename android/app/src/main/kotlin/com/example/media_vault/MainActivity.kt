@@ -1,4 +1,4 @@
-package com.example.media_vault
+package com.finnevermann.mediavault
 
 import io.flutter.embedding.android.FlutterActivity
 
