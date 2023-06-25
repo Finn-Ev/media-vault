@@ -28,7 +28,7 @@ class _SplashPageState extends State<SplashPage> with WidgetsBindingObserver {
 
     // Any setState() call inside the didChangeAppLifecycleState-method seems to do the trick.
     // So it would work just as well without changing the _isInForeground variable (but keeping the setState() call with a empty body).
-    // However, this seems to be a kind of buggy and not really intended, so I'm using the variable to be safe in case the behavior changes in the future.
+    // However, this seems to be a kind of buggy and not really  intended, so I'm using the variable to be safe in case the behavior changes in the future.
     setState(() {
       _isInForeground = state == AppLifecycleState.resumed;
     });

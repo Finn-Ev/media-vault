@@ -26,73 +26,68 @@ import 'package:media_vault/features/assets/presentation/asset_video_player/asse
 import 'package:media_vault/features/assets/presentation/move_assets/move_assets_page.dart'
     as _i16;
 import 'package:media_vault/features/auth/presentation/local_auth/edit_pin/edit_pin_page.dart'
-    as _i8;
-import 'package:media_vault/features/auth/presentation/local_auth/enter_local_auth/enter_local_auth_page.dart'
-    as _i10;
-import 'package:media_vault/features/auth/presentation/local_auth/forgot_pin/forgot_pin_page.dart'
-    as _i9;
-import 'package:media_vault/features/auth/presentation/local_auth/local_auth_root_page.dart'
-    as _i11;
-import 'package:media_vault/features/auth/presentation/local_auth/local_auth_setup/confirm_local_auth_setup_page.dart'
     as _i7;
-import 'package:media_vault/features/auth/presentation/local_auth/local_auth_setup/local_auth_setup_page.dart'
+import 'package:media_vault/features/auth/presentation/local_auth/enter_local_auth/enter_local_auth_page.dart'
+    as _i9;
+import 'package:media_vault/features/auth/presentation/local_auth/forgot_pin/forgot_pin_page.dart'
+    as _i8;
+import 'package:media_vault/features/auth/presentation/local_auth/local_auth_root_page.dart'
+    as _i10;
+import 'package:media_vault/features/auth/presentation/local_auth/local_auth_setup/confirm_local_auth_setup_page.dart'
     as _i6;
-import 'package:media_vault/features/auth/presentation/remote_auth/forgot_password/forgot_password_page.dart'
-    as _i3;
-import 'package:media_vault/features/auth/presentation/remote_auth/login/login_page.dart'
+import 'package:media_vault/features/auth/presentation/local_auth/local_auth_setup/local_auth_setup_page.dart'
     as _i5;
-import 'package:media_vault/features/auth/presentation/remote_auth/register/register_page.dart'
-    as _i4;
-import 'package:media_vault/features/auth/presentation/settings/settings_page.dart'
+import 'package:media_vault/features/auth/presentation/remote_auth/forgot_password/forgot_password_page.dart'
     as _i2;
-import 'package:media_vault/features/auth/splash_page.dart' as _i1;
+import 'package:media_vault/features/auth/presentation/remote_auth/login/login_page.dart'
+    as _i4;
+import 'package:media_vault/features/auth/presentation/remote_auth/register/register_page.dart'
+    as _i3;
+import 'package:media_vault/features/auth/presentation/settings/settings_page.dart'
+    as _i1;
+import 'package:media_vault/features/auth/presentation/splash_page.dart'
+    as _i11;
 
 abstract class $AppRouter extends _i18.RootStackRouter {
   $AppRouter({super.navigatorKey});
 
   @override
   final Map<String, _i18.PageFactory> pagesMap = {
-    SplashRoute.name: (routeData) {
-      return _i18.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const _i1.SplashPage(),
-      );
-    },
     SettingsRoute.name: (routeData) {
       return _i18.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i2.SettingsPage(),
+        child: const _i1.SettingsPage(),
       );
     },
     ForgotPasswordRoute.name: (routeData) {
       return _i18.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i3.ForgotPasswordPage(),
+        child: const _i2.ForgotPasswordPage(),
       );
     },
     RegisterRoute.name: (routeData) {
       return _i18.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i4.RegisterPage(),
+        child: const _i3.RegisterPage(),
       );
     },
     LoginRoute.name: (routeData) {
       return _i18.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i5.LoginPage(),
+        child: const _i4.LoginPage(),
       );
     },
     LocalAuthSetupRoute.name: (routeData) {
       return _i18.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i6.LocalAuthSetupPage(),
+        child: const _i5.LocalAuthSetupPage(),
       );
     },
     ConfirmLocalAuthSetupRoute.name: (routeData) {
       final args = routeData.argsAs<ConfirmLocalAuthSetupRouteArgs>();
       return _i18.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i7.ConfirmLocalAuthSetupPage(
+        child: _i6.ConfirmLocalAuthSetupPage(
           pin: args.pin,
           key: args.key,
         ),
@@ -101,25 +96,31 @@ abstract class $AppRouter extends _i18.RootStackRouter {
     EditPinRoute.name: (routeData) {
       return _i18.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i8.EditPinPage(),
+        child: const _i7.EditPinPage(),
       );
     },
     ForgotPinRoute.name: (routeData) {
       return _i18.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i9.ForgotPinPage(),
+        child: const _i8.ForgotPinPage(),
       );
     },
     EnterLocalAuthRoute.name: (routeData) {
       return _i18.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i10.EnterLocalAuthPage(),
+        child: const _i9.EnterLocalAuthPage(),
       );
     },
     LocalAuthRootRoute.name: (routeData) {
       return _i18.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i11.LocalAuthRootPage(),
+        child: const _i10.LocalAuthRootPage(),
+      );
+    },
+    SplashRoute.name: (routeData) {
+      return _i18.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const _i11.SplashPage(),
       );
     },
     AssetCarouselRoute.name: (routeData) {
@@ -181,21 +182,7 @@ abstract class $AppRouter extends _i18.RootStackRouter {
 }
 
 /// generated route for
-/// [_i1.SplashPage]
-class SplashRoute extends _i18.PageRouteInfo<void> {
-  const SplashRoute({List<_i18.PageRouteInfo>? children})
-      : super(
-          SplashRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'SplashRoute';
-
-  static const _i18.PageInfo<void> page = _i18.PageInfo<void>(name);
-}
-
-/// generated route for
-/// [_i2.SettingsPage]
+/// [_i1.SettingsPage]
 class SettingsRoute extends _i18.PageRouteInfo<void> {
   const SettingsRoute({List<_i18.PageRouteInfo>? children})
       : super(
@@ -209,7 +196,7 @@ class SettingsRoute extends _i18.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i3.ForgotPasswordPage]
+/// [_i2.ForgotPasswordPage]
 class ForgotPasswordRoute extends _i18.PageRouteInfo<void> {
   const ForgotPasswordRoute({List<_i18.PageRouteInfo>? children})
       : super(
@@ -223,7 +210,7 @@ class ForgotPasswordRoute extends _i18.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i4.RegisterPage]
+/// [_i3.RegisterPage]
 class RegisterRoute extends _i18.PageRouteInfo<void> {
   const RegisterRoute({List<_i18.PageRouteInfo>? children})
       : super(
@@ -237,7 +224,7 @@ class RegisterRoute extends _i18.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i5.LoginPage]
+/// [_i4.LoginPage]
 class LoginRoute extends _i18.PageRouteInfo<void> {
   const LoginRoute({List<_i18.PageRouteInfo>? children})
       : super(
@@ -251,7 +238,7 @@ class LoginRoute extends _i18.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i6.LocalAuthSetupPage]
+/// [_i5.LocalAuthSetupPage]
 class LocalAuthSetupRoute extends _i18.PageRouteInfo<void> {
   const LocalAuthSetupRoute({List<_i18.PageRouteInfo>? children})
       : super(
@@ -265,7 +252,7 @@ class LocalAuthSetupRoute extends _i18.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i7.ConfirmLocalAuthSetupPage]
+/// [_i6.ConfirmLocalAuthSetupPage]
 class ConfirmLocalAuthSetupRoute
     extends _i18.PageRouteInfo<ConfirmLocalAuthSetupRouteArgs> {
   ConfirmLocalAuthSetupRoute({
@@ -304,7 +291,7 @@ class ConfirmLocalAuthSetupRouteArgs {
 }
 
 /// generated route for
-/// [_i8.EditPinPage]
+/// [_i7.EditPinPage]
 class EditPinRoute extends _i18.PageRouteInfo<void> {
   const EditPinRoute({List<_i18.PageRouteInfo>? children})
       : super(
@@ -318,7 +305,7 @@ class EditPinRoute extends _i18.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i9.ForgotPinPage]
+/// [_i8.ForgotPinPage]
 class ForgotPinRoute extends _i18.PageRouteInfo<void> {
   const ForgotPinRoute({List<_i18.PageRouteInfo>? children})
       : super(
@@ -332,7 +319,7 @@ class ForgotPinRoute extends _i18.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i10.EnterLocalAuthPage]
+/// [_i9.EnterLocalAuthPage]
 class EnterLocalAuthRoute extends _i18.PageRouteInfo<void> {
   const EnterLocalAuthRoute({List<_i18.PageRouteInfo>? children})
       : super(
@@ -346,7 +333,7 @@ class EnterLocalAuthRoute extends _i18.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i11.LocalAuthRootPage]
+/// [_i10.LocalAuthRootPage]
 class LocalAuthRootRoute extends _i18.PageRouteInfo<void> {
   const LocalAuthRootRoute({List<_i18.PageRouteInfo>? children})
       : super(
@@ -355,6 +342,20 @@ class LocalAuthRootRoute extends _i18.PageRouteInfo<void> {
         );
 
   static const String name = 'LocalAuthRootRoute';
+
+  static const _i18.PageInfo<void> page = _i18.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i11.SplashPage]
+class SplashRoute extends _i18.PageRouteInfo<void> {
+  const SplashRoute({List<_i18.PageRouteInfo>? children})
+      : super(
+          SplashRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'SplashRoute';
 
   static const _i18.PageInfo<void> page = _i18.PageInfo<void>(name);
 }
