@@ -62,7 +62,7 @@ class LoginForm extends StatelessWidget {
                       showDialog(
                         context: context,
                         builder: (_) => PlatformAlertDialog(
-                          title: const Text("Email not verified"),
+                          title: const Text("Email is unverified"),
                           content: Text(mapAuthFailureToMessage(failure)),
                           actions: [
                             PlatformDialogAction(

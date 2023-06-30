@@ -64,11 +64,7 @@ class _SplashPageState extends State<SplashPage> with WidgetsBindingObserver {
         if (state is AuthCoreUnauthenticated) {
           AutoRouter.of(context).replace(const LoginRoute());
         } else if (state is AuthCoreAuthenticated) {
-          if (!state.user.emailVerified) {
-            AutoRouter.of(context).replace(const LoginRoute());
-          } else {
-            AutoRouter.of(context).replace(const LocalAuthRootRoute());
-          }
+          AutoRouter.of(context).replace(const LocalAuthRootRoute());
         }
       },
 

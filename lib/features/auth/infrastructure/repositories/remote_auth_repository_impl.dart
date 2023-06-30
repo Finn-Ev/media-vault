@@ -31,7 +31,8 @@ class AuthRepositoryImpl implements RemoteAuthRepository {
         albumRepository.createTrash();
       }
 
-      // firebaseAuth.signOut();
+      // users have to verify their email before they are allowed to use the app
+      await signOut();
 
       return right(unit);
     } on FirebaseAuthException catch (e) {
@@ -79,9 +80,7 @@ class AuthRepositoryImpl implements RemoteAuthRepository {
   Future<Either<RemoteAuthFailure, Unit>> signInWithGoogle() async {
     final GoogleSignIn googleSignIn = GoogleSignIn(
       clientId: kFirebaseClientId,
-      scopes: [
-        'email',
-      ],
+      scopes: ['email'],
     );
 
     final GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
