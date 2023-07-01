@@ -8,8 +8,8 @@ import 'package:media_vault/shared/widgets/custom_alert_dialog.dart';
 import 'package:media_vault/shared/widgets/custom_button.dart';
 
 @RoutePage()
-class SettingsPage extends StatelessWidget {
-  const SettingsPage({Key? key}) : super(key: key);
+class ProfilePage extends StatelessWidget {
+  const ProfilePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -35,13 +35,15 @@ class SettingsPage extends StatelessWidget {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Settings'),
+          title: const Text('My Profile'),
         ),
         body: Column(
           children: [
             const Text("Logged in as"),
             const SizedBox(height: 5),
-            Text((BlocProvider.of<AuthCoreBloc>(context).state as AuthCoreAuthenticated).user.email),
+            Text((BlocProvider.of<AuthCoreBloc>(context).state as AuthCoreAuthenticated)
+                .user
+                .email),
             const SizedBox(height: 20),
             CustomButton(
               text: "Change PIN",

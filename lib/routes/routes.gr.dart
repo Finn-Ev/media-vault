@@ -13,81 +13,75 @@ import 'package:flutter/foundation.dart' as _i21;
 import 'package:flutter/material.dart' as _i19;
 import 'package:media_vault/features/albums/domain/entities/album.dart' as _i20;
 import 'package:media_vault/features/albums/presentation/album_list_page.dart'
-    as _i17;
+    as _i16;
 import 'package:media_vault/features/assets/domain/entities/asset.dart' as _i22;
 import 'package:media_vault/features/assets/presentation/asset_carousel/asset_carousel_page.dart'
-    as _i12;
-import 'package:media_vault/features/assets/presentation/asset_list/asset_list_page.dart'
-    as _i14;
-import 'package:media_vault/features/assets/presentation/asset_list/trash/trash_page.dart'
-    as _i13;
-import 'package:media_vault/features/assets/presentation/asset_video_player/asset_video_player_page.dart'
-    as _i15;
-import 'package:media_vault/features/assets/presentation/move_assets/move_assets_page.dart'
-    as _i16;
-import 'package:media_vault/features/auth/presentation/local_auth/edit_pin/edit_pin_page.dart'
-    as _i7;
-import 'package:media_vault/features/auth/presentation/local_auth/enter_local_auth/enter_local_auth_page.dart'
-    as _i9;
-import 'package:media_vault/features/auth/presentation/local_auth/forgot_pin/forgot_pin_page.dart'
-    as _i8;
-import 'package:media_vault/features/auth/presentation/local_auth/local_auth_root_page.dart'
-    as _i10;
-import 'package:media_vault/features/auth/presentation/local_auth/local_auth_setup/confirm_local_auth_setup_page.dart'
-    as _i6;
-import 'package:media_vault/features/auth/presentation/local_auth/local_auth_setup/local_auth_setup_page.dart'
-    as _i5;
-import 'package:media_vault/features/auth/presentation/remote_auth/forgot_password/forgot_password_page.dart'
-    as _i2;
-import 'package:media_vault/features/auth/presentation/remote_auth/login/login_page.dart'
-    as _i4;
-import 'package:media_vault/features/auth/presentation/remote_auth/register/register_page.dart'
-    as _i3;
-import 'package:media_vault/features/auth/presentation/settings/settings_page.dart'
-    as _i1;
-import 'package:media_vault/features/auth/presentation/splash_page.dart'
     as _i11;
+import 'package:media_vault/features/assets/presentation/asset_list/asset_list_page.dart'
+    as _i13;
+import 'package:media_vault/features/assets/presentation/asset_list/trash/trash_page.dart'
+    as _i12;
+import 'package:media_vault/features/assets/presentation/asset_video_player/asset_video_player_page.dart'
+    as _i14;
+import 'package:media_vault/features/assets/presentation/move_assets/move_assets_page.dart'
+    as _i15;
+import 'package:media_vault/features/auth/presentation/local_auth/edit_pin/edit_pin_page.dart'
+    as _i6;
+import 'package:media_vault/features/auth/presentation/local_auth/enter_local_auth/enter_local_auth_page.dart'
+    as _i8;
+import 'package:media_vault/features/auth/presentation/local_auth/forgot_pin/forgot_pin_page.dart'
+    as _i7;
+import 'package:media_vault/features/auth/presentation/local_auth/local_auth_root_page.dart'
+    as _i9;
+import 'package:media_vault/features/auth/presentation/local_auth/local_auth_setup/confirm_local_auth_setup_page.dart'
+    as _i5;
+import 'package:media_vault/features/auth/presentation/local_auth/local_auth_setup/local_auth_setup_page.dart'
+    as _i4;
+import 'package:media_vault/features/auth/presentation/profile/profile_page.dart'
+    as _i17;
+import 'package:media_vault/features/auth/presentation/remote_auth/forgot_password/forgot_password_page.dart'
+    as _i1;
+import 'package:media_vault/features/auth/presentation/remote_auth/login/login_page.dart'
+    as _i3;
+import 'package:media_vault/features/auth/presentation/remote_auth/register/register_page.dart'
+    as _i2;
+import 'package:media_vault/features/auth/presentation/splash_page.dart'
+    as _i10;
 
 abstract class $AppRouter extends _i18.RootStackRouter {
   $AppRouter({super.navigatorKey});
 
   @override
   final Map<String, _i18.PageFactory> pagesMap = {
-    SettingsRoute.name: (routeData) {
-      return _i18.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const _i1.SettingsPage(),
-      );
-    },
     ForgotPasswordRoute.name: (routeData) {
       return _i18.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i2.ForgotPasswordPage(),
+        child: const _i1.ForgotPasswordPage(),
       );
     },
     RegisterRoute.name: (routeData) {
       return _i18.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i3.RegisterPage(),
+        child: const _i2.RegisterPage(),
       );
     },
     LoginRoute.name: (routeData) {
       return _i18.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i4.LoginPage(),
+        child: const _i3.LoginPage(),
       );
     },
     LocalAuthSetupRoute.name: (routeData) {
       return _i18.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i5.LocalAuthSetupPage(),
+        child: const _i4.LocalAuthSetupPage(),
       );
     },
     ConfirmLocalAuthSetupRoute.name: (routeData) {
       final args = routeData.argsAs<ConfirmLocalAuthSetupRouteArgs>();
       return _i18.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i6.ConfirmLocalAuthSetupPage(
+        child: _i5.ConfirmLocalAuthSetupPage(
           pin: args.pin,
           key: args.key,
         ),
@@ -96,38 +90,38 @@ abstract class $AppRouter extends _i18.RootStackRouter {
     EditPinRoute.name: (routeData) {
       return _i18.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i7.EditPinPage(),
+        child: const _i6.EditPinPage(),
       );
     },
     ForgotPinRoute.name: (routeData) {
       return _i18.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i8.ForgotPinPage(),
+        child: const _i7.ForgotPinPage(),
       );
     },
     EnterLocalAuthRoute.name: (routeData) {
       return _i18.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i9.EnterLocalAuthPage(),
+        child: const _i8.EnterLocalAuthPage(),
       );
     },
     LocalAuthRootRoute.name: (routeData) {
       return _i18.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i10.LocalAuthRootPage(),
+        child: const _i9.LocalAuthRootPage(),
       );
     },
     SplashRoute.name: (routeData) {
       return _i18.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i11.SplashPage(),
+        child: const _i10.SplashPage(),
       );
     },
     AssetCarouselRoute.name: (routeData) {
       final args = routeData.argsAs<AssetCarouselRouteArgs>();
       return _i18.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i12.AssetCarouselPage(
+        child: _i11.AssetCarouselPage(
           albumId: args.albumId,
           initialIndex: args.initialIndex,
           key: args.key,
@@ -137,14 +131,14 @@ abstract class $AppRouter extends _i18.RootStackRouter {
     TrashRoute.name: (routeData) {
       return _i18.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i13.TrashPage(),
+        child: const _i12.TrashPage(),
       );
     },
     AssetListRoute.name: (routeData) {
       final args = routeData.argsAs<AssetListRouteArgs>();
       return _i18.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i14.AssetListPage(
+        child: _i13.AssetListPage(
           album: args.album,
           key: args.key,
         ),
@@ -154,7 +148,7 @@ abstract class $AppRouter extends _i18.RootStackRouter {
       final args = routeData.argsAs<AssetVideoPlayerRouteArgs>();
       return _i18.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i15.AssetVideoPlayerPage(
+        child: _i14.AssetVideoPlayerPage(
           url: args.url,
           key: args.key,
         ),
@@ -164,7 +158,7 @@ abstract class $AppRouter extends _i18.RootStackRouter {
       final args = routeData.argsAs<MoveAssetsRouteArgs>();
       return _i18.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i16.MoveAssetsPage(
+        child: _i15.MoveAssetsPage(
           sourceAlbumId: args.sourceAlbumId,
           assets: args.assets,
           copy: args.copy,
@@ -175,28 +169,20 @@ abstract class $AppRouter extends _i18.RootStackRouter {
     AlbumListRoute.name: (routeData) {
       return _i18.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i17.AlbumListPage(),
+        child: const _i16.AlbumListPage(),
+      );
+    },
+    ProfileRoute.name: (routeData) {
+      return _i18.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const _i17.ProfilePage(),
       );
     },
   };
 }
 
 /// generated route for
-/// [_i1.SettingsPage]
-class SettingsRoute extends _i18.PageRouteInfo<void> {
-  const SettingsRoute({List<_i18.PageRouteInfo>? children})
-      : super(
-          SettingsRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'SettingsRoute';
-
-  static const _i18.PageInfo<void> page = _i18.PageInfo<void>(name);
-}
-
-/// generated route for
-/// [_i2.ForgotPasswordPage]
+/// [_i1.ForgotPasswordPage]
 class ForgotPasswordRoute extends _i18.PageRouteInfo<void> {
   const ForgotPasswordRoute({List<_i18.PageRouteInfo>? children})
       : super(
@@ -210,7 +196,7 @@ class ForgotPasswordRoute extends _i18.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i3.RegisterPage]
+/// [_i2.RegisterPage]
 class RegisterRoute extends _i18.PageRouteInfo<void> {
   const RegisterRoute({List<_i18.PageRouteInfo>? children})
       : super(
@@ -224,7 +210,7 @@ class RegisterRoute extends _i18.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i4.LoginPage]
+/// [_i3.LoginPage]
 class LoginRoute extends _i18.PageRouteInfo<void> {
   const LoginRoute({List<_i18.PageRouteInfo>? children})
       : super(
@@ -238,7 +224,7 @@ class LoginRoute extends _i18.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i5.LocalAuthSetupPage]
+/// [_i4.LocalAuthSetupPage]
 class LocalAuthSetupRoute extends _i18.PageRouteInfo<void> {
   const LocalAuthSetupRoute({List<_i18.PageRouteInfo>? children})
       : super(
@@ -252,7 +238,7 @@ class LocalAuthSetupRoute extends _i18.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i6.ConfirmLocalAuthSetupPage]
+/// [_i5.ConfirmLocalAuthSetupPage]
 class ConfirmLocalAuthSetupRoute
     extends _i18.PageRouteInfo<ConfirmLocalAuthSetupRouteArgs> {
   ConfirmLocalAuthSetupRoute({
@@ -291,7 +277,7 @@ class ConfirmLocalAuthSetupRouteArgs {
 }
 
 /// generated route for
-/// [_i7.EditPinPage]
+/// [_i6.EditPinPage]
 class EditPinRoute extends _i18.PageRouteInfo<void> {
   const EditPinRoute({List<_i18.PageRouteInfo>? children})
       : super(
@@ -305,7 +291,7 @@ class EditPinRoute extends _i18.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i8.ForgotPinPage]
+/// [_i7.ForgotPinPage]
 class ForgotPinRoute extends _i18.PageRouteInfo<void> {
   const ForgotPinRoute({List<_i18.PageRouteInfo>? children})
       : super(
@@ -319,7 +305,7 @@ class ForgotPinRoute extends _i18.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i9.EnterLocalAuthPage]
+/// [_i8.EnterLocalAuthPage]
 class EnterLocalAuthRoute extends _i18.PageRouteInfo<void> {
   const EnterLocalAuthRoute({List<_i18.PageRouteInfo>? children})
       : super(
@@ -333,7 +319,7 @@ class EnterLocalAuthRoute extends _i18.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i10.LocalAuthRootPage]
+/// [_i9.LocalAuthRootPage]
 class LocalAuthRootRoute extends _i18.PageRouteInfo<void> {
   const LocalAuthRootRoute({List<_i18.PageRouteInfo>? children})
       : super(
@@ -347,7 +333,7 @@ class LocalAuthRootRoute extends _i18.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i11.SplashPage]
+/// [_i10.SplashPage]
 class SplashRoute extends _i18.PageRouteInfo<void> {
   const SplashRoute({List<_i18.PageRouteInfo>? children})
       : super(
@@ -361,7 +347,7 @@ class SplashRoute extends _i18.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i12.AssetCarouselPage]
+/// [_i11.AssetCarouselPage]
 class AssetCarouselRoute extends _i18.PageRouteInfo<AssetCarouselRouteArgs> {
   AssetCarouselRoute({
     required String albumId,
@@ -404,7 +390,7 @@ class AssetCarouselRouteArgs {
 }
 
 /// generated route for
-/// [_i13.TrashPage]
+/// [_i12.TrashPage]
 class TrashRoute extends _i18.PageRouteInfo<void> {
   const TrashRoute({List<_i18.PageRouteInfo>? children})
       : super(
@@ -418,7 +404,7 @@ class TrashRoute extends _i18.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i14.AssetListPage]
+/// [_i13.AssetListPage]
 class AssetListRoute extends _i18.PageRouteInfo<AssetListRouteArgs> {
   AssetListRoute({
     required _i20.Album album,
@@ -456,7 +442,7 @@ class AssetListRouteArgs {
 }
 
 /// generated route for
-/// [_i15.AssetVideoPlayerPage]
+/// [_i14.AssetVideoPlayerPage]
 class AssetVideoPlayerRoute
     extends _i18.PageRouteInfo<AssetVideoPlayerRouteArgs> {
   AssetVideoPlayerRoute({
@@ -495,7 +481,7 @@ class AssetVideoPlayerRouteArgs {
 }
 
 /// generated route for
-/// [_i16.MoveAssetsPage]
+/// [_i15.MoveAssetsPage]
 class MoveAssetsRoute extends _i18.PageRouteInfo<MoveAssetsRouteArgs> {
   MoveAssetsRoute({
     required String sourceAlbumId,
@@ -543,7 +529,7 @@ class MoveAssetsRouteArgs {
 }
 
 /// generated route for
-/// [_i17.AlbumListPage]
+/// [_i16.AlbumListPage]
 class AlbumListRoute extends _i18.PageRouteInfo<void> {
   const AlbumListRoute({List<_i18.PageRouteInfo>? children})
       : super(
@@ -552,6 +538,20 @@ class AlbumListRoute extends _i18.PageRouteInfo<void> {
         );
 
   static const String name = 'AlbumListRoute';
+
+  static const _i18.PageInfo<void> page = _i18.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i17.ProfilePage]
+class ProfileRoute extends _i18.PageRouteInfo<void> {
+  const ProfileRoute({List<_i18.PageRouteInfo>? children})
+      : super(
+          ProfileRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'ProfileRoute';
 
   static const _i18.PageInfo<void> page = _i18.PageInfo<void>(name);
 }

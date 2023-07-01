@@ -32,9 +32,9 @@ class AlbumListPage extends StatelessWidget {
         appBar: AppBar(
           centerTitle: true,
           leading: IconButton(
-            icon: const Icon(Icons.settings),
+            icon: const Icon(Icons.person),
             onPressed: () {
-              AutoRouter.of(context).push(const SettingsRoute());
+              AutoRouter.of(context).push(const ProfileRoute());
             },
           ),
           title: const Text('My Albums'),
@@ -55,7 +55,8 @@ class AlbumListPage extends StatelessWidget {
                       confirmText: 'Create',
                       popContextOnAction: true,
                       onConfirm: (value) {
-                        BlocProvider.of<AlbumControllerBloc>(context).add(CreateAlbum(title: value));
+                        BlocProvider.of<AlbumControllerBloc>(context)
+                            .add(CreateAlbum(title: value));
                       },
                     );
                   },

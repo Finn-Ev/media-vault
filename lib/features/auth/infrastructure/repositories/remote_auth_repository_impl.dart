@@ -23,7 +23,8 @@ class AuthRepositoryImpl implements RemoteAuthRepository {
   Future<Either<RemoteAuthFailure, Unit>> registerWithEmailAndPassword(
       {required String email, required String password}) async {
     try {
-      final user = await firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
+      final user =
+          await firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
 
       user.user!.sendEmailVerification();
 
@@ -48,7 +49,8 @@ class AuthRepositoryImpl implements RemoteAuthRepository {
   Future<Either<RemoteAuthFailure, Unit>> signInWithEmailAndPassword(
       {required String email, required String password}) async {
     try {
-      final user = await firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
+      final user =
+          await firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
 
       // don't allow the user to login if the email is not verified
       if (!user.user!.emailVerified) {
@@ -67,7 +69,8 @@ class AuthRepositoryImpl implements RemoteAuthRepository {
   }
 
   @override
-  Future<Either<RemoteAuthFailure, Unit>> sendPasswordResetEmail({required String email}) async {
+  Future<Either<RemoteAuthFailure, Unit>> sendPasswordResetEmail(
+      {required String email}) async {
     try {
       await firebaseAuth.sendPasswordResetEmail(email: email);
       return right(unit);
