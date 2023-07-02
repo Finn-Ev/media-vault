@@ -48,7 +48,7 @@ class _SplashPageState extends State<SplashPage> with WidgetsBindingObserver {
           'Unfortunately, an issue occurred while trying to authenticate you. Please log in again.',
           style: TextStyle(color: Colors.white, fontSize: 16),
         ),
-        duration: Duration(seconds: 5),
+        duration: Duration(seconds: 3),
       ),
     );
   }
