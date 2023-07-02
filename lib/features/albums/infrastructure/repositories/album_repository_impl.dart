@@ -82,7 +82,6 @@ class AlbumRepositoryImpl extends AlbumRepository {
     try {
       final userDoc = await firestore.userDocument();
 
-      // delete the storage files of the album
       final assetDocsToMoveToTrash = await userDoc.collection("albums/$albumId/assets").get();
 
       for (final assetDoc in assetDocsToMoveToTrash.docs) {
@@ -153,5 +152,31 @@ class AlbumRepositoryImpl extends AlbumRepository {
         return left(UnexpectedFailure());
       }
     });
+  }
+
+  @override
+  Future<Either<MediaFailure, List<Album>>> fetchAll() async {
+    final userDoc = await firestore.userDocument();
+
+    final snapshot = await userDoc.albumCollection.get();
+
+    print(snapshot.docs);
+
+    try {
+      return right(snapshot.docs.map((doc) => AlbumModel.fromFirestore(doc).toEntity()).toList());
+    } catch (e) {
+      if (e is FirebaseException) {
+        if (kDebugMode) {
+          print(e);
+        }
+        if (e.code.contains('permission-denied') || e.code.contains("PERMISSION_DENIED")) {
+          return left(InsufficientPermissions());
+        } else {
+          return left(UnexpectedFailure());
+        }
+      } else {
+        return left(UnexpectedFailure());
+      }
+    }
   }
 }
