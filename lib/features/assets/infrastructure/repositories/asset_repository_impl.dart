@@ -160,10 +160,12 @@ class AssetRepositoryImpl extends AssetRepository {
       await userDoc.collection('albums/$sourceAlbumId/assets').doc(assetToMove.id).delete();
 
       await userDoc.collection('albums/$trashAlbumId/assets').doc(assetToMove.id).set(
-            // don't update albumId, otherwise we can't move it back to the original album
-            AssetModel.fromEntity(assetToMove.copyWith(
-              modifiedAt: DateTime.now(),
-            )).toMap(),
+            // don't update the albumId, otherwise we can't move it back to the original album
+            AssetModel.fromEntity(
+              assetToMove.copyWith(
+                modifiedAt: DateTime.now(),
+              ),
+            ).toMap(),
           );
 
       return right(unit);

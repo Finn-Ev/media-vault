@@ -40,5 +40,15 @@ class AlbumControllerBloc extends Bloc<AlbumControllerEvent, AlbumControllerStat
         (success) => emit(AlbumControllerLoaded()),
       );
     });
+
+    on<DeleteAllAlbums>((event, emit) async {
+      emit(AlbumControllerLoading());
+      final failureOrSuccess = await albumRepository.deleteAllPermanently();
+
+      failureOrSuccess.fold(
+        (failure) => emit(AlbumControllerFailure(failure)),
+        (success) => emit(AlbumControllerLoaded()),
+      );
+    });
   }
 }

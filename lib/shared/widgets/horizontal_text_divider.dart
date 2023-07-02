@@ -9,12 +9,18 @@ class HorizontalTextDivider extends StatelessWidget {
     final themeData = Theme.of(context);
     return Row(children: <Widget>[
       Expanded(
-          child: Divider(
-        color: themeData.colorScheme.onPrimary,
-      )),
-      const SizedBox(width: 8.0),
-      Text(text),
-      const SizedBox(width: 8.0),
+        child: Divider(
+          color: themeData.colorScheme.onPrimary,
+        ),
+      ),
+      if (text != '')
+        Row(
+          children: [
+            const SizedBox(width: 8.0),
+            Text(text),
+            const SizedBox(width: 8.0),
+          ],
+        ),
       Expanded(
         child: Divider(
           color: themeData.colorScheme.onPrimary,

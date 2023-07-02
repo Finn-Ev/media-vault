@@ -173,9 +173,11 @@ abstract class $AppRouter extends _i18.RootStackRouter {
       );
     },
     ProfileRoute.name: (routeData) {
+      final args = routeData.argsAs<ProfileRouteArgs>(
+          orElse: () => const ProfileRouteArgs());
       return _i18.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i17.ProfilePage(),
+        child: _i17.ProfilePage(key: args.key),
       );
     },
   };
@@ -544,14 +546,29 @@ class AlbumListRoute extends _i18.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i17.ProfilePage]
-class ProfileRoute extends _i18.PageRouteInfo<void> {
-  const ProfileRoute({List<_i18.PageRouteInfo>? children})
-      : super(
+class ProfileRoute extends _i18.PageRouteInfo<ProfileRouteArgs> {
+  ProfileRoute({
+    _i19.Key? key,
+    List<_i18.PageRouteInfo>? children,
+  }) : super(
           ProfileRoute.name,
+          args: ProfileRouteArgs(key: key),
           initialChildren: children,
         );
 
   static const String name = 'ProfileRoute';
 
-  static const _i18.PageInfo<void> page = _i18.PageInfo<void>(name);
+  static const _i18.PageInfo<ProfileRouteArgs> page =
+      _i18.PageInfo<ProfileRouteArgs>(name);
+}
+
+class ProfileRouteArgs {
+  const ProfileRouteArgs({this.key});
+
+  final _i19.Key? key;
+
+  @override
+  String toString() {
+    return 'ProfileRouteArgs{key: $key}';
+  }
 }

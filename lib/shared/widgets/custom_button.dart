@@ -5,12 +5,14 @@ class CustomButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
   final bool isLoading;
+  final bool isVeryDestructive;
 
   const CustomButton({
     Key? key,
     required this.text,
     required this.onPressed,
     this.isLoading = false,
+    this.isVeryDestructive = false,
   }) : super(key: key);
 
   @override
@@ -23,14 +25,14 @@ class CustomButton extends StatelessWidget {
         width: double.infinity,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: themeData.colorScheme.secondary,
+          color: isVeryDestructive ? Colors.red[900] : themeData.colorScheme.secondary,
         ),
         child: Center(
             child: !isLoading
                 ? Text(
                     text,
                     style: TextStyle(
-                      color: themeData.colorScheme.onSecondary,
+                      color: isVeryDestructive ? Colors.white : themeData.colorScheme.onSecondary,
                       fontSize: 20,
                     ),
                   )

@@ -20,3 +20,5 @@ class DeleteAlbum extends AlbumControllerEvent {
 
   DeleteAlbum({required this.id});
 }
+
+class DeleteAllAlbums extends AlbumControllerEvent {}
